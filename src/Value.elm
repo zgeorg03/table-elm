@@ -1,9 +1,20 @@
-module Value exposing (tests, Value)
+module Value
+    exposing
+        ( Value
+        , toString
+        , makeInt
+        , makeFloat
+        , makeBool
+        , makeString
+        , makeDate
+        , S
+        , tests
+        )
 
 {-| This module wraps all the possible types a table cell can have
 
 
-@docs tests, Value
+@docs Value, toString, makeInt, makeFloat, makeBool, makeString,makeDate, tests, S
 
 -}
 
@@ -12,9 +23,31 @@ import Html exposing (..)
 import Date exposing (..)
 
 
+type I
+    = Int
+
+
+type F
+    = Float
+
+
+type B
+    = Bool
+
+
+{-| String type
+-}
+type S
+    = String
+
+
+type D
+    = Date
+
+
 {-| This type holds the possible types for a table cell
 -}
-type Value
+type Val
     = I Int
     | F Float
     | B Bool
@@ -22,22 +55,65 @@ type Value
     | D Int
 
 
-toString : Value -> String
+{-| This type wraps the Val type
+-}
+type Value a
+    = W Val
+
+
+{-| Create Integer
+-}
+makeInt : Int -> Value I
+makeInt v =
+    W (I v)
+
+
+{-| Create Float
+-}
+makeFloat : Float -> Value F
+makeFloat v =
+    W (F v)
+
+
+{-| Create Boolean
+-}
+makeBool : Bool -> Value B
+makeBool v =
+    W (B v)
+
+
+{-| Create String
+-}
+makeString : String -> Value S
+makeString v =
+    W (S v)
+
+
+{-| Create Date
+-}
+makeDate : Int -> Value D
+makeDate v =
+    W (D v)
+
+
+{-| String representation of a value
+-}
+toString : Value a -> String
 toString value =
     case value of
-        I int ->
+        W (I int) ->
             Basics.toString int
 
-        F float ->
+        W (F float) ->
             Basics.toString float
 
-        B bool ->
+        W (B bool) ->
             Basics.toString bool
 
-        S string ->
+        W (S string) ->
             string
 
-        D timestamp ->
+        W (D timestamp) ->
             let
                 date =
                     getDateFromInt timestamp
@@ -52,10 +128,16 @@ toString value =
                     Date.year date |> Basics.toString
 
                 hours =
-                    Date.hour date |> Basics.toString
+                    if (Date.hour date) < 10 then
+                        "0" ++ (Date.hour date |> Basics.toString)
+                    else
+                        Date.hour date |> Basics.toString
 
                 mins =
-                    Date.minute date |> Basics.toString
+                    if (Date.minute date) < 10 then
+                        "0" ++ (Date.minute date |> Basics.toString)
+                    else
+                        Date.minute date |> Basics.toString
             in
                 day ++ " " ++ month ++ " " ++ year ++ ", " ++ hours ++ ":" ++ mins
 
@@ -70,7 +152,11 @@ getDateFromInt timestamp =
 tests : Test
 tests =
     suite "Value package Test suite"
-        [ test "Addition" <| assertEqual (3 + 5) 8
+        [ test "Integer" <| assertEqual (toString (makeInt 23)) "23"
+        , test "Float" <| assertEqual (toString (makeFloat 23.33)) "23.33"
+        , test "Boolean" <| assertEqual (toString (makeBool False)) "False"
+        , test "Date" <| assertEqual (toString (makeDate 1468688316)) "16 July 2016, 19:58"
+        , test "String" <| assertEqual (toString (makeString "Test string")) "Test string"
         ]
 
 
@@ -79,11 +165,11 @@ tests =
 main : Html a
 main =
     div []
-        [ div [] [ text (toString (I 2)) ]
-        , div [] [ text (toString (F 2.3)) ]
-        , div [] [ text (toString (D 1468688316)) ]
-        , div [] [ text (toString (B False)) ]
-        , div [] [ text (toString (S "Test")) ]
+        [ div [] [ text (toString (makeInt 2)) ]
+        , div [] [ text (toString (makeFloat 2.3)) ]
+        , div [] [ text (toString (makeDate 1468688316)) ]
+        , div [] [ text (toString (makeBool False)) ]
+        , div [] [ text (toString (makeString "Test")) ]
         ]
 
 
