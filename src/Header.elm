@@ -1,10 +1,11 @@
-module Header exposing (State, Model, Msg, init, initNoCmd, update, view)
+module Header exposing (State(..), Model, Msg, init, initNoCmd, update, view)
 
 {-| This module builds a simple Header, with 3 states: Original,Ascending, Descending
 
 @docs State, Model, Msg, init, initNoCmd, update, view
 -}
 
+import Value exposing (..)
 import Html exposing (..)
 import Html.App exposing (program)
 import Html.Events exposing (onClick, onDoubleClick)
@@ -24,8 +25,9 @@ type State
 {-| A model has a value and a state
 -}
 type alias Model =
-    { value : String
+    { title : String
     , state : State
+    , type' : ValueType
     }
 
 
@@ -35,16 +37,16 @@ type alias Model =
 
 {-| Initialization of the model
 -}
-init : String -> ( Model, Cmd Msg )
-init value =
-    ( Model value Original, Cmd.none )
+init : String -> ValueType -> ( Model, Cmd Msg )
+init title typ =
+    ( Model title Original typ, Cmd.none )
 
 
 {-| Initialization of the model without command
 -}
-initNoCmd : String -> Model
-initNoCmd value =
-    Model value Original
+initNoCmd : String -> ValueType -> Model
+initNoCmd title typ =
+    Model title Original typ
 
 
 
@@ -93,19 +95,19 @@ showHeader : Model -> Html Msg
 showHeader model =
     case model.state of
         Original ->
-            th [] [ label [ onClick ChangeState ] [ text (model.value ++ " (==)") ] ]
+            th [] [ label [ onClick ChangeState, onDoubleClick Reset ] [ text (model.title ++ " (==)") ] ]
 
         Ascending ->
-            th [] [ label [ onClick ChangeState, onDoubleClick Reset ] [ text (model.value ++ " (<=)") ] ]
+            th [] [ label [ onClick ChangeState, onDoubleClick Reset ] [ text (model.title ++ " (<=)") ] ]
 
         Descending ->
-            th [] [ label [ onClick ChangeState ] [ text (model.value ++ " (>=)") ] ]
+            th [] [ label [ onClick ChangeState, onDoubleClick Reset ] [ text (model.title ++ " (>=)") ] ]
 
 
 main : Program Never
 main =
     program
-        { init = init "Name"
+        { init = init "Name" IntType
         , view = view
         , update = update
         , subscriptions = \_ -> Sub.none

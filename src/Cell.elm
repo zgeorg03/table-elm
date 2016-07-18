@@ -2,72 +2,88 @@ module Cell exposing (..)
 
 import Value exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (style, value)
-import Html.App exposing (beginnerProgram)
-import Html.Events exposing (onDoubleClick, keyCode, on)
+import Html.Attributes exposing (style, value, type', readonly, checked)
+import Html.App exposing (program)
+import Html.Events exposing (onDoubleClick, keyCode, on, onInput)
 import Json.Decode as Json
 
 
 --Model
 
 
-type alias Model a =
-    { data : Value a
-    , editable : Bool
-    , backgroundColor : String
-    , editingValue : String
+type alias Model =
+    { value : Value
+    , readonly : Bool
     }
 
 
-model : Model S
-model =
-    Model (makeString "Hello, This is a test") False "" ""
+init : Value -> ( Model, Cmd Msg )
+init val =
+    ( Model val True
+    , Cmd.none
+    )
 
 
 
 --Update
 
 
-type Msg a
+type Msg
     = Pass
     | UpdateValue String
-    | SetEditable
-    | UnsetEditable
+    | Setreadonly
+    | Unsetreadonly
 
 
-update : Msg a -> Model a -> Model a
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Pass ->
-            model
+            ( model, Cmd.none )
 
-        SetEditable ->
-            { model | editable = True }
+        Setreadonly ->
+            ( { model | readonly = True }, Cmd.none )
 
-        UnsetEditable ->
-            { model | editable = False }
+        Unsetreadonly ->
+            ( { model | readonly = False }, Cmd.none )
 
         UpdateValue v ->
-            { model | data = v }
+            {- let
+                   p =
+                       S v
+               in
+                   ( { model | data = v }, Cmd.none )
+
+            -}
+            ( { model | readonly = False }, Cmd.none )
 
 
 
 --View
 
 
-view : Model a -> Html (Msg a)
+view : Model -> Html Msg
 view model =
-    case model.editable of
-        False ->
-            td [ onDoubleClick SetEditable, style [ ( "background-color", model.backgroundColor ) ] ] [ text (Value.toString model.data) ]
+    div []
+        [ case model.value of
+            I int ->
+                input [ readonly model.readonly, type' "text", value (Basics.toString int) ] []
 
-        True ->
-            td [ onDoubleClick UnsetEditable, onEnter UpdateValue, style [ ( "background-color", model.backgroundColor ) ] ]
-                [ input [ value (Value.toString model.data) ] []
-                ]
+            F float ->
+                input [ readonly model.readonly, type' "text", value (Basics.toString float) ] []
+
+            B bool ->
+                input [ readonly model.readonly, type' "checkbox", checked bool ] []
+
+            D date ->
+                input [ readonly model.readonly, type' "date", value (Value.toString model.value) ] []
+
+            S str ->
+                input [ readonly model.readonly, type' "text", value str ] []
+        ]
 
 
-onEnter : Msg a -> Attribute (Msg a)
+onEnter : Msg -> Attribute Msg
 onEnter msg =
     let
         tagger code =
@@ -85,4 +101,9 @@ onEnter msg =
 
 main : Program Never
 main =
-    beginnerProgram { model = model, view = view, update = update }
+    program
+        { init = init (S "Zack")
+        , view = view
+        , update = update
+        , subscriptions = (\_ -> Sub.none)
+        }

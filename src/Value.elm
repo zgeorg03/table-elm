@@ -1,20 +1,21 @@
 module Value
     exposing
-        ( Value
+        ( Value(..)
+        , ValueType(..)
+        , getDefaultValue
         , toString
         , makeInt
         , makeFloat
         , makeBool
         , makeString
         , makeDate
-        , S
         , tests
         )
 
 {-| This module wraps all the possible types a table cell can have
 
 
-@docs Value, toString, makeInt, makeFloat, makeBool, makeString,makeDate, tests, S
+@docs Value,ValueType,getDefaultValue, toString, makeInt, makeFloat, makeBool, makeString,makeDate, tests
 
 -}
 
@@ -23,31 +24,9 @@ import Html exposing (..)
 import Date exposing (..)
 
 
-type I
-    = Int
-
-
-type F
-    = Float
-
-
-type B
-    = Bool
-
-
-{-| String type
+{-| This type holds the possible types with the corresponding values for a table cell
 -}
-type S
-    = String
-
-
-type D
-    = Date
-
-
-{-| This type holds the possible types for a table cell
--}
-type Val
+type Value
     = I Int
     | F Float
     | B Bool
@@ -55,65 +34,97 @@ type Val
     | D Int
 
 
-{-| This type wraps the Val type
+{-| This type holds the possible types for a table cell
 -}
-type Value a
-    = W Val
+type ValueType
+    = IntType
+    | StringType
+    | DateType
+    | FloatType
+    | BoolType
 
 
 {-| Create Integer
 -}
-makeInt : Int -> Value I
+makeInt : Int -> Value
 makeInt v =
-    W (I v)
+    I v
+
+
+{-| Create Integer type
+-}
+makeIntType : ValueType
+makeIntType =
+    IntType
 
 
 {-| Create Float
 -}
-makeFloat : Float -> Value F
+makeFloat : Float -> Value
 makeFloat v =
-    W (F v)
+    F v
 
 
 {-| Create Boolean
 -}
-makeBool : Bool -> Value B
+makeBool : Bool -> Value
 makeBool v =
-    W (B v)
+    B v
 
 
 {-| Create String
 -}
-makeString : String -> Value S
+makeString : String -> Value
 makeString v =
-    W (S v)
+    S v
 
 
 {-| Create Date
 -}
-makeDate : Int -> Value D
+makeDate : Int -> Value
 makeDate v =
-    W (D v)
+    D v
+
+
+{-| Useful method to get the default value given it's data type
+-}
+getDefaultValue : ValueType -> Value
+getDefaultValue valueType =
+    case valueType of
+        IntType ->
+            I 0
+
+        StringType ->
+            S ""
+
+        FloatType ->
+            F 0.0
+
+        DateType ->
+            D 0
+
+        BoolType ->
+            B True
 
 
 {-| String representation of a value
 -}
-toString : Value a -> String
+toString : Value -> String
 toString value =
     case value of
-        W (I int) ->
+        I int ->
             Basics.toString int
 
-        W (F float) ->
+        F float ->
             Basics.toString float
 
-        W (B bool) ->
+        B bool ->
             Basics.toString bool
 
-        W (S string) ->
+        S string ->
             string
 
-        W (D timestamp) ->
+        D timestamp ->
             let
                 date =
                     getDateFromInt timestamp
