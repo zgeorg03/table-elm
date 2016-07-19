@@ -2,13 +2,16 @@ module ExternalCSS exposing (stylesheet)
 
 {-|
   Used only for testing with reactor
--
+
+@docs stylesheet
 -}
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 
 
+{-| A link to bootstrap cdn
+-}
 stylesheet : Html a
 stylesheet =
     let

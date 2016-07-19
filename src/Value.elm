@@ -4,19 +4,15 @@ module Value
         , ValueType(..)
         , getDefaultValueFromType
         , getDefaultValue
+        , compare
         , toString
-        , makeInt
-        , makeFloat
-        , makeBool
-        , makeString
-        , makeDate
         , tests
         )
 
 {-| This module wraps all the possible types a table cell can have
 
 
-@docs Value,ValueType,getDefaultValueFromType, getDefaultValue, toString, makeInt, makeFloat, makeBool, makeString,makeDate, tests
+@docs Value,ValueType,getDefaultValueFromType, getDefaultValue, compare, toString, tests
 
 -}
 
@@ -178,6 +174,60 @@ toString value =
 getDateFromInt : Int -> Date
 getDateFromInt timestamp =
     (1000 * timestamp) |> toFloat |> Date.fromTime
+
+
+{-| Comparator for Value
+-}
+compare : Value -> Value -> Order
+compare a b =
+    case a of
+        I v1 ->
+            case b of
+                I v2 ->
+                    Basics.compare v1 v2
+
+                _ ->
+                    LT
+
+        F v1 ->
+            case b of
+                F v2 ->
+                    Basics.compare v1 v2
+
+                _ ->
+                    LT
+
+        S v1 ->
+            case b of
+                S v2 ->
+                    Basics.compare v1 v2
+
+                _ ->
+                    LT
+
+        B v1 ->
+            case b of
+                B v2 ->
+                    case ( v1, v2 ) of
+                        ( True, False ) ->
+                            GT
+
+                        ( False, True ) ->
+                            LT
+
+                        _ ->
+                            EQ
+
+                _ ->
+                    LT
+
+        D v1 ->
+            case b of
+                D v2 ->
+                    Basics.compare v1 v2
+
+                _ ->
+                    LT
 
 
 {-| The function with all the necessary tests

@@ -33,7 +33,8 @@ type alias IdRecord =
 
 type alias Model =
     { headers : List IdHeader
-    , records : Array IdRecord
+    , records : List IdRecord
+    , original : List IdRecord
     , permutation : Array Int
     , rows : Int
     , cols : Int
@@ -65,12 +66,10 @@ init headers records =
 
         indexedListRecords =
             toIndexedList arrayRecords
-
-        indexedArrayRecords =
-            fromList indexedListRecords
     in
         ( Model (List.map initHeaderHelper indexedListHeaders)
-            (Array.map initRecordHelper indexedArrayRecords)
+            (List.map initRecordHelper indexedListRecords)
+            (List.map initRecordHelper indexedListRecords)
             (Array.initialize headersLen (\n -> n))
             recordsLen
             headersLen
@@ -116,9 +115,9 @@ update msg model =
         RecordMsg id msg ->
             let
                 ( newRecords, cmds ) =
-                    List.unzip (Array.map (updateRecordHelp id msg) model.records |> toList)
+                    List.unzip (List.map (updateRecordHelp id msg) model.records)
             in
-                ( { model | records = Array.fromList newRecords }, Cmd.batch cmds )
+                ( { model | records = newRecords }, Cmd.batch cmds )
 
         Sort col ->
             let
@@ -129,12 +128,12 @@ update msg model =
 
 
 sort : Int -> Model -> Model
-sort index model =
+sort col model =
     let
-        newPerm =
-            getPermutation index model
+        newRecords =
+            List.sortWith (sortIdRecord col) model.records
     in
-        { model | permutation = newPerm }
+        { model | records = newRecords }
 
 
 getPermutation : Int -> Model -> Array Int
@@ -152,33 +151,21 @@ getPermutation col model =
         newPerm
 
 
-wrapper : Int -> Model -> Int -> Value
-wrapper col model row =
+sortIdRecord : Int -> IdRecord -> IdRecord -> Order
+sortIdRecord col rec1 rec2 =
+    Value.compare (getRecord rec1 |> getValue col) (getRecord rec2 |> getValue col)
+
+
+getRecord : IdRecord -> Record.Model
+getRecord idRecord =
+    idRecord.model
+
+
+getValue : Int -> Record.Model -> Value
+getValue index record =
     let
-        records : Array IdRecord
-        records =
-            model.records
-
-        mayIdRecord : Maybe IdRecord
-        mayIdRecord =
-            get row records
-
-        idRecord : IdRecord
-        idRecord =
-            case mayIdRecord of
-                Nothing ->
-                    { id = 0, model = Record.init [] }
-
-                Just record ->
-                    record
-
-        record : Record.Model
-        record =
-            idRecord.model
-
-        mayIdCell : Maybe { id : Int, model : Cell.Model }
         mayIdCell =
-            get col record
+            get index record
 
         idCell : { id : Int, model : Cell.Model }
         idCell =
@@ -189,63 +176,10 @@ wrapper col model row =
                 Just cell ->
                     cell
 
-        cell : Cell.Model
         cell =
             idCell.model
     in
         cell.value
-
-
-compareValue : Value -> Value -> Order
-compareValue a b =
-    case a of
-        I v1 ->
-            case b of
-                I v2 ->
-                    Basics.compare v1 v2
-
-                _ ->
-                    LT
-
-        F v1 ->
-            case b of
-                F v2 ->
-                    Basics.compare v1 v2
-
-                _ ->
-                    LT
-
-        S v1 ->
-            case b of
-                S v2 ->
-                    Basics.compare v1 v2
-
-                _ ->
-                    LT
-
-        B v1 ->
-            case b of
-                B v2 ->
-                    case ( v1, v2 ) of
-                        ( True, False ) ->
-                            GT
-
-                        ( False, True ) ->
-                            LT
-
-                        _ ->
-                            EQ
-
-                _ ->
-                    LT
-
-        D v1 ->
-            case b of
-                D v2 ->
-                    Basics.compare v1 v2
-
-                _ ->
-                    LT
 
 
 updateHeaderHelp : Int -> Header.Msg -> IdHeader -> ( IdHeader, Cmd Msg )
@@ -283,29 +217,41 @@ view model =
             , case model.error of
                 Nothing ->
                     tbody []
-                        (viewRecordsPermutated model)
+                        (viewRecords model)
 
                 Just error ->
                     tr [] [ text error ]
             ]
-        , text (Basics.toString model.permutation)
-        , button [ onClick (Sort 1) ] [ text "Sort" ]
+        , button [ onClick (Sort 3) ] [ text "Sort" ]
         ]
 
 
-viewRecordsPermutated : Model -> List (Html Msg)
-viewRecordsPermutated model =
-    Array.map (\x -> Array.get x model.records |> viewRecordPermutated) model.permutation |> Array.toList
+
+{-
+   viewRecordsPermutated : Model -> List (Html Msg)
+   viewRecordsPermutated model =
+       Array.map (\x -> Array.get x model.records |> viewRecordPermutated) model.permutation |> Array.toList
 
 
-viewRecordPermutated : Maybe IdRecord -> Html Msg
-viewRecordPermutated res =
-    case res of
-        Nothing ->
-            div [] []
+   viewRecordPermutated : Maybe IdRecord -> Html Msg
+   viewRecordPermutated res =
+       case res of
+           Nothing ->
+               div [] []
 
-        Just record ->
-            (App.map (RecordMsg record.id) (Record.view record.model))
+           Just record ->
+               (App.map (RecordMsg record.id) (Record.view record.model))
+-}
+
+
+viewRecords : Model -> List (Html Msg)
+viewRecords model =
+    List.map viewRecord model.records
+
+
+viewRecord : IdRecord -> Html Msg
+viewRecord record =
+    (App.map (RecordMsg record.id) (Record.view record.model))
 
 
 viewHeader : IdHeader -> Html Msg
