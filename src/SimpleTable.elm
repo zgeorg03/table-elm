@@ -6,11 +6,12 @@ module SimpleTable exposing (..)
 
 import ExternalCSS exposing (..)
 import Header exposing (..)
+import Record exposing (..)
+import Cell exposing (..)
 import Value exposing (..)
 import Html exposing (..)
 import Html.App as App exposing (program)
 import Html.Attributes exposing (class, value)
-import Html.Events exposing (onInput, onClick)
 import Array exposing (..)
 
 
@@ -23,12 +24,17 @@ type alias IdHeader =
     }
 
 
+type alias IdRecord =
+    { id : Int
+    , model : Record.Model
+    }
+
+
 type alias Model =
     { headers : List IdHeader
-    , data : List (Array Value)
+    , records : List IdRecord
     , size : Int
     , error : Maybe String
-    , newRecord : Array Value
     }
 
 
@@ -36,26 +42,39 @@ type alias Model =
 --INIT
 
 
-init : List Header.Model -> ( Model, Cmd Msg )
-init list =
+init : List Header.Model -> List Record.Model -> ( Model, Cmd Msg )
+init headers records =
     let
-        array =
-            fromList list
+        arrayHeaders =
+            fromList headers
+
+        arrayRecords =
+            fromList records
 
         len =
-            length array
+            length arrayHeaders
 
-        indexedList : List ( Int, Header.Model )
-        indexedList =
-            toIndexedList array
+        indexedListHeaders =
+            toIndexedList arrayHeaders
+
+        indexedListRecords =
+            toIndexedList arrayRecords
     in
-        ( Model (List.map initHelper indexedList) [] len Nothing empty
+        ( Model (List.map initHeaderHelper indexedListHeaders)
+            (List.map initRecordHelper indexedListRecords)
+            len
+            Nothing
         , Cmd.none
         )
 
 
-initHelper : ( Int, Header.Model ) -> IdHeader
-initHelper ( i, model ) =
+initRecordHelper : ( Int, Record.Model ) -> IdRecord
+initRecordHelper ( i, model ) =
+    IdRecord i (model)
+
+
+initHeaderHelper : ( Int, Header.Model ) -> IdHeader
+initHeaderHelper ( i, model ) =
     IdHeader i (model)
 
 
@@ -66,8 +85,8 @@ initHelper ( i, model ) =
 type Msg
     = NoOp
     | HeaderMsg Int Header.Msg
-    | UpdateCol1 String
-    | AddRecord
+    | RecordMsg Int Record.Msg
+    | Sort Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -79,41 +98,28 @@ update msg model =
         HeaderMsg id msg ->
             let
                 ( newHeaders, cmds ) =
-                    List.unzip (List.map (updateHelp id msg) model.headers)
+                    List.unzip (List.map (updateHeaderHelp id msg) model.headers)
             in
                 ( { model | headers = newHeaders }, Cmd.batch cmds )
 
-        UpdateCol1 txt ->
+        RecordMsg id msg ->
             let
-                len =
-                    length model.newRecord
-
-                array =
-                    if len /= model.size then
-                        emptyRecord model
-                    else
-                        model.newRecord
-
-                newArray =
-                    set 0 (makeString txt) array
+                ( newRecords, cmds ) =
+                    List.unzip (List.map (updateRecordHelp id msg) model.records)
             in
-                ( { model | newRecord = newArray }, Cmd.none )
+                ( { model | records = newRecords }, Cmd.batch cmds )
 
-        AddRecord ->
-            let
-                res =
-                    addRecord model.newRecord model
-            in
-                case res of
-                    Err error ->
-                        ( { model | error = Just error }, Cmd.none )
-
-                    Ok newModel ->
-                        ( { newModel | newRecord = (emptyRecord newModel) }, Cmd.none )
+        Sort int ->
+            ( model, Cmd.none )
 
 
-updateHelp : Int -> Header.Msg -> IdHeader -> ( IdHeader, Cmd Msg )
-updateHelp id msg header =
+sort : Int -> Model -> Model
+sort index model =
+    model
+
+
+updateHeaderHelp : Int -> Header.Msg -> IdHeader -> ( IdHeader, Cmd Msg )
+updateHeaderHelp id msg header =
     if header.id /= id then
         ( header, Cmd.none )
     else
@@ -124,75 +130,45 @@ updateHelp id msg header =
             ( IdHeader id newModel, Cmd.map (HeaderMsg id) cmds )
 
 
-
---Add record
-
-
-addRecord : Array Value -> Model -> Result String Model
-addRecord array model =
-    let
-        len =
-            (length array)
-
-        newData =
-            array :: model.data
-
-        res =
-            if len /= model.size then
-                Err "Record size doesn't match with the table definition"
-            else
-                Ok { model | data = newData }
-    in
-        res
-
-
-emptyRecord : Model -> Array Value
-emptyRecord model =
-    initialize model.size (always (S ""))
+updateRecordHelp : Int -> Record.Msg -> IdRecord -> ( IdRecord, Cmd Msg )
+updateRecordHelp id msg record =
+    if record.id /= id then
+        ( record, Cmd.none )
+    else
+        let
+            ( newModel, cmds ) =
+                Record.update msg record.model
+        in
+            ( IdRecord id newModel, Cmd.map (RecordMsg id) cmds )
 
 
 view : Model -> Html Msg
 view model =
-    let
-        txtCol1 =
-            case (get 0 model.newRecord) of
-                Just val ->
-                    (Value.toString val)
-
+    div []
+        [ (stylesheet)
+        , table [ class "table" ]
+            [ thead []
+                [ tr [] (List.map viewHeader model.headers)
+                ]
+            , case model.error of
                 Nothing ->
-                    ""
-    in
-        div []
-            [ div []
-                [ (stylesheet)
-                , table [ class "table" ]
-                    [ thead []
-                        [ tr [] (List.map viewHeader model.headers)
-                        ]
-                    , case model.error of
-                        Nothing ->
-                            tbody []
-                                (viewRecords model.data)
+                    tbody []
+                        (viewRecords model.records)
 
-                        Just error ->
-                            tr [] [ text error ]
-                    ]
-                ]
-            , div []
-                [ input [ onInput UpdateCol1, value txtCol1 ] []
-                , button [ onClick AddRecord ] [ text "Add" ]
-                ]
+                Just error ->
+                    tr [] [ text error ]
             ]
+        ]
 
 
-viewRecords : List (Array Value) -> List (Html Msg)
+viewRecords : List (IdRecord) -> List (Html Msg)
 viewRecords list =
     List.map viewRecord list
 
 
-viewRecord : Array Value -> Html Msg
-viewRecord array =
-    tr [] (toList (Array.map viewRecordCell array))
+viewRecord : IdRecord -> Html Msg
+viewRecord { id, model } =
+    (App.map (RecordMsg id) (Record.view model))
 
 
 viewRecordCell : Value -> Html Msg
@@ -205,8 +181,8 @@ viewHeader { id, model } =
     App.map (HeaderMsg id) (Header.view model)
 
 
-model : List Header.Model
-model =
+headers : List Header.Model
+headers =
     [ { title = "ID", state = Original, type' = IntType }
     , { title = "Name", state = Original, type' = StringType }
     , { title = "Surname", state = Original, type' = StringType }
@@ -214,10 +190,39 @@ model =
     ]
 
 
+records : List Record.Model
+records =
+    [ Record.init
+        [ Cell.init (I 955275)
+        , Cell.init (S "Zacharias")
+        , Cell.init (S "Georgiou")
+        , Cell.init (D 756216594)
+        ]
+    , Record.init
+        [ Cell.init (I 123456)
+        , Cell.init (S "Andreas")
+        , Cell.init (S "Andreou")
+        , Cell.init (D 726216594)
+        ]
+    , Record.init
+        [ Cell.init (I 123456)
+        , Cell.init (S "Andreas")
+        , Cell.init (S "Andreou")
+        , Cell.init (D 726216594)
+        ]
+    , Record.init
+        [ Cell.init (I 123456)
+        , Cell.init (S "Chris")
+        , Cell.init (S "Petrou")
+        , Cell.init (D 644349992)
+        ]
+    ]
+
+
 main : Program Never
 main =
     program
-        { init = init model
+        { init = init headers records
         , view = view
         , update = update
         , subscriptions = (\_ -> Sub.none)

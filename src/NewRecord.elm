@@ -1,6 +1,7 @@
 module NewRecord exposing (..)
 
 import Value exposing (..)
+import Cell exposing (..)
 import Html exposing (..)
 import Html.App as App exposing (program)
 import Html.Attributes exposing (value, type', checked)
@@ -11,7 +12,7 @@ import Array exposing (..)
 
 
 type alias Model =
-    { records : Array Value
+    { records : Array Cell.Model
     }
 
 
@@ -30,7 +31,7 @@ update msg model =
             ( model, Cmd.none )
 
 
-emptyRecord : List ValueType -> Array Value
+emptyRecord : List Value -> Array Value
 emptyRecord list =
     let
         array =
@@ -49,7 +50,7 @@ init list =
 
 
 
---VIEW
+--rerIEW
 
 
 view : Model -> Html Msg

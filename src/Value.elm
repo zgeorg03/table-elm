@@ -2,6 +2,7 @@ module Value
     exposing
         ( Value(..)
         , ValueType(..)
+        , getDefaultValueFromType
         , getDefaultValue
         , toString
         , makeInt
@@ -15,7 +16,7 @@ module Value
 {-| This module wraps all the possible types a table cell can have
 
 
-@docs Value,ValueType,getDefaultValue, toString, makeInt, makeFloat, makeBool, makeString,makeDate, tests
+@docs Value,ValueType,getDefaultValueFromType, getDefaultValue, toString, makeInt, makeFloat, makeBool, makeString,makeDate, tests
 
 -}
 
@@ -88,8 +89,8 @@ makeDate v =
 
 {-| Useful method to get the default value given it's data type
 -}
-getDefaultValue : ValueType -> Value
-getDefaultValue valueType =
+getDefaultValueFromType : ValueType -> Value
+getDefaultValueFromType valueType =
     case valueType of
         IntType ->
             I 0
@@ -104,6 +105,27 @@ getDefaultValue valueType =
             D 0
 
         BoolType ->
+            B True
+
+
+{-| Useful method to get the default value given it's value
+-}
+getDefaultValue : Value -> Value
+getDefaultValue value =
+    case value of
+        I _ ->
+            I 0
+
+        S _ ->
+            S ""
+
+        F _ ->
+            F 0.0
+
+        D _ ->
+            D 0
+
+        B _ ->
             B True
 
 
