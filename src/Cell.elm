@@ -24,7 +24,6 @@ type alias Model =
     { value : Value
     , rawValue : String
     , readonly : Bool
-    , debug : Bool
     }
 
 
@@ -32,21 +31,21 @@ type alias Model =
 -}
 init : Value -> Model
 init value =
-    Model value (Value.toString value) True False
+    Model value (Value.toString value) True
 
 
 {-| Initialization of a model without command in edit mode
 -}
 initEditable : Value -> Model
 initEditable value =
-    Model value (Value.toString value) False False
+    Model value (Value.toString value) False
 
 
 {-| Initialization of a model
 -}
 initCmd : Value -> Bool -> ( Model, Cmd Msg )
 initCmd val readonly =
-    ( Model val (Value.toString val) readonly True
+    ( Model val (Value.toString val) readonly
     , Cmd.none
     )
 
@@ -137,40 +136,29 @@ view : Model -> Html Msg
 view model =
     case model.readonly of
         False ->
-            div []
-                [ case model.value of
-                    I int ->
-                        input [ onEnter UpdateInteger, onInput UpdateRawInput, type' "text", value model.rawValue ] []
+            case model.value of
+                I int ->
+                    input [ onEnter UpdateInteger, onInput UpdateRawInput, type' "text", value model.rawValue ] []
 
-                    F float ->
-                        input [ onEnter UpdateFloat, onInput UpdateRawInput, type' "text", value model.rawValue ] []
+                F float ->
+                    input [ onEnter UpdateFloat, onInput UpdateRawInput, type' "text", value model.rawValue ] []
 
-                    B bool ->
-                        input [ onClick UpdateBool, type' "checkbox", checked bool ] []
+                B bool ->
+                    input [ onClick UpdateBool, type' "checkbox", checked bool ] []
 
-                    D date ->
-                        input [ readonly True, type' "date", value (Value.toString model.value) ] []
+                D date ->
+                    input [ readonly True, type' "date", value (Value.toString model.value) ] []
 
-                    S str ->
-                        input [ onEnter UpdateString, onInput UpdateRawInput, type' "text", value model.rawValue ] []
-                  -- Debug purposes
-                , case model.debug of
-                    True ->
-                        div [ style [ ( "color", "grey" ) ] ] [ text (Value.toString model.value) ]
-
-                    False ->
-                        span [] []
-                ]
+                S str ->
+                    input [ onEnter UpdateString, onInput UpdateRawInput, type' "text", value model.rawValue ] []
 
         True ->
-            div []
-                [ case model.value of
-                    B bool ->
-                        input [ disabled True, readonly model.readonly, type' "checkbox", checked bool ] []
+            case model.value of
+                B bool ->
+                    input [ disabled True, readonly model.readonly, type' "checkbox", checked bool ] []
 
-                    _ ->
-                        text (Value.toString model.value)
-                ]
+                _ ->
+                    text (Value.toString model.value)
 
 
 onEnter : Msg -> Attribute Msg

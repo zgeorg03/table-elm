@@ -21,7 +21,7 @@ type alias IdCell =
 {-| The model is a list of unique cells
 -}
 type alias Model =
-    List IdCell
+    Array IdCell
 
 
 
@@ -39,7 +39,7 @@ init list =
         indexedList =
             toIndexedList array
     in
-        List.map initHelper indexedList
+        List.map initHelper indexedList |> Array.fromList
 
 
 {-| Initialization of the model with Cmds
@@ -53,7 +53,7 @@ initWithCmd list =
         indexedList =
             toIndexedList array
     in
-        ( List.map initHelper indexedList
+        ( List.map initHelper indexedList |> Array.fromList
         , Cmd.none
         )
 
@@ -81,9 +81,9 @@ update msg model =
         CellMsg id msg ->
             let
                 ( newCells, cmds ) =
-                    List.unzip (List.map (updateHelp id msg) model)
+                    List.unzip (Array.map (updateHelp id msg) model |> Array.toList)
             in
-                ( newCells, Cmd.batch cmds )
+                ( Array.fromList newCells, Cmd.batch cmds )
 
 
 updateHelp : Int -> Cell.Msg -> IdCell -> ( IdCell, Cmd Msg )
@@ -102,7 +102,7 @@ updateHelp id msg idcell =
 -}
 view : Model -> Html Msg
 view model =
-    tr [] (List.map viewCell model)
+    tr [] (Array.map viewCell model |> Array.toList)
 
 
 viewCell : IdCell -> Html Msg
