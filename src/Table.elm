@@ -109,8 +109,12 @@ update msg model =
             let
                 ( newHeaders, cmds ) =
                     List.unzip (List.map (updateHeaderHelp id msg) model.headers)
+
+                {- newHeaders. -}
+                newModel =
+                    sort id model
             in
-                ( { model | headers = newHeaders }, Cmd.batch cmds )
+                ( { newModel | headers = newHeaders }, Cmd.batch cmds )
 
         RecordMsg id msg ->
             let
@@ -223,6 +227,7 @@ view model =
                     tr [] [ text error ]
             ]
         , button [ onClick (Sort 3) ] [ text "Sort" ]
+        , text (Basics.toString model.headers)
         ]
 
 
