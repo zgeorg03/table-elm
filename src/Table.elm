@@ -1,6 +1,9 @@
-module Table exposing (..)
+module Table exposing (Model, init)
 
 {-|
+  This module implements a simple table
+
+@docs Model, init
 
 -}
 
@@ -11,7 +14,8 @@ import Cell exposing (..)
 import Value exposing (..)
 import Html exposing (..)
 import Html.App as App exposing (program)
-import Html.Attributes exposing (class, value)
+import Html.Attributes exposing (class, value, style, disabled)
+import Html.Events exposing (onClick)
 import Array exposing (..)
 
 
@@ -30,12 +34,23 @@ type alias IdRecord =
     }
 
 
+{-| Model
+  ##Arguments##
+  1. **title** The title shown in the header
+
+-}
 type alias Model =
-    { headers : List IdHeader
+    { title : String
+    , headers : List IdHeader
     , records : Array IdRecord
     , permutation : List Int
     , rows : Int
     , cols : Int
+    , base : Int
+    , visibleRecords : Int
+    , activeRecords : Int
+    , prevEnabled : Bool
+    , nextEnabled : Bool
     , error : Maybe String
     }
 
@@ -44,8 +59,11 @@ type alias Model =
 --INIT
 
 
-init : List Header.Model -> List Record.Model -> ( Model, Cmd Msg )
-init headers records =
+{-| Initialization of the Table
+
+-}
+init : String -> Int -> List Header.Model -> List Record.Model -> ( Model, Cmd Msg )
+init title visibleRecords headers records =
     let
         arrayHeaders =
             fromList headers
@@ -64,12 +82,30 @@ init headers records =
 
         indexedListRecords =
             toIndexedList arrayRecords
+
+        activeRecords =
+            if visibleRecords > recordsLen then
+                recordsLen
+            else
+                visibleRecords
+
+        nextEnabled =
+            if recordsLen > visibleRecords then
+                True
+            else
+                False
     in
-        ( Model (List.map initHeaderHelper indexedListHeaders)
+        ( Model title
+            (List.map initHeaderHelper indexedListHeaders)
             (Array.map initRecordHelper (indexedListRecords |> fromList))
-            (Array.initialize headersLen (\n -> n) |> Array.toList)
+            (Array.initialize recordsLen (\n -> n) |> Array.toList)
             recordsLen
             headersLen
+            0
+            visibleRecords
+            activeRecords
+            False
+            nextEnabled
             Nothing
         , Cmd.none
         )
@@ -93,6 +129,8 @@ type Msg
     = NoOp
     | HeaderMsg Int Header.Msg
     | RecordMsg Int Record.Msg
+    | IncrementBase
+    | DecrementBase
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -121,6 +159,62 @@ update msg model =
                     List.unzip (Array.map (updateRecordHelp id msg) model.records |> toList)
             in
                 ( { model | records = newRecords |> fromList }, Cmd.batch cmds )
+
+        IncrementBase ->
+            let
+                newNext =
+                    if (model.rows - ((2 * model.visibleRecords) + model.base)) <= 0 then
+                        False
+                    else
+                        True
+
+                newBase =
+                    if (model.rows - (model.visibleRecords + model.base)) <= 0 then
+                        model.base
+                    else
+                        model.base + model.visibleRecords
+
+                activeRecords =
+                    if model.rows - (model.visibleRecords + model.base) < model.visibleRecords then
+                        model.rows - (model.visibleRecords + model.base)
+                    else
+                        model.visibleRecords
+
+                newPrev =
+                    if (newBase - model.visibleRecords) < 0 then
+                        False
+                    else
+                        True
+            in
+                ( { model | prevEnabled = newPrev, nextEnabled = newNext, base = newBase, activeRecords = activeRecords }, Cmd.none )
+
+        DecrementBase ->
+            let
+                newPrev =
+                    if (model.base - model.visibleRecords) <= 0 then
+                        False
+                    else
+                        True
+
+                newBase =
+                    if (model.base - model.visibleRecords) < 0 then
+                        model.base
+                    else
+                        model.base - model.visibleRecords
+
+                activeRecords =
+                    if (model.rows - model.base) + model.visibleRecords < model.visibleRecords then
+                        model.rows - (model.visibleRecords + model.base)
+                    else
+                        model.visibleRecords
+
+                newNext =
+                    if (newBase - model.visibleRecords) > 0 then
+                        False
+                    else
+                        True
+            in
+                ( { model | nextEnabled = newNext, prevEnabled = newPrev, base = newBase, activeRecords = activeRecords }, Cmd.none )
 
 
 getHeaderState : Int -> List IdHeader -> State
@@ -266,33 +360,51 @@ view : Model -> Html Msg
 view model =
     div []
         [ (stylesheet)
-        , table [ class "table" ]
-            [ thead []
-                [ tr [] (List.map viewHeader model.headers)
-                ]
-            , case model.error of
-                Nothing ->
-                    tbody []
-                        (viewRecordsPermutated model)
+        , div [ class "panel panel-primary" ]
+            [ div [ class "panel-heading" ] [ text model.title ]
+            , div [ class "panel-body" ]
+                [ table [ class "table" ]
+                    [ thead []
+                        [ tr [] (List.map viewHeader model.headers)
+                        ]
+                    , case model.error of
+                        Nothing ->
+                            tbody []
+                                (viewRecordsPermutated model)
 
-                Just error ->
-                    tr [] [ text error ]
+                        Just error ->
+                            tr [] [ text error ]
+                    ]
+                ]
+            , div [ class "panel-footer" ]
+                [ nav []
+                    [ ul [ class "pagination" ]
+                        [ li [ onClick DecrementBase ] [ button [ disabled (not model.prevEnabled) ] [ a [] [ text "Previous" ] ] ]
+                        , li [ onClick IncrementBase ] [ button [ disabled (not model.nextEnabled) ] [ a [] [ text "Next" ] ] ]
+                        ]
+                    ]
+                , div [] [ text ("Showing " ++ (Basics.toString (model.base + 1)) ++ " to " ++ (Basics.toString (model.base + model.activeRecords)) ++ " of " ++ (Basics.toString model.rows) ++ " entries") ]
+                ]
             ]
-        , text (Basics.toString model.headers)
-        , text (Basics.toString model.permutation)
+        , div [ class "container" ] [ text (Basics.toString model.permutation) ]
+        , div [ class "container" ] [ text (Basics.toString model.base) ]
         ]
 
 
 viewRecordsPermutated : Model -> List (Html Msg)
 viewRecordsPermutated model =
-    List.map (\x -> Array.get x model.records |> viewRecordPermutated) model.permutation
+    let
+        perm =
+            Array.slice model.base (model.base + model.visibleRecords) (model.permutation |> Array.fromList) |> Array.toList
+    in
+        List.map (\x -> Array.get x model.records |> viewRecordPermutated) perm
 
 
 viewRecordPermutated : Maybe IdRecord -> Html Msg
 viewRecordPermutated res =
     case res of
         Nothing ->
-            div [] []
+            tr [] []
 
         Just record ->
             (App.map (RecordMsg record.id) (Record.view record.model))
@@ -316,7 +428,7 @@ viewHeader { id, model } =
 main : Program Never
 main =
     program
-        { init = init dummyHeaders dummyRecords
+        { init = init "Example table" 5 dummyHeaders dummyRecords
         , view = view
         , update = update
         , subscriptions = (\_ -> Sub.none)
@@ -351,7 +463,7 @@ dummyRecords =
         ]
     , Record.init
         [ Cell.init (I 123456)
-        , Cell.init (S "Marias")
+        , Cell.init (S "Maria")
         , Cell.init (S "Andreou")
         , Cell.init (D 726216594)
         , Cell.init (B True)
@@ -369,5 +481,47 @@ dummyRecords =
         , Cell.init (S "Costa")
         , Cell.init (D 944349992)
         , Cell.init (B False)
+        ]
+    , Record.init
+        [ Cell.init (I 524202)
+        , Cell.init (S "Andri")
+        , Cell.init (S "Andreou")
+        , Cell.init (D 1244349992)
+        , Cell.init (B False)
+        ]
+    , Record.init
+        [ Cell.init (I 525400)
+        , Cell.init (S "Maria")
+        , Cell.init (S "Christou")
+        , Cell.init (D 244349992)
+        , Cell.init (B False)
+        ]
+    , Record.init
+        [ Cell.init (I 525500)
+        , Cell.init (S "Marios")
+        , Cell.init (S "Georgiou")
+        , Cell.init (D 344349992)
+        , Cell.init (B True)
+        ]
+    , Record.init
+        [ Cell.init (I 595500)
+        , Cell.init (S "Marios")
+        , Cell.init (S "Mariou")
+        , Cell.init (D 344349992)
+        , Cell.init (B True)
+        ]
+    , Record.init
+        [ Cell.init (I 525500)
+        , Cell.init (S "Marios")
+        , Cell.init (S "Georgiou")
+        , Cell.init (D 344349992)
+        , Cell.init (B True)
+        ]
+    , Record.init
+        [ Cell.init (I 405500)
+        , Cell.init (S "Giorgos")
+        , Cell.init (S "Antreou")
+        , Cell.init (D 344049992)
+        , Cell.init (B True)
         ]
     ]
