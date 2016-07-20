@@ -9,6 +9,7 @@ import Value exposing (..)
 import Html exposing (..)
 import Html.App exposing (program)
 import Html.Events exposing (onClick, onDoubleClick)
+import Html.Attributes exposing (class)
 
 
 --MODEL
@@ -95,13 +96,28 @@ showHeader : Model -> Html Msg
 showHeader model =
     case model.state of
         Original ->
-            th [] [ label [ onClick ChangeState, onDoubleClick Reset ] [ text (model.title ++ " (==)") ] ]
+            th []
+                [ label [ onClick ChangeState, onDoubleClick Reset ]
+                    [ text (model.title ++ " ")
+                    , span [ class "glyphicon glyphicon-minus" ] []
+                    ]
+                ]
 
         Ascending ->
-            th [] [ label [ onClick ChangeState, onDoubleClick Reset ] [ text (model.title ++ " (<=)") ] ]
+            th []
+                [ label [ onClick ChangeState, onDoubleClick Reset ]
+                    [ text model.title
+                    , span [ class "glyphicon glyphicon-triangle-bottom" ] []
+                    ]
+                ]
 
         Descending ->
-            th [] [ label [ onClick ChangeState, onDoubleClick Reset ] [ text (model.title ++ " (>=)") ] ]
+            th []
+                [ label [ onClick ChangeState, onDoubleClick Reset ]
+                    [ text model.title
+                    , span [ class "glyphicon glyphicon-triangle-top" ] []
+                    ]
+                ]
 
 
 main : Program Never

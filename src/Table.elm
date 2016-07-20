@@ -234,7 +234,14 @@ getValue index record =
 updateHeaderHelp : Int -> Header.Msg -> IdHeader -> ( IdHeader, Cmd Msg )
 updateHeaderHelp id msg header =
     if header.id /= id then
-        ( header, Cmd.none )
+        let
+            hModel =
+                header.model
+
+            newModel =
+                { hModel | state = Original }
+        in
+            ( { header | model = newModel }, Cmd.none )
     else
         let
             ( newModel, cmds ) =
@@ -322,6 +329,7 @@ dummyHeaders =
     , { title = "Name", state = Original, type' = StringType }
     , { title = "Surname", state = Original, type' = StringType }
     , { title = "DateOfBirth", state = Original, type' = DateType }
+    , { title = "Rich", state = Original, type' = BoolType }
     ]
 
 
@@ -332,23 +340,34 @@ dummyRecords =
         , Cell.init (S "Zacharias")
         , Cell.init (S "Georgiou")
         , Cell.init (D 756216594)
+        , Cell.init (B True)
         ]
     , Record.init
         [ Cell.init (I 503212)
         , Cell.init (S "Andreas")
         , Cell.init (S "Mariou")
         , Cell.init (D 726216594)
+        , Cell.init (B False)
         ]
     , Record.init
         [ Cell.init (I 123456)
         , Cell.init (S "Marias")
         , Cell.init (S "Andreou")
         , Cell.init (D 726216594)
+        , Cell.init (B True)
         ]
     , Record.init
         [ Cell.init (I 123456)
         , Cell.init (S "Chris")
         , Cell.init (S "Petrou")
         , Cell.init (D 644349992)
+        , Cell.init (B False)
+        ]
+    , Record.init
+        [ Cell.init (I 235409)
+        , Cell.init (S "Costas")
+        , Cell.init (S "Costa")
+        , Cell.init (D 944349992)
+        , Cell.init (B False)
         ]
     ]

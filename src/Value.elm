@@ -29,6 +29,7 @@ type Value
     | B Bool
     | S String
     | D Int
+    | E
 
 
 {-| This type holds the possible types for a table cell
@@ -39,48 +40,7 @@ type ValueType
     | DateType
     | FloatType
     | BoolType
-
-
-{-| Create Integer
--}
-makeInt : Int -> Value
-makeInt v =
-    I v
-
-
-{-| Create Integer type
--}
-makeIntType : ValueType
-makeIntType =
-    IntType
-
-
-{-| Create Float
--}
-makeFloat : Float -> Value
-makeFloat v =
-    F v
-
-
-{-| Create Boolean
--}
-makeBool : Bool -> Value
-makeBool v =
-    B v
-
-
-{-| Create String
--}
-makeString : String -> Value
-makeString v =
-    S v
-
-
-{-| Create Date
--}
-makeDate : Int -> Value
-makeDate v =
-    D v
+    | EmptyType
 
 
 {-| Useful method to get the default value given it's data type
@@ -103,6 +63,9 @@ getDefaultValueFromType valueType =
         BoolType ->
             B True
 
+        EmptyType ->
+            E
+
 
 {-| Useful method to get the default value given it's value
 -}
@@ -124,12 +87,18 @@ getDefaultValue value =
         B _ ->
             B True
 
+        E ->
+            E
+
 
 {-| String representation of a value
 -}
 toString : Value -> String
 toString value =
     case value of
+        E ->
+            "Empty"
+
         I int ->
             Basics.toString int
 
@@ -177,10 +146,16 @@ getDateFromInt timestamp =
 
 
 {-| Comparator for Value
+  **TODO** Comparing different types of values for now returns LT
 -}
 compare : Value -> Value -> Order
 compare a b =
     case a of
+        E ->
+            case b of
+                _ ->
+                    LT
+
         I v1 ->
             case b of
                 I v2 ->
@@ -235,11 +210,11 @@ compare a b =
 tests : Test
 tests =
     suite "Value package Test suite"
-        [ test "Integer" <| assertEqual (toString (makeInt 23)) "23"
-        , test "Float" <| assertEqual (toString (makeFloat 23.33)) "23.33"
-        , test "Boolean" <| assertEqual (toString (makeBool False)) "False"
-        , test "Date" <| assertEqual (toString (makeDate 1468688316)) "16 July 2016, 19:58"
-        , test "String" <| assertEqual (toString (makeString "Test string")) "Test string"
+        [ test "Integer" <| assertEqual (toString (I 23)) "23"
+        , test "Float" <| assertEqual (toString (F 23.33)) "23.33"
+        , test "Boolean" <| assertEqual (toString (B False)) "False"
+        , test "Date" <| assertEqual (toString (D 1468688316)) "16 July 2016, 19:58"
+        , test "String" <| assertEqual (toString (S "Test string")) "Test string"
         ]
 
 
@@ -248,11 +223,11 @@ tests =
 main : Html a
 main =
     div []
-        [ div [] [ text (toString (makeInt 2)) ]
-        , div [] [ text (toString (makeFloat 2.3)) ]
-        , div [] [ text (toString (makeDate 1468688316)) ]
-        , div [] [ text (toString (makeBool False)) ]
-        , div [] [ text (toString (makeString "Test")) ]
+        [ div [] [ text (toString (I 2)) ]
+        , div [] [ text (toString (F 2.3)) ]
+        , div [] [ text (toString (D 1468688316)) ]
+        , div [] [ text (toString (B False)) ]
+        , div [] [ text (toString (S "Test")) ]
         ]
 
 

@@ -152,6 +152,9 @@ view model =
                 S str ->
                     input [ onEnter UpdateString, onInput UpdateRawInput, type' "text", value model.rawValue ] []
 
+                E ->
+                    input [ readonly True, type' "text", value (Value.toString model.value) ] []
+
         True ->
             case model.value of
                 B bool ->
