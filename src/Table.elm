@@ -12,7 +12,6 @@ import Value exposing (..)
 import Html exposing (..)
 import Html.App as App exposing (program)
 import Html.Attributes exposing (class, value)
-import Html.Events exposing (onClick)
 import Array exposing (..)
 
 
@@ -33,9 +32,8 @@ type alias IdRecord =
 
 type alias Model =
     { headers : List IdHeader
-    , records : List IdRecord
-    , original : List IdRecord
-    , permutation : Array Int
+    , records : Array IdRecord
+    , permutation : List Int
     , rows : Int
     , cols : Int
     , error : Maybe String
@@ -68,9 +66,8 @@ init headers records =
             toIndexedList arrayRecords
     in
         ( Model (List.map initHeaderHelper indexedListHeaders)
-            (List.map initRecordHelper indexedListRecords)
-            (List.map initRecordHelper indexedListRecords)
-            (Array.initialize headersLen (\n -> n))
+            (Array.map initRecordHelper (indexedListRecords |> fromList))
+            (Array.initialize headersLen (\n -> n) |> Array.toList)
             recordsLen
             headersLen
             Nothing
@@ -96,7 +93,6 @@ type Msg
     = NoOp
     | HeaderMsg Int Header.Msg
     | RecordMsg Int Record.Msg
-    | Sort Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -110,54 +106,103 @@ update msg model =
                 ( newHeaders, cmds ) =
                     List.unzip (List.map (updateHeaderHelp id msg) model.headers)
 
-                {- newHeaders. -}
+                -- Get current state
+                state =
+                    getHeaderState id newHeaders
+
                 newModel =
-                    sort id model
+                    sort id state model
             in
                 ( { newModel | headers = newHeaders }, Cmd.batch cmds )
 
         RecordMsg id msg ->
             let
                 ( newRecords, cmds ) =
-                    List.unzip (List.map (updateRecordHelp id msg) model.records)
+                    List.unzip (Array.map (updateRecordHelp id msg) model.records |> toList)
             in
-                ( { model | records = newRecords }, Cmd.batch cmds )
-
-        Sort col ->
-            let
-                newModel =
-                    sort col model
-            in
-                ( newModel, Cmd.none )
+                ( { model | records = newRecords |> fromList }, Cmd.batch cmds )
 
 
-sort : Int -> Model -> Model
-sort col model =
+getHeaderState : Int -> List IdHeader -> State
+getHeaderState col idHeaders =
     let
-        newRecords =
-            List.sortWith (sortIdRecord col) model.records
+        array =
+            Array.fromList idHeaders
+
+        mayIdHeader =
+            Array.get col array
+
+        idHeader =
+            case mayIdHeader of
+                Nothing ->
+                    --TODO Fix this
+                    { id = 0, model = Header.Model "" Original IntType }
+
+                Just s ->
+                    s
+
+        header =
+            idHeader.model
     in
-        { model | records = newRecords }
+        header.state
 
 
-getPermutation : Int -> Model -> Array Int
-getPermutation col model =
+sort : Int -> State -> Model -> Model
+sort col state model =
+    { model | permutation = getNewPermutation col state model }
+
+
+getNewPermutation : Int -> State -> Model -> List Int
+getNewPermutation col state model =
+    case state of
+        Original ->
+            Array.initialize model.rows (\n -> n) |> Array.toList
+
+        Ascending ->
+            List.sortWith (sortForPermutation model col) model.permutation
+
+        Descending ->
+            List.sortWith (sortForPermutation model col) model.permutation |> List.reverse
+
+
+sortForPermutation : Model -> Int -> Int -> Int -> Order
+sortForPermutation model col id1 id2 =
     let
-        perm =
-            Array.toList model.permutation
+        rec1 =
+            getIdRecord id1 model
 
-        newPerm : Array Int
-        newPerm =
-            --List.sortWith compareValue (List.map (wrapper col model) perm) |> Array.fromList
-            --List.sortBy (wrapper col model) perm |> Array.fromList
-            List.sort perm |> List.reverse |> Array.fromList
+        rec2 =
+            getIdRecord id2 model
     in
-        newPerm
+        sortIdRecord col rec1 rec2
 
 
 sortIdRecord : Int -> IdRecord -> IdRecord -> Order
 sortIdRecord col rec1 rec2 =
     Value.compare (getRecord rec1 |> getValue col) (getRecord rec2 |> getValue col)
+
+
+getIdRecord : Int -> Model -> IdRecord
+getIdRecord row model =
+    let
+        records : Array IdRecord
+        records =
+            model.records
+
+        mayIdRecord : Maybe IdRecord
+        mayIdRecord =
+            get row records
+
+        idRecord : IdRecord
+        idRecord =
+            case mayIdRecord of
+                Nothing ->
+                    { id = 0, model = Record.init [] }
+
+                Just record ->
+                    record
+    in
+        idRecord
 
 
 getRecord : IdRecord -> Record.Model
@@ -221,37 +266,34 @@ view model =
             , case model.error of
                 Nothing ->
                     tbody []
-                        (viewRecords model)
+                        (viewRecordsPermutated model)
 
                 Just error ->
                     tr [] [ text error ]
             ]
-        , button [ onClick (Sort 3) ] [ text "Sort" ]
         , text (Basics.toString model.headers)
+        , text (Basics.toString model.permutation)
         ]
 
 
-
-{-
-   viewRecordsPermutated : Model -> List (Html Msg)
-   viewRecordsPermutated model =
-       Array.map (\x -> Array.get x model.records |> viewRecordPermutated) model.permutation |> Array.toList
+viewRecordsPermutated : Model -> List (Html Msg)
+viewRecordsPermutated model =
+    List.map (\x -> Array.get x model.records |> viewRecordPermutated) model.permutation
 
 
-   viewRecordPermutated : Maybe IdRecord -> Html Msg
-   viewRecordPermutated res =
-       case res of
-           Nothing ->
-               div [] []
+viewRecordPermutated : Maybe IdRecord -> Html Msg
+viewRecordPermutated res =
+    case res of
+        Nothing ->
+            div [] []
 
-           Just record ->
-               (App.map (RecordMsg record.id) (Record.view record.model))
--}
+        Just record ->
+            (App.map (RecordMsg record.id) (Record.view record.model))
 
 
 viewRecords : Model -> List (Html Msg)
 viewRecords model =
-    List.map viewRecord model.records
+    Array.map viewRecord model.records |> toList
 
 
 viewRecord : IdRecord -> Html Msg
