@@ -147,13 +147,56 @@ getPermutation col model =
         newPerm =
             --List.sortWith compareValue (List.map (wrapper col model) perm) |> Array.fromList
             --List.sortBy (wrapper col model) perm |> Array.fromList
-            List.sort perm |> List.reverse |> Array.fromList
+            --List.sort perm |> List.reverse |> Array.fromList
+            List.sortWith (sortPermutation model col) perm |> Array.fromList
     in
         newPerm
 
 
-wrapper : Int -> Model -> Int -> Value
-wrapper col model row =
+sortPermutation : Model -> Int -> Int -> Int -> Order
+sortPermutation model col id1 id2 =
+    let
+        rec1 =
+            getIdRecord id1 model
+
+        rec2 =
+            getIdRecord id2 model
+    in
+        sortIdRecord col rec1 rec2
+
+
+sortIdRecord : Int -> IdRecord -> IdRecord -> Order
+sortIdRecord col rec1 rec2 =
+    compareValue (getRecord rec1 |> getValue col) (getRecord rec2 |> getValue col)
+
+
+getRecord : IdRecord -> Record.Model
+getRecord idRecord =
+    idRecord.model
+
+
+getValue : Int -> Record.Model -> Value
+getValue index record =
+    let
+        mayIdCell =
+            get index record
+
+        idCell =
+            case mayIdCell of
+                Nothing ->
+                    { id = 0, model = Cell.init (I 0) }
+
+                Just cell ->
+                    cell
+
+        cell =
+            idCell.model
+    in
+        cell.value
+
+
+getIdRecord : Int -> Model -> IdRecord
+getIdRecord row model =
     let
         records : Array IdRecord
         records =
@@ -171,29 +214,8 @@ wrapper col model row =
 
                 Just record ->
                     record
-
-        record : Record.Model
-        record =
-            idRecord.model
-
-        mayIdCell : Maybe { id : Int, model : Cell.Model }
-        mayIdCell =
-            get col record
-
-        idCell : { id : Int, model : Cell.Model }
-        idCell =
-            case mayIdCell of
-                Nothing ->
-                    { id = 0, model = Cell.init (I 0) }
-
-                Just cell ->
-                    cell
-
-        cell : Cell.Model
-        cell =
-            idCell.model
     in
-        cell.value
+        idRecord
 
 
 compareValue : Value -> Value -> Order
@@ -289,7 +311,7 @@ view model =
                     tr [] [ text error ]
             ]
         , text (Basics.toString model.permutation)
-        , button [ onClick (Sort 1) ] [ text "Sort" ]
+        , button [ onClick (Sort 0) ] [ text "Sort" ]
         ]
 
 

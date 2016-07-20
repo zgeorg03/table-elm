@@ -1,14 +1,16 @@
-module ExternalCSS exposing (stylesheet)
+module ExternalCSS exposing (..)
 
-{-|
-  Used only for testing with reactor
--
+{-| Used only for testing with reactor
+
+@docs stylesheet
 -}
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 
 
+{-| Style sheet
+-}
 stylesheet : Html a
 stylesheet =
     let
