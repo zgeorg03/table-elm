@@ -1,8 +1,8 @@
-module Cell exposing (Model, Msg, init, initEditable, update, view)
+module Cell exposing (Model, Msg, init, initEditable, update, view, toString)
 
 {-| This module implements an input field with validation
 
-@docs Model, Msg, init, initEditable, update, view
+@docs Model, Msg, init, initEditable, update, view, toString
 
 -}
 
@@ -65,6 +65,13 @@ type Msg
     | UpdateInteger
     | UpdateFloat
     | UpdateBool
+
+
+{-| To string method
+-}
+toString : Model -> String
+toString model =
+    Value.toString model.value
 
 
 {-| Update the model

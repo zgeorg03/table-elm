@@ -1,4 +1,10 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="UTF-8"><title>Table</title>
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<style>html,head,body { padding:0; margin:0; }
+body { font-family: calibri, helvetica, arial, sans-serif; }</style><script type="text/javascript">
 (function() {
 'use strict';
 
@@ -134,7 +140,6 @@ function A9(fun, a, b, c, d, e, f, g, h, i)
     ? fun.func(a, b, c, d, e, f, g, h, i)
     : fun(a)(b)(c)(d)(e)(f)(g)(h)(i);
 }
-
 //import Native.Utils //
 
 var _elm_lang$core$Native_Basics = function() {
@@ -275,8 +280,7 @@ return {
 	isInfinite: isInfinite
 };
 
-}();
-//import //
+}();//import //
 
 var _elm_lang$core$Native_Utils = function() {
 
@@ -758,8 +762,7 @@ return {
 	toString: toString
 };
 
-}();
-var _elm_lang$core$Basics$uncurry = F2(
+}();var _elm_lang$core$Basics$uncurry = F2(
 	function (f, _p0) {
 		var _p1 = _p0;
 		return A2(f, _p1._0, _p1._1);
@@ -883,7 +886,6 @@ var _elm_lang$core$Basics$LT = {ctor: 'LT'};
 var _elm_lang$core$Basics$Never = function (a) {
 	return {ctor: 'Never', _0: a};
 };
-
 //import Native.Utils //
 
 var _elm_lang$core$Native_Debug = function() {
@@ -913,10 +915,8 @@ return {
 	log: F2(log)
 };
 
-}();
-var _elm_lang$core$Debug$crash = _elm_lang$core$Native_Debug.crash;
+}();var _elm_lang$core$Debug$crash = _elm_lang$core$Native_Debug.crash;
 var _elm_lang$core$Debug$log = _elm_lang$core$Native_Debug.log;
-
 var _elm_lang$core$Maybe$withDefault = F2(
 	function ($default, maybe) {
 		var _p0 = maybe;
@@ -1008,7 +1008,6 @@ var _elm_lang$core$Maybe$map5 = F6(
 			return _elm_lang$core$Maybe$Nothing;
 		}
 	});
-
 //import Native.Utils //
 
 var _elm_lang$core$Native_List = function() {
@@ -1161,8 +1160,7 @@ return {
 	sortWith: F2(sortWith)
 };
 
-}();
-var _elm_lang$core$List$sortWith = _elm_lang$core$Native_List.sortWith;
+}();var _elm_lang$core$List$sortWith = _elm_lang$core$Native_List.sortWith;
 var _elm_lang$core$List$sortBy = _elm_lang$core$Native_List.sortBy;
 var _elm_lang$core$List$sort = function (xs) {
 	return A2(_elm_lang$core$List$sortBy, _elm_lang$core$Basics$identity, xs);
@@ -1561,7 +1559,6 @@ var _elm_lang$core$List$repeat = F2(
 			n,
 			value);
 	});
-
 var _elm_lang$core$Result$toMaybe = function (result) {
 	var _p0 = result;
 	if (_p0.ctor === 'Ok') {
@@ -1703,7 +1700,6 @@ var _elm_lang$core$Result$fromMaybe = F2(
 			return _elm_lang$core$Result$Err(err);
 		}
 	});
-
 //import //
 
 var _elm_lang$core$Native_Platform = function() {
@@ -2280,8 +2276,7 @@ return {
 	map: F2(map)
 };
 
-}();
-//import Native.Utils //
+}();//import Native.Utils //
 
 var _elm_lang$core$Native_Scheduler = function() {
 
@@ -2558,15 +2553,13 @@ return {
 	rawSend: rawSend
 };
 
-}();
-var _elm_lang$core$Platform$hack = _elm_lang$core$Native_Scheduler.succeed;
+}();var _elm_lang$core$Platform$hack = _elm_lang$core$Native_Scheduler.succeed;
 var _elm_lang$core$Platform$sendToSelf = _elm_lang$core$Native_Platform.sendToSelf;
 var _elm_lang$core$Platform$sendToApp = _elm_lang$core$Native_Platform.sendToApp;
 var _elm_lang$core$Platform$Program = {ctor: 'Program'};
 var _elm_lang$core$Platform$Task = {ctor: 'Task'};
 var _elm_lang$core$Platform$ProcessId = {ctor: 'ProcessId'};
 var _elm_lang$core$Platform$Router = {ctor: 'Router'};
-
 var _elm_lang$core$Platform_Cmd$batch = _elm_lang$core$Native_Platform.batch;
 var _elm_lang$core$Platform_Cmd$none = _elm_lang$core$Platform_Cmd$batch(
 	_elm_lang$core$Native_List.fromArray(
@@ -2582,14 +2575,12 @@ _elm_lang$core$Platform_Cmd_ops['!'] = F2(
 	});
 var _elm_lang$core$Platform_Cmd$map = _elm_lang$core$Native_Platform.map;
 var _elm_lang$core$Platform_Cmd$Cmd = {ctor: 'Cmd'};
-
 var _elm_lang$core$Platform_Sub$batch = _elm_lang$core$Native_Platform.batch;
 var _elm_lang$core$Platform_Sub$none = _elm_lang$core$Platform_Sub$batch(
 	_elm_lang$core$Native_List.fromArray(
 		[]));
 var _elm_lang$core$Platform_Sub$map = _elm_lang$core$Native_Platform.map;
 var _elm_lang$core$Platform_Sub$Sub = {ctor: 'Sub'};
-
 var _elm_community$elm_test$ElmTest_Assertion$AlwaysFail = function (a) {
 	return {ctor: 'AlwaysFail', _0: a};
 };
@@ -2639,7 +2630,6 @@ var _elm_community$elm_test$ElmTest_Assertion$assert = function (b) {
 			return b;
 		});
 };
-
 var _elm_community$elm_test$ElmTest_Test$numberOfSuites = function (test) {
 	var _p0 = test;
 	if (_p0.ctor === 'TestCase') {
@@ -2714,7 +2704,6 @@ var _elm_community$elm_test$ElmTest_Test$equals = F2(
 		return _elm_community$elm_test$ElmTest_Test$defaultTest(
 			A2(_elm_community$elm_test$ElmTest_Assertion$assertEqual, a, b));
 	});
-
 var _elm_community$elm_test$ElmTest_Run$failedSuites = function (result) {
 	var _p0 = result;
 	if (_p0.ctor === 'Report') {
@@ -2864,7 +2853,6 @@ var _elm_community$elm_test$ElmTest_Run$run = function (test) {
 			{results: results, passes: passes, failures: fails});
 	}
 };
-
 //import Maybe, Native.List, Native.Utils, Result //
 
 var _elm_lang$core$Native_String = function() {
@@ -3191,8 +3179,7 @@ return {
 	fromList: fromList
 };
 
-}();
-//import Native.Utils //
+}();//import Native.Utils //
 
 var _elm_lang$core$Native_Char = function() {
 
@@ -3205,8 +3192,7 @@ return {
 	toLocaleLower: function(c) { return _elm_lang$core$Native_Utils.chr(c.toLocaleLowerCase()); }
 };
 
-}();
-var _elm_lang$core$Char$fromCode = _elm_lang$core$Native_Char.fromCode;
+}();var _elm_lang$core$Char$fromCode = _elm_lang$core$Native_Char.fromCode;
 var _elm_lang$core$Char$toCode = _elm_lang$core$Native_Char.toCode;
 var _elm_lang$core$Char$toLocaleLower = _elm_lang$core$Native_Char.toLocaleLower;
 var _elm_lang$core$Char$toLocaleUpper = _elm_lang$core$Native_Char.toLocaleUpper;
@@ -3248,7 +3234,6 @@ var _elm_lang$core$Char$isHexDigit = function ($char) {
 		_elm_lang$core$Native_Utils.chr('F'),
 		$char));
 };
-
 var _elm_lang$core$String$fromList = _elm_lang$core$Native_String.fromList;
 var _elm_lang$core$String$toList = _elm_lang$core$Native_String.toList;
 var _elm_lang$core$String$toFloat = _elm_lang$core$Native_String.toFloat;
@@ -3292,7 +3277,6 @@ var _elm_lang$core$String$fromChar = function ($char) {
 	return A2(_elm_lang$core$String$cons, $char, '');
 };
 var _elm_lang$core$String$isEmpty = _elm_lang$core$Native_String.isEmpty;
-
 var _elm_community$elm_test$ElmTest_Runner_String$replicate = F2(
 	function (n, c) {
 		var go = function (n) {
@@ -3473,7 +3457,6 @@ var _elm_community$elm_test$ElmTest_Runner_String$runDisplay = function (t) {
 		return '';
 	}
 };
-
 //import Native.List //
 
 var _elm_lang$core$Native_Array = function() {
@@ -4440,8 +4423,7 @@ return {
 	fromJSArray: fromJSArray
 };
 
-}();
-var _elm_lang$core$Array$append = _elm_lang$core$Native_Array.append;
+}();var _elm_lang$core$Array$append = _elm_lang$core$Native_Array.append;
 var _elm_lang$core$Array$length = _elm_lang$core$Native_Array.length;
 var _elm_lang$core$Array$isEmpty = function (array) {
 	return _elm_lang$core$Native_Utils.eq(
@@ -4494,7 +4476,6 @@ var _elm_lang$core$Array$repeat = F2(
 			_elm_lang$core$Basics$always(e));
 	});
 var _elm_lang$core$Array$Array = {ctor: 'Array'};
-
 var _elm_lang$core$Dict$foldr = F3(
 	function (f, acc, t) {
 		foldr:
@@ -5388,7 +5369,6 @@ var _elm_lang$core$Dict$diff = F2(
 			t1,
 			t2);
 	});
-
 //import Maybe, Native.Array, Native.List, Native.Utils, Result //
 
 var _elm_lang$core$Native_Json = function() {
@@ -6052,7 +6032,6 @@ return {
 };
 
 }();
-
 var _elm_lang$core$Json_Encode$list = _elm_lang$core$Native_Json.encodeList;
 var _elm_lang$core$Json_Encode$array = _elm_lang$core$Native_Json.encodeArray;
 var _elm_lang$core$Json_Encode$object = _elm_lang$core$Native_Json.encodeObject;
@@ -6063,7 +6042,6 @@ var _elm_lang$core$Json_Encode$int = _elm_lang$core$Native_Json.identity;
 var _elm_lang$core$Json_Encode$string = _elm_lang$core$Native_Json.identity;
 var _elm_lang$core$Json_Encode$encode = _elm_lang$core$Native_Json.encode;
 var _elm_lang$core$Json_Encode$Value = {ctor: 'Value'};
-
 var _elm_lang$core$Json_Decode$tuple8 = _elm_lang$core$Native_Json.decodeTuple8;
 var _elm_lang$core$Json_Decode$tuple7 = _elm_lang$core$Native_Json.decodeTuple7;
 var _elm_lang$core$Json_Decode$tuple6 = _elm_lang$core$Native_Json.decodeTuple6;
@@ -6124,7 +6102,6 @@ var _elm_lang$core$Json_Decode$dict = function (decoder) {
 		_elm_lang$core$Json_Decode$keyValuePairs(decoder));
 };
 var _elm_lang$core$Json_Decode$Decoder = {ctor: 'Decoder'};
-
 //import Native.Json //
 
 var _elm_lang$virtual_dom$Native_VirtualDom = function() {
@@ -7583,8 +7560,7 @@ return {
 	programWithFlags: programWithFlags
 };
 
-}();
-var _elm_lang$virtual_dom$VirtualDom$programWithFlags = _elm_lang$virtual_dom$Native_VirtualDom.programWithFlags;
+}();var _elm_lang$virtual_dom$VirtualDom$programWithFlags = _elm_lang$virtual_dom$Native_VirtualDom.programWithFlags;
 var _elm_lang$virtual_dom$VirtualDom$keyedNode = _elm_lang$virtual_dom$Native_VirtualDom.keyedNode;
 var _elm_lang$virtual_dom$VirtualDom$lazy3 = _elm_lang$virtual_dom$Native_VirtualDom.lazy3;
 var _elm_lang$virtual_dom$VirtualDom$lazy2 = _elm_lang$virtual_dom$Native_VirtualDom.lazy2;
@@ -7608,7 +7584,6 @@ var _elm_lang$virtual_dom$VirtualDom$Options = F2(
 	});
 var _elm_lang$virtual_dom$VirtualDom$Node = {ctor: 'Node'};
 var _elm_lang$virtual_dom$VirtualDom$Property = {ctor: 'Property'};
-
 var _elm_lang$html$Html$text = _elm_lang$virtual_dom$VirtualDom$text;
 var _elm_lang$html$Html$node = _elm_lang$virtual_dom$VirtualDom$node;
 var _elm_lang$html$Html$body = _elm_lang$html$Html$node('body');
@@ -7710,7 +7685,6 @@ var _elm_lang$html$Html$details = _elm_lang$html$Html$node('details');
 var _elm_lang$html$Html$summary = _elm_lang$html$Html$node('summary');
 var _elm_lang$html$Html$menuitem = _elm_lang$html$Html$node('menuitem');
 var _elm_lang$html$Html$menu = _elm_lang$html$Html$node('menu');
-
 var _elm_lang$html$Html_App$programWithFlags = _elm_lang$virtual_dom$VirtualDom$programWithFlags;
 var _elm_lang$html$Html_App$program = function (app) {
 	return _elm_lang$html$Html_App$programWithFlags(
@@ -7748,7 +7722,6 @@ var _elm_lang$html$Html_App$beginnerProgram = function (_p1) {
 		});
 };
 var _elm_lang$html$Html_App$map = _elm_lang$virtual_dom$VirtualDom$map;
-
 var _elm_community$elm_test$ElmTest_Runner_Console$runDisplay = function (tests) {
 	var _p0 = _elm_community$elm_test$ElmTest_Runner_String$run(tests);
 	if ((_p0.ctor === '::') && (_p0._0.ctor === '_Tuple2')) {
@@ -7800,7 +7773,6 @@ var _elm_community$elm_test$ElmTest_Runner_Console$runSuite = function (consoleT
 				})
 		});
 };
-
 var _elm_community$elm_test$ElmTest_Runner_Html$runDisplay = function (tests) {
 	var _p0 = _elm_community$elm_test$ElmTest_Runner_String$run(tests);
 	if ((_p0.ctor === '::') && (_p0._0.ctor === '_Tuple2')) {
@@ -7848,7 +7820,6 @@ var _elm_community$elm_test$ElmTest_Runner_Html$runSuite = function (consoleTest
 				})
 		});
 };
-
 var _elm_community$elm_test$ElmTest$runSuiteHtml = _elm_community$elm_test$ElmTest_Runner_Html$runSuite;
 var _elm_community$elm_test$ElmTest$runSuite = _elm_community$elm_test$ElmTest_Runner_Console$runSuite;
 var _elm_community$elm_test$ElmTest$stringRunner = _elm_community$elm_test$ElmTest_Runner_String$runDisplay;
@@ -7864,7 +7835,6 @@ var _elm_community$elm_test$ElmTest$suite = _elm_community$elm_test$ElmTest_Test
 var _elm_community$elm_test$ElmTest$equals = _elm_community$elm_test$ElmTest_Test$equals;
 var _elm_community$elm_test$ElmTest$defaultTest = _elm_community$elm_test$ElmTest_Test$defaultTest;
 var _elm_community$elm_test$ElmTest$test = _elm_community$elm_test$ElmTest_Test$test;
-
 //import Result //
 
 var _elm_lang$core$Native_Date = function() {
@@ -7897,8 +7867,7 @@ return {
 	dayOfWeek: function(d) { return { ctor: dayTable[d.getDay()] }; }
 };
 
-}();
-var _elm_lang$core$Task$onError = _elm_lang$core$Native_Scheduler.onError;
+}();var _elm_lang$core$Task$onError = _elm_lang$core$Native_Scheduler.onError;
 var _elm_lang$core$Task$andThen = _elm_lang$core$Native_Scheduler.andThen;
 var _elm_lang$core$Task$spawnCmd = F2(
 	function (router, _p0) {
@@ -8130,7 +8099,6 @@ var _elm_lang$core$Task$cmdMap = F2(
 			A2(_elm_lang$core$Task$map, tagger, _p11._0));
 	});
 _elm_lang$core$Native_Platform.effectManagers['Task'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Task$init, onEffects: _elm_lang$core$Task$onEffects, onSelfMsg: _elm_lang$core$Task$onSelfMsg, tag: 'cmd', cmdMap: _elm_lang$core$Task$cmdMap};
-
 //import Native.Scheduler //
 
 var _elm_lang$core$Native_Time = function() {
@@ -8157,8 +8125,7 @@ return {
 	setInterval_: F2(setInterval_)
 };
 
-}();
-var _elm_lang$core$Time$setInterval = _elm_lang$core$Native_Time.setInterval_;
+}();var _elm_lang$core$Time$setInterval = _elm_lang$core$Native_Time.setInterval_;
 var _elm_lang$core$Time$spawnHelp = F3(
 	function (router, intervals, processes) {
 		var _p0 = intervals;
@@ -8346,7 +8313,6 @@ var _elm_lang$core$Time$subMap = F2(
 			});
 	});
 _elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
-
 var _elm_lang$core$Date$millisecond = _elm_lang$core$Native_Date.millisecond;
 var _elm_lang$core$Date$second = _elm_lang$core$Native_Date.second;
 var _elm_lang$core$Date$minute = _elm_lang$core$Native_Date.minute;
@@ -8379,7 +8345,457 @@ var _elm_lang$core$Date$Apr = {ctor: 'Apr'};
 var _elm_lang$core$Date$Mar = {ctor: 'Mar'};
 var _elm_lang$core$Date$Feb = {ctor: 'Feb'};
 var _elm_lang$core$Date$Jan = {ctor: 'Jan'};
-
+var _elm_lang$html$Html_Attributes$attribute = _elm_lang$virtual_dom$VirtualDom$attribute;
+var _elm_lang$html$Html_Attributes$contextmenu = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$attribute, 'contextmenu', value);
+};
+var _elm_lang$html$Html_Attributes$draggable = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$attribute, 'draggable', value);
+};
+var _elm_lang$html$Html_Attributes$list = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$attribute, 'list', value);
+};
+var _elm_lang$html$Html_Attributes$maxlength = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$attribute,
+		'maxlength',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$datetime = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$attribute, 'datetime', value);
+};
+var _elm_lang$html$Html_Attributes$pubdate = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$attribute, 'pubdate', value);
+};
+var _elm_lang$html$Html_Attributes$colspan = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$attribute,
+		'colspan',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$rowspan = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$attribute,
+		'rowspan',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$property = _elm_lang$virtual_dom$VirtualDom$property;
+var _elm_lang$html$Html_Attributes$stringProperty = F2(
+	function (name, string) {
+		return A2(
+			_elm_lang$html$Html_Attributes$property,
+			name,
+			_elm_lang$core$Json_Encode$string(string));
+	});
+var _elm_lang$html$Html_Attributes$class = function (name) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'className', name);
+};
+var _elm_lang$html$Html_Attributes$id = function (name) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'id', name);
+};
+var _elm_lang$html$Html_Attributes$title = function (name) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'title', name);
+};
+var _elm_lang$html$Html_Attributes$accesskey = function ($char) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'accessKey',
+		_elm_lang$core$String$fromChar($char));
+};
+var _elm_lang$html$Html_Attributes$dir = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'dir', value);
+};
+var _elm_lang$html$Html_Attributes$dropzone = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'dropzone', value);
+};
+var _elm_lang$html$Html_Attributes$itemprop = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'itemprop', value);
+};
+var _elm_lang$html$Html_Attributes$lang = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'lang', value);
+};
+var _elm_lang$html$Html_Attributes$tabindex = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'tabIndex',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$charset = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'charset', value);
+};
+var _elm_lang$html$Html_Attributes$content = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'content', value);
+};
+var _elm_lang$html$Html_Attributes$httpEquiv = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'httpEquiv', value);
+};
+var _elm_lang$html$Html_Attributes$language = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'language', value);
+};
+var _elm_lang$html$Html_Attributes$src = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'src', value);
+};
+var _elm_lang$html$Html_Attributes$height = function (value) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'height',
+		_elm_lang$core$Basics$toString(value));
+};
+var _elm_lang$html$Html_Attributes$width = function (value) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'width',
+		_elm_lang$core$Basics$toString(value));
+};
+var _elm_lang$html$Html_Attributes$alt = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'alt', value);
+};
+var _elm_lang$html$Html_Attributes$preload = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'preload', value);
+};
+var _elm_lang$html$Html_Attributes$poster = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'poster', value);
+};
+var _elm_lang$html$Html_Attributes$kind = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'kind', value);
+};
+var _elm_lang$html$Html_Attributes$srclang = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'srclang', value);
+};
+var _elm_lang$html$Html_Attributes$sandbox = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'sandbox', value);
+};
+var _elm_lang$html$Html_Attributes$srcdoc = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'srcdoc', value);
+};
+var _elm_lang$html$Html_Attributes$type$ = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'type', value);
+};
+var _elm_lang$html$Html_Attributes$value = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'value', value);
+};
+var _elm_lang$html$Html_Attributes$defaultValue = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'defaultValue', value);
+};
+var _elm_lang$html$Html_Attributes$placeholder = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'placeholder', value);
+};
+var _elm_lang$html$Html_Attributes$accept = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'accept', value);
+};
+var _elm_lang$html$Html_Attributes$acceptCharset = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'acceptCharset', value);
+};
+var _elm_lang$html$Html_Attributes$action = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'action', value);
+};
+var _elm_lang$html$Html_Attributes$autocomplete = function (bool) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'autocomplete',
+		bool ? 'on' : 'off');
+};
+var _elm_lang$html$Html_Attributes$autosave = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'autosave', value);
+};
+var _elm_lang$html$Html_Attributes$enctype = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'enctype', value);
+};
+var _elm_lang$html$Html_Attributes$formaction = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'formAction', value);
+};
+var _elm_lang$html$Html_Attributes$minlength = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'minLength',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$method = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'method', value);
+};
+var _elm_lang$html$Html_Attributes$name = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'name', value);
+};
+var _elm_lang$html$Html_Attributes$pattern = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'pattern', value);
+};
+var _elm_lang$html$Html_Attributes$size = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'size',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$for = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'htmlFor', value);
+};
+var _elm_lang$html$Html_Attributes$form = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'form', value);
+};
+var _elm_lang$html$Html_Attributes$max = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'max', value);
+};
+var _elm_lang$html$Html_Attributes$min = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'min', value);
+};
+var _elm_lang$html$Html_Attributes$step = function (n) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'step', n);
+};
+var _elm_lang$html$Html_Attributes$cols = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'cols',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$rows = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'rows',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$wrap = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'wrap', value);
+};
+var _elm_lang$html$Html_Attributes$usemap = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'useMap', value);
+};
+var _elm_lang$html$Html_Attributes$shape = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'shape', value);
+};
+var _elm_lang$html$Html_Attributes$coords = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'coords', value);
+};
+var _elm_lang$html$Html_Attributes$challenge = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'challenge', value);
+};
+var _elm_lang$html$Html_Attributes$keytype = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'keytype', value);
+};
+var _elm_lang$html$Html_Attributes$align = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'align', value);
+};
+var _elm_lang$html$Html_Attributes$cite = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'cite', value);
+};
+var _elm_lang$html$Html_Attributes$href = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'href', value);
+};
+var _elm_lang$html$Html_Attributes$target = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'target', value);
+};
+var _elm_lang$html$Html_Attributes$downloadAs = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'download', value);
+};
+var _elm_lang$html$Html_Attributes$hreflang = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'hreflang', value);
+};
+var _elm_lang$html$Html_Attributes$media = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'media', value);
+};
+var _elm_lang$html$Html_Attributes$ping = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'ping', value);
+};
+var _elm_lang$html$Html_Attributes$rel = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'rel', value);
+};
+var _elm_lang$html$Html_Attributes$start = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'start',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$headers = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'headers', value);
+};
+var _elm_lang$html$Html_Attributes$scope = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'scope', value);
+};
+var _elm_lang$html$Html_Attributes$manifest = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'manifest', value);
+};
+var _elm_lang$html$Html_Attributes$boolProperty = F2(
+	function (name, bool) {
+		return A2(
+			_elm_lang$html$Html_Attributes$property,
+			name,
+			_elm_lang$core$Json_Encode$bool(bool));
+	});
+var _elm_lang$html$Html_Attributes$hidden = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'hidden', bool);
+};
+var _elm_lang$html$Html_Attributes$contenteditable = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'contentEditable', bool);
+};
+var _elm_lang$html$Html_Attributes$spellcheck = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'spellcheck', bool);
+};
+var _elm_lang$html$Html_Attributes$async = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'async', bool);
+};
+var _elm_lang$html$Html_Attributes$defer = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'defer', bool);
+};
+var _elm_lang$html$Html_Attributes$scoped = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'scoped', bool);
+};
+var _elm_lang$html$Html_Attributes$autoplay = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'autoplay', bool);
+};
+var _elm_lang$html$Html_Attributes$controls = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'controls', bool);
+};
+var _elm_lang$html$Html_Attributes$loop = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'loop', bool);
+};
+var _elm_lang$html$Html_Attributes$default = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'default', bool);
+};
+var _elm_lang$html$Html_Attributes$seamless = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'seamless', bool);
+};
+var _elm_lang$html$Html_Attributes$checked = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'checked', bool);
+};
+var _elm_lang$html$Html_Attributes$selected = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'selected', bool);
+};
+var _elm_lang$html$Html_Attributes$autofocus = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'autofocus', bool);
+};
+var _elm_lang$html$Html_Attributes$disabled = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'disabled', bool);
+};
+var _elm_lang$html$Html_Attributes$multiple = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'multiple', bool);
+};
+var _elm_lang$html$Html_Attributes$novalidate = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'noValidate', bool);
+};
+var _elm_lang$html$Html_Attributes$readonly = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'readOnly', bool);
+};
+var _elm_lang$html$Html_Attributes$required = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'required', bool);
+};
+var _elm_lang$html$Html_Attributes$ismap = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'isMap', value);
+};
+var _elm_lang$html$Html_Attributes$download = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'download', bool);
+};
+var _elm_lang$html$Html_Attributes$reversed = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'reversed', bool);
+};
+var _elm_lang$html$Html_Attributes$classList = function (list) {
+	return _elm_lang$html$Html_Attributes$class(
+		A2(
+			_elm_lang$core$String$join,
+			' ',
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Basics$fst,
+				A2(_elm_lang$core$List$filter, _elm_lang$core$Basics$snd, list))));
+};
+var _elm_lang$html$Html_Attributes$style = _elm_lang$virtual_dom$VirtualDom$style;
+var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode_ops[':='], 'keyCode', _elm_lang$core$Json_Decode$int);
+var _elm_lang$html$Html_Events$targetChecked = A2(
+	_elm_lang$core$Json_Decode$at,
+	_elm_lang$core$Native_List.fromArray(
+		['target', 'checked']),
+	_elm_lang$core$Json_Decode$bool);
+var _elm_lang$html$Html_Events$targetValue = A2(
+	_elm_lang$core$Json_Decode$at,
+	_elm_lang$core$Native_List.fromArray(
+		['target', 'value']),
+	_elm_lang$core$Json_Decode$string);
+var _elm_lang$html$Html_Events$defaultOptions = _elm_lang$virtual_dom$VirtualDom$defaultOptions;
+var _elm_lang$html$Html_Events$onWithOptions = _elm_lang$virtual_dom$VirtualDom$onWithOptions;
+var _elm_lang$html$Html_Events$on = _elm_lang$virtual_dom$VirtualDom$on;
+var _elm_lang$html$Html_Events$onFocus = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'focus',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onBlur = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'blur',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onSubmitOptions = _elm_lang$core$Native_Utils.update(
+	_elm_lang$html$Html_Events$defaultOptions,
+	{preventDefault: true});
+var _elm_lang$html$Html_Events$onSubmit = function (msg) {
+	return A3(
+		_elm_lang$html$Html_Events$onWithOptions,
+		'submit',
+		_elm_lang$html$Html_Events$onSubmitOptions,
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onCheck = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'change',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetChecked));
+};
+var _elm_lang$html$Html_Events$onInput = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'input',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetValue));
+};
+var _elm_lang$html$Html_Events$onMouseOut = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseout',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseOver = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseover',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseLeave = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseleave',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseEnter = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseenter',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseUp = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseup',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseDown = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mousedown',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onDoubleClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'dblclick',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'click',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$Options = F2(
+	function (a, b) {
+		return {stopPropagation: a, preventDefault: b};
+	});
 var _zgeorg03$table_elm$Value$getMonth = function (date) {
 	var m = _elm_lang$core$Date$month(date);
 	var _p0 = m;
@@ -8700,14 +9116,1621 @@ var _zgeorg03$table_elm$Value$FloatType = {ctor: 'FloatType'};
 var _zgeorg03$table_elm$Value$DateType = {ctor: 'DateType'};
 var _zgeorg03$table_elm$Value$StringType = {ctor: 'StringType'};
 var _zgeorg03$table_elm$Value$IntType = {ctor: 'IntType'};
-
-var _zgeorg03$table_elm$Main$main = {
-	main: _elm_community$elm_test$ElmTest$runSuite(_zgeorg03$table_elm$Value$tests)
+var _zgeorg03$table_elm$Cell$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'Pass':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'Setreadonly':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{readonly: true}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Unsetreadonly':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{readonly: false}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'UpdateRawInput':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{rawValue: _p0._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'UpdateString':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							value: _zgeorg03$table_elm$Value$S(model.rawValue)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'UpdateInteger':
+				var _p1 = function () {
+					var _p2 = _elm_lang$core$String$toInt(model.rawValue);
+					if (_p2.ctor === 'Ok') {
+						var _p3 = _p2._0;
+						return {
+							ctor: '_Tuple2',
+							_0: _zgeorg03$table_elm$Value$I(_p3),
+							_1: _elm_lang$core$Basics$toString(_p3)
+						};
+					} else {
+						return {
+							ctor: '_Tuple2',
+							_0: _zgeorg03$table_elm$Value$getDefaultValue(model.value),
+							_1: ''
+						};
+					}
+				}();
+				var val = _p1._0;
+				var rawVal = _p1._1;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{rawValue: rawVal, value: val}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'UpdateFloat':
+				var _p4 = function () {
+					var _p5 = _elm_lang$core$String$toFloat(model.rawValue);
+					if (_p5.ctor === 'Ok') {
+						var _p6 = _p5._0;
+						return {
+							ctor: '_Tuple2',
+							_0: _zgeorg03$table_elm$Value$F(_p6),
+							_1: _elm_lang$core$Basics$toString(_p6)
+						};
+					} else {
+						return {
+							ctor: '_Tuple2',
+							_0: _zgeorg03$table_elm$Value$getDefaultValue(model.value),
+							_1: ''
+						};
+					}
+				}();
+				var val = _p4._0;
+				var rawVal = _p4._1;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{rawValue: rawVal, value: val}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				var _p7 = model.readonly;
+				if (_p7 === true) {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				} else {
+					var val = function () {
+						var _p8 = model.value;
+						if (_p8.ctor === 'B') {
+							return _zgeorg03$table_elm$Value$B(
+								_elm_lang$core$Basics$not(_p8._0));
+						} else {
+							return model.value;
+						}
+					}();
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{value: val}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
+		}
+	});
+var _zgeorg03$table_elm$Cell$Model = F3(
+	function (a, b, c) {
+		return {value: a, rawValue: b, readonly: c};
+	});
+var _zgeorg03$table_elm$Cell$init = function (value) {
+	return A3(
+		_zgeorg03$table_elm$Cell$Model,
+		value,
+		_zgeorg03$table_elm$Value$toString(value),
+		true);
 };
-
+var _zgeorg03$table_elm$Cell$initEditable = function (value) {
+	return A3(
+		_zgeorg03$table_elm$Cell$Model,
+		value,
+		_zgeorg03$table_elm$Value$toString(value),
+		false);
+};
+var _zgeorg03$table_elm$Cell$initCmd = F2(
+	function (val, readonly) {
+		return {
+			ctor: '_Tuple2',
+			_0: A3(
+				_zgeorg03$table_elm$Cell$Model,
+				val,
+				_zgeorg03$table_elm$Value$toString(val),
+				readonly),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
+var _zgeorg03$table_elm$Cell$UpdateBool = {ctor: 'UpdateBool'};
+var _zgeorg03$table_elm$Cell$UpdateFloat = {ctor: 'UpdateFloat'};
+var _zgeorg03$table_elm$Cell$UpdateInteger = {ctor: 'UpdateInteger'};
+var _zgeorg03$table_elm$Cell$UpdateString = {ctor: 'UpdateString'};
+var _zgeorg03$table_elm$Cell$UpdateRawInput = function (a) {
+	return {ctor: 'UpdateRawInput', _0: a};
+};
+var _zgeorg03$table_elm$Cell$Unsetreadonly = {ctor: 'Unsetreadonly'};
+var _zgeorg03$table_elm$Cell$Setreadonly = {ctor: 'Setreadonly'};
+var _zgeorg03$table_elm$Cell$Pass = {ctor: 'Pass'};
+var _zgeorg03$table_elm$Cell$onEnter = function (msg) {
+	var tagger = function (code) {
+		return _elm_lang$core$Native_Utils.eq(code, 13) ? msg : _zgeorg03$table_elm$Cell$Pass;
+	};
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'keydown',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$keyCode));
+};
+var _zgeorg03$table_elm$Cell$view = function (model) {
+	var _p9 = model.readonly;
+	if (_p9 === false) {
+		var _p10 = model.value;
+		switch (_p10.ctor) {
+			case 'I':
+				return A2(
+					_elm_lang$html$Html$input,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_zgeorg03$table_elm$Cell$onEnter(_zgeorg03$table_elm$Cell$UpdateInteger),
+							_elm_lang$html$Html_Events$onInput(_zgeorg03$table_elm$Cell$UpdateRawInput),
+							_elm_lang$html$Html_Attributes$type$('text'),
+							_elm_lang$html$Html_Attributes$value(model.rawValue)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'F':
+				return A2(
+					_elm_lang$html$Html$input,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_zgeorg03$table_elm$Cell$onEnter(_zgeorg03$table_elm$Cell$UpdateFloat),
+							_elm_lang$html$Html_Events$onInput(_zgeorg03$table_elm$Cell$UpdateRawInput),
+							_elm_lang$html$Html_Attributes$type$('text'),
+							_elm_lang$html$Html_Attributes$value(model.rawValue)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'B':
+				return A2(
+					_elm_lang$html$Html$input,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Events$onClick(_zgeorg03$table_elm$Cell$UpdateBool),
+							_elm_lang$html$Html_Attributes$type$('checkbox'),
+							_elm_lang$html$Html_Attributes$checked(_p10._0)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'D':
+				return A2(
+					_elm_lang$html$Html$input,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$readonly(true),
+							_elm_lang$html$Html_Attributes$type$('date'),
+							_elm_lang$html$Html_Attributes$value(
+							_zgeorg03$table_elm$Value$toString(model.value))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'S':
+				return A2(
+					_elm_lang$html$Html$input,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_zgeorg03$table_elm$Cell$onEnter(_zgeorg03$table_elm$Cell$UpdateString),
+							_elm_lang$html$Html_Events$onInput(_zgeorg03$table_elm$Cell$UpdateRawInput),
+							_elm_lang$html$Html_Attributes$type$('text'),
+							_elm_lang$html$Html_Attributes$value(model.rawValue)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			default:
+				return A2(
+					_elm_lang$html$Html$input,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$readonly(true),
+							_elm_lang$html$Html_Attributes$type$('text'),
+							_elm_lang$html$Html_Attributes$value(
+							_zgeorg03$table_elm$Value$toString(model.value))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+		}
+	} else {
+		var _p11 = model.value;
+		if (_p11.ctor === 'B') {
+			return A2(
+				_elm_lang$html$Html$input,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$disabled(true),
+						_elm_lang$html$Html_Attributes$readonly(model.readonly),
+						_elm_lang$html$Html_Attributes$type$('checkbox'),
+						_elm_lang$html$Html_Attributes$checked(_p11._0)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[]));
+		} else {
+			return _elm_lang$html$Html$text(
+				_zgeorg03$table_elm$Value$toString(model.value));
+		}
+	}
+};
+var _zgeorg03$table_elm$Cell$main = {
+	main: _elm_lang$html$Html_App$program(
+		{
+			init: A2(
+				_zgeorg03$table_elm$Cell$initCmd,
+				_zgeorg03$table_elm$Value$F(1213),
+				false),
+			view: _zgeorg03$table_elm$Cell$view,
+			update: _zgeorg03$table_elm$Cell$update,
+			subscriptions: function (_p12) {
+				return _elm_lang$core$Platform_Sub$none;
+			}
+		})
+};
+var _zgeorg03$table_elm$ExternalCSS$stylesheet = function () {
+	var children = _elm_lang$core$Native_List.fromArray(
+		[]);
+	var attrs = _elm_lang$core$Native_List.fromArray(
+		[
+			A2(_elm_lang$html$Html_Attributes$attribute, 'rel', 'stylesheet'),
+			A2(_elm_lang$html$Html_Attributes$attribute, 'property', 'stylesheet'),
+			A2(_elm_lang$html$Html_Attributes$attribute, 'href', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+		]);
+	var tag = 'link';
+	return A3(_elm_lang$html$Html$node, tag, attrs, children);
+}();
+var _zgeorg03$table_elm$Header$Model = F3(
+	function (a, b, c) {
+		return {title: a, state: b, type$: c};
+	});
+var _zgeorg03$table_elm$Header$Descending = {ctor: 'Descending'};
+var _zgeorg03$table_elm$Header$Ascending = {ctor: 'Ascending'};
+var _zgeorg03$table_elm$Header$Original = {ctor: 'Original'};
+var _zgeorg03$table_elm$Header$init = F2(
+	function (title, typ) {
+		return {
+			ctor: '_Tuple2',
+			_0: A3(_zgeorg03$table_elm$Header$Model, title, _zgeorg03$table_elm$Header$Original, typ),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
+var _zgeorg03$table_elm$Header$initNoCmd = F2(
+	function (title, typ) {
+		return A3(_zgeorg03$table_elm$Header$Model, title, _zgeorg03$table_elm$Header$Original, typ);
+	});
+var _zgeorg03$table_elm$Header$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		if (_p0.ctor === 'Reset') {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					model,
+					{state: _zgeorg03$table_elm$Header$Original}),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		} else {
+			var _p1 = model.state;
+			switch (_p1.ctor) {
+				case 'Original':
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{state: _zgeorg03$table_elm$Header$Ascending}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				case 'Ascending':
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{state: _zgeorg03$table_elm$Header$Descending}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				default:
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{state: _zgeorg03$table_elm$Header$Original}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+			}
+		}
+	});
+var _zgeorg03$table_elm$Header$ChangeState = {ctor: 'ChangeState'};
+var _zgeorg03$table_elm$Header$Reset = {ctor: 'Reset'};
+var _zgeorg03$table_elm$Header$showHeader = function (model) {
+	var _p2 = model.state;
+	switch (_p2.ctor) {
+		case 'Original':
+			return A2(
+				_elm_lang$html$Html$th,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$label,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Events$onClick(_zgeorg03$table_elm$Header$ChangeState),
+								_elm_lang$html$Html_Events$onDoubleClick(_zgeorg03$table_elm$Header$Reset)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(
+								A2(_elm_lang$core$Basics_ops['++'], model.title, ' ')),
+								A2(
+								_elm_lang$html$Html$span,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('glyphicon glyphicon-minus')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[]))
+							]))
+					]));
+		case 'Ascending':
+			return A2(
+				_elm_lang$html$Html$th,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$label,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Events$onClick(_zgeorg03$table_elm$Header$ChangeState),
+								_elm_lang$html$Html_Events$onDoubleClick(_zgeorg03$table_elm$Header$Reset)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(model.title),
+								A2(
+								_elm_lang$html$Html$span,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('glyphicon glyphicon-triangle-bottom')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[]))
+							]))
+					]));
+		default:
+			return A2(
+				_elm_lang$html$Html$th,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$label,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Events$onClick(_zgeorg03$table_elm$Header$ChangeState),
+								_elm_lang$html$Html_Events$onDoubleClick(_zgeorg03$table_elm$Header$Reset)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(model.title),
+								A2(
+								_elm_lang$html$Html$span,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('glyphicon glyphicon-triangle-top')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[]))
+							]))
+					]));
+	}
+};
+var _zgeorg03$table_elm$Header$view = function (model) {
+	return _zgeorg03$table_elm$Header$showHeader(model);
+};
+var _zgeorg03$table_elm$Header$main = {
+	main: _elm_lang$html$Html_App$program(
+		{
+			init: A2(_zgeorg03$table_elm$Header$init, 'Name', _zgeorg03$table_elm$Value$IntType),
+			view: _zgeorg03$table_elm$Header$view,
+			update: _zgeorg03$table_elm$Header$update,
+			subscriptions: function (_p3) {
+				return _elm_lang$core$Platform_Sub$none;
+			}
+		})
+};
+var _zgeorg03$table_elm$Pagination$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'NoOp':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'FirstPage':
+				var activeEntries = (_elm_lang$core$Native_Utils.cmp(model.totalEntries, model.entriesInPage) < 0) ? model.totalEntries : model.entriesInPage;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{currentPage: 0, activeEntries: activeEntries}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'LastPage':
+				var activeEntries = model.totalEntries - ((model.totalPages - 1) * model.entriesInPage);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{currentPage: model.totalPages - 1, activeEntries: activeEntries}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'NextPage':
+				var nextPage = (_elm_lang$core$Native_Utils.cmp(model.currentPage + 1, model.totalPages) < 0) ? (model.currentPage + 1) : model.currentPage;
+				var activeEntries = _elm_lang$core$Native_Utils.eq(nextPage, model.totalPages - 1) ? (model.totalEntries - ((model.totalPages - 1) * model.entriesInPage)) : ((_elm_lang$core$Native_Utils.cmp(model.totalEntries, model.entriesInPage) < 0) ? model.totalEntries : model.entriesInPage);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{currentPage: nextPage, activeEntries: activeEntries}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'PrevPage':
+				var activeEntries = (_elm_lang$core$Native_Utils.cmp(model.totalEntries, model.entriesInPage) < 0) ? model.totalEntries : model.entriesInPage;
+				var nextPage = (_elm_lang$core$Native_Utils.cmp(model.currentPage - 1, 0) > -1) ? (model.currentPage - 1) : model.currentPage;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{currentPage: nextPage, activeEntries: activeEntries}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'GotoPage':
+				var _p1 = _p0._0;
+				var activeEntries = _elm_lang$core$Native_Utils.eq(_p1, model.totalPages - 1) ? (model.totalEntries - ((model.totalPages - 1) * model.entriesInPage)) : ((_elm_lang$core$Native_Utils.cmp(model.totalEntries, model.entriesInPage) < 0) ? model.totalEntries : model.entriesInPage);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{currentPage: _p1, activeEntries: activeEntries}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				var _p2 = _p0._0;
+				var activeEntries = (_elm_lang$core$Native_Utils.cmp(model.totalEntries, _p2) < 0) ? model.totalEntries : _p2;
+				var totalPages = _elm_lang$core$Basics$ceiling(
+					_elm_lang$core$Basics$toFloat(model.totalEntries) / _elm_lang$core$Basics$toFloat(_p2));
+				var pages = A2(
+					_elm_lang$core$Array$initialize,
+					totalPages,
+					function (n) {
+						return n;
+					});
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{currentPage: 0, pages: pages, entriesInPage: _p2, totalPages: totalPages, activeEntries: activeEntries}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+		}
+	});
+var _zgeorg03$table_elm$Pagination$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {totalEntries: a, entriesInPage: b, activeEntries: c, totalPages: d, currentPage: e, pages: f};
+	});
+var _zgeorg03$table_elm$Pagination$init = F2(
+	function (records, visible) {
+		var nOfPages = _elm_lang$core$Basics$ceiling(
+			_elm_lang$core$Basics$toFloat(records) / _elm_lang$core$Basics$toFloat(visible));
+		var activeEntries = (_elm_lang$core$Native_Utils.cmp(records, visible) < 0) ? records : visible;
+		return A6(
+			_zgeorg03$table_elm$Pagination$Model,
+			records,
+			visible,
+			activeEntries,
+			nOfPages,
+			0,
+			A2(
+				_elm_lang$core$Array$initialize,
+				nOfPages,
+				function (n) {
+					return n;
+				}));
+	});
+var _zgeorg03$table_elm$Pagination$initCmd = F2(
+	function (records, visible) {
+		var nOfPages = _elm_lang$core$Basics$ceiling(
+			_elm_lang$core$Basics$toFloat(records) / _elm_lang$core$Basics$toFloat(visible));
+		var activeEntries = (_elm_lang$core$Native_Utils.cmp(records, visible) < 0) ? records : visible;
+		return {
+			ctor: '_Tuple2',
+			_0: A6(
+				_zgeorg03$table_elm$Pagination$Model,
+				records,
+				visible,
+				activeEntries,
+				nOfPages,
+				0,
+				A2(
+					_elm_lang$core$Array$initialize,
+					nOfPages,
+					function (n) {
+						return n;
+					})),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
+var _zgeorg03$table_elm$Pagination$ChangeEntriesInPage = function (a) {
+	return {ctor: 'ChangeEntriesInPage', _0: a};
+};
+var _zgeorg03$table_elm$Pagination$GotoPage = function (a) {
+	return {ctor: 'GotoPage', _0: a};
+};
+var _zgeorg03$table_elm$Pagination$showPage = F2(
+	function (currentPage, id) {
+		return _elm_lang$core$Native_Utils.eq(id, currentPage) ? A2(
+			_elm_lang$html$Html$li,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('active')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$a,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(
+							_elm_lang$core$Basics$toString(id + 1))
+						]))
+				])) : A2(
+			_elm_lang$html$Html$li,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$a,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Events$onClick(
+							_zgeorg03$table_elm$Pagination$GotoPage(id))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(
+							_elm_lang$core$Basics$toString(id + 1))
+						]))
+				]));
+	});
+var _zgeorg03$table_elm$Pagination$PrevPage = {ctor: 'PrevPage'};
+var _zgeorg03$table_elm$Pagination$NextPage = {ctor: 'NextPage'};
+var _zgeorg03$table_elm$Pagination$LastPage = {ctor: 'LastPage'};
+var _zgeorg03$table_elm$Pagination$FirstPage = {ctor: 'FirstPage'};
+var _zgeorg03$table_elm$Pagination$showPages = function (model) {
+	var nextLast = _elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$li,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$a,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Events$onClick(_zgeorg03$table_elm$Pagination$NextPage)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('Next')
+						]))
+				])),
+			A2(
+			_elm_lang$html$Html$li,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$a,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Events$onClick(_zgeorg03$table_elm$Pagination$LastPage)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('Last')
+						]))
+				]))
+		]);
+	var startPos = (_elm_lang$core$Native_Utils.cmp(model.totalPages, 5) < 1) ? 0 : ((_elm_lang$core$Native_Utils.cmp(model.currentPage + 2, 3) < 1) ? 0 : ((_elm_lang$core$Native_Utils.cmp(model.currentPage + 2, model.totalPages) > -1) ? (model.totalPages - 5) : (model.currentPage - 2)));
+	var viewport = A3(_elm_lang$core$Array$slice, startPos, startPos + 5, model.pages);
+	var inner = _elm_lang$core$Array$toList(
+		A2(
+			_elm_lang$core$Array$map,
+			_zgeorg03$table_elm$Pagination$showPage(model.currentPage),
+			viewport));
+	var firstPrevious = _elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$li,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$a,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Events$onClick(_zgeorg03$table_elm$Pagination$FirstPage)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('First')
+						]))
+				])),
+			A2(
+			_elm_lang$html$Html$li,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$a,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Events$onClick(_zgeorg03$table_elm$Pagination$PrevPage)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('Previous')
+						]))
+				]))
+		]);
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		firstPrevious,
+		A2(_elm_lang$core$Basics_ops['++'], inner, nextLast));
+};
+var _zgeorg03$table_elm$Pagination$view = function (model) {
+	var base = model.currentPage * model.entriesInPage;
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('row')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('col-md-2')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Show  '),
+						A2(
+						_elm_lang$html$Html$select,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$option,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Events$onClick(
+										_zgeorg03$table_elm$Pagination$ChangeEntriesInPage(1))
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('1')
+									])),
+								A2(
+								_elm_lang$html$Html$option,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Events$onClick(
+										_zgeorg03$table_elm$Pagination$ChangeEntriesInPage(2))
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('2')
+									])),
+								A2(
+								_elm_lang$html$Html$option,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$selected(true),
+										_elm_lang$html$Html_Events$onClick(
+										_zgeorg03$table_elm$Pagination$ChangeEntriesInPage(5))
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('5')
+									])),
+								A2(
+								_elm_lang$html$Html$option,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Events$onClick(
+										_zgeorg03$table_elm$Pagination$ChangeEntriesInPage(10))
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('10')
+									])),
+								A2(
+								_elm_lang$html$Html$option,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Events$onClick(
+										_zgeorg03$table_elm$Pagination$ChangeEntriesInPage(25))
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('25')
+									])),
+								A2(
+								_elm_lang$html$Html$option,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Events$onClick(
+										_zgeorg03$table_elm$Pagination$ChangeEntriesInPage(50))
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('50')
+									])),
+								A2(
+								_elm_lang$html$Html$option,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Events$onClick(
+										_zgeorg03$table_elm$Pagination$ChangeEntriesInPage(100))
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('100')
+									])),
+								A2(
+								_elm_lang$html$Html$option,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Events$onClick(
+										_zgeorg03$table_elm$Pagination$ChangeEntriesInPage(200))
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('200')
+									]))
+							])),
+						_elm_lang$html$Html$text('  Entries')
+					])),
+				A2(
+				_elm_lang$html$Html$nav,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('col-md-6')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$ul,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('pagination')
+							]),
+						_zgeorg03$table_elm$Pagination$showPages(model))
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('col-md-4')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'Showing ',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Basics$toString(base + 1),
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									' to ',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_elm_lang$core$Basics$toString(base + model.activeEntries),
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											' of ',
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												_elm_lang$core$Basics$toString(model.totalEntries),
+												' Entries')))))))
+					]))
+			]));
+};
+var _zgeorg03$table_elm$Pagination$main = {
+	main: _elm_lang$html$Html_App$program(
+		{
+			init: A2(_zgeorg03$table_elm$Pagination$initCmd, 26, 5),
+			view: _zgeorg03$table_elm$Pagination$view,
+			update: _zgeorg03$table_elm$Pagination$update,
+			subscriptions: function (_p3) {
+				return _elm_lang$core$Platform_Sub$none;
+			}
+		})
+};
+var _zgeorg03$table_elm$Pagination$NoOp = {ctor: 'NoOp'};
+var _zgeorg03$table_elm$Record$model = _elm_lang$core$Native_List.fromArray(
+	[
+		_zgeorg03$table_elm$Cell$init(
+		_zgeorg03$table_elm$Value$I(0)),
+		_zgeorg03$table_elm$Cell$init(
+		_zgeorg03$table_elm$Value$B(true)),
+		_zgeorg03$table_elm$Cell$init(
+		_zgeorg03$table_elm$Value$F(0)),
+		_zgeorg03$table_elm$Cell$init(
+		_zgeorg03$table_elm$Value$D(12312312))
+	]);
+var _zgeorg03$table_elm$Record$IdCell = F2(
+	function (a, b) {
+		return {id: a, model: b};
+	});
+var _zgeorg03$table_elm$Record$initHelper = function (_p0) {
+	var _p1 = _p0;
+	return A2(_zgeorg03$table_elm$Record$IdCell, _p1._0, _p1._1);
+};
+var _zgeorg03$table_elm$Record$init = function (list) {
+	var array = _elm_lang$core$Array$fromList(list);
+	var indexedList = _elm_lang$core$Array$toIndexedList(array);
+	return _elm_lang$core$Array$fromList(
+		A2(_elm_lang$core$List$map, _zgeorg03$table_elm$Record$initHelper, indexedList));
+};
+var _zgeorg03$table_elm$Record$initWithCmd = function (list) {
+	var array = _elm_lang$core$Array$fromList(list);
+	var indexedList = _elm_lang$core$Array$toIndexedList(array);
+	return {
+		ctor: '_Tuple2',
+		_0: _elm_lang$core$Array$fromList(
+			A2(_elm_lang$core$List$map, _zgeorg03$table_elm$Record$initHelper, indexedList)),
+		_1: _elm_lang$core$Platform_Cmd$none
+	};
+};
+var _zgeorg03$table_elm$Record$CellMsg = F2(
+	function (a, b) {
+		return {ctor: 'CellMsg', _0: a, _1: b};
+	});
+var _zgeorg03$table_elm$Record$updateHelp = F3(
+	function (id, msg, idcell) {
+		if (!_elm_lang$core$Native_Utils.eq(idcell.id, id)) {
+			return {ctor: '_Tuple2', _0: idcell, _1: _elm_lang$core$Platform_Cmd$none};
+		} else {
+			var _p2 = A2(_zgeorg03$table_elm$Cell$update, msg, idcell.model);
+			var newModel = _p2._0;
+			var cmds = _p2._1;
+			return {
+				ctor: '_Tuple2',
+				_0: A2(_zgeorg03$table_elm$Record$IdCell, id, newModel),
+				_1: A2(
+					_elm_lang$core$Platform_Cmd$map,
+					_zgeorg03$table_elm$Record$CellMsg(id),
+					cmds)
+			};
+		}
+	});
+var _zgeorg03$table_elm$Record$update = F2(
+	function (msg, model) {
+		var _p3 = msg;
+		var _p4 = _elm_lang$core$List$unzip(
+			_elm_lang$core$Array$toList(
+				A2(
+					_elm_lang$core$Array$map,
+					A2(_zgeorg03$table_elm$Record$updateHelp, _p3._0, _p3._1),
+					model)));
+		var newCells = _p4._0;
+		var cmds = _p4._1;
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Array$fromList(newCells),
+			_1: _elm_lang$core$Platform_Cmd$batch(cmds)
+		};
+	});
+var _zgeorg03$table_elm$Record$viewCell = function (_p5) {
+	var _p6 = _p5;
+	return A2(
+		_elm_lang$html$Html$td,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html_App$map,
+				_zgeorg03$table_elm$Record$CellMsg(_p6.id),
+				_zgeorg03$table_elm$Cell$view(_p6.model))
+			]));
+};
+var _zgeorg03$table_elm$Record$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$tr,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Array$toList(
+			A2(_elm_lang$core$Array$map, _zgeorg03$table_elm$Record$viewCell, model)));
+};
+var _zgeorg03$table_elm$Record$main = {
+	main: _elm_lang$html$Html_App$program(
+		{
+			init: _zgeorg03$table_elm$Record$initWithCmd(_zgeorg03$table_elm$Record$model),
+			view: _zgeorg03$table_elm$Record$view,
+			update: _zgeorg03$table_elm$Record$update,
+			subscriptions: function (_p7) {
+				return _elm_lang$core$Platform_Sub$none;
+			}
+		})
+};
+var _zgeorg03$table_elm$Table$dummyRecords = _elm_lang$core$Native_List.fromArray(
+	[
+		_zgeorg03$table_elm$Record$init(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$I(500012)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Zacharias')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Georgiou')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$D(756216594)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$B(true))
+			])),
+		_zgeorg03$table_elm$Record$init(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$I(503212)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Andreas')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Mariou')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$D(726216594)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$B(false))
+			])),
+		_zgeorg03$table_elm$Record$init(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$I(123456)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Maria')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Andreou')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$D(726216594)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$B(true))
+			])),
+		_zgeorg03$table_elm$Record$init(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$I(123456)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Chris')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Petrou')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$D(644349992)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$B(false))
+			])),
+		_zgeorg03$table_elm$Record$init(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$I(235409)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Costas')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Costa')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$D(944349992)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$B(false))
+			])),
+		_zgeorg03$table_elm$Record$init(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$I(524202)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Andri')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Andreou')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$D(1244349992)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$B(false))
+			])),
+		_zgeorg03$table_elm$Record$init(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$I(525400)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Maria')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Christou')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$D(244349992)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$B(false))
+			])),
+		_zgeorg03$table_elm$Record$init(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$I(525500)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Marios')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Georgiou')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$D(344349992)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$B(true))
+			])),
+		_zgeorg03$table_elm$Record$init(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$I(595500)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Marios')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Mariou')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$D(344349992)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$B(true))
+			])),
+		_zgeorg03$table_elm$Record$init(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$I(525500)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Marios')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Georgiou')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$D(344349992)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$B(true))
+			])),
+		_zgeorg03$table_elm$Record$init(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$I(405500)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Giorgos')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$S('Antreou')),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$D(344049992)),
+				_zgeorg03$table_elm$Cell$init(
+				_zgeorg03$table_elm$Value$B(true))
+			]))
+	]);
+var _zgeorg03$table_elm$Table$dummyHeaders = _elm_lang$core$Native_List.fromArray(
+	[
+		{title: 'ID', state: _zgeorg03$table_elm$Header$Original, type$: _zgeorg03$table_elm$Value$IntType},
+		{title: 'Name', state: _zgeorg03$table_elm$Header$Original, type$: _zgeorg03$table_elm$Value$StringType},
+		{title: 'Surname', state: _zgeorg03$table_elm$Header$Original, type$: _zgeorg03$table_elm$Value$StringType},
+		{title: 'DateOfBirth', state: _zgeorg03$table_elm$Header$Original, type$: _zgeorg03$table_elm$Value$DateType},
+		{title: 'Rich', state: _zgeorg03$table_elm$Header$Original, type$: _zgeorg03$table_elm$Value$BoolType}
+	]);
+var _zgeorg03$table_elm$Table$getValue = F2(
+	function (index, record) {
+		var mayIdCell = A2(_elm_lang$core$Array$get, index, record);
+		var idCell = function () {
+			var _p0 = mayIdCell;
+			if (_p0.ctor === 'Nothing') {
+				return {
+					id: 0,
+					model: _zgeorg03$table_elm$Cell$init(
+						_zgeorg03$table_elm$Value$I(0))
+				};
+			} else {
+				return _p0._0;
+			}
+		}();
+		var cell = idCell.model;
+		return cell.value;
+	});
+var _zgeorg03$table_elm$Table$getRecord = function (idRecord) {
+	return idRecord.model;
+};
+var _zgeorg03$table_elm$Table$getIdRecord = F2(
+	function (row, model) {
+		var records = model.records;
+		var mayIdRecord = A2(_elm_lang$core$Array$get, row, records);
+		var idRecord = function () {
+			var _p1 = mayIdRecord;
+			if (_p1.ctor === 'Nothing') {
+				return {
+					id: 0,
+					model: _zgeorg03$table_elm$Record$init(
+						_elm_lang$core$Native_List.fromArray(
+							[]))
+				};
+			} else {
+				return _p1._0;
+			}
+		}();
+		return idRecord;
+	});
+var _zgeorg03$table_elm$Table$sortIdRecord = F3(
+	function (col, rec1, rec2) {
+		return A2(
+			_zgeorg03$table_elm$Value$compare,
+			A2(
+				_zgeorg03$table_elm$Table$getValue,
+				col,
+				_zgeorg03$table_elm$Table$getRecord(rec1)),
+			A2(
+				_zgeorg03$table_elm$Table$getValue,
+				col,
+				_zgeorg03$table_elm$Table$getRecord(rec2)));
+	});
+var _zgeorg03$table_elm$Table$sortForPermutation = F4(
+	function (model, col, id1, id2) {
+		var rec2 = A2(_zgeorg03$table_elm$Table$getIdRecord, id2, model);
+		var rec1 = A2(_zgeorg03$table_elm$Table$getIdRecord, id1, model);
+		return A3(_zgeorg03$table_elm$Table$sortIdRecord, col, rec1, rec2);
+	});
+var _zgeorg03$table_elm$Table$getNewPermutation = F3(
+	function (col, state, model) {
+		var _p2 = state;
+		switch (_p2.ctor) {
+			case 'Original':
+				return _elm_lang$core$Array$toList(
+					A2(
+						_elm_lang$core$Array$initialize,
+						model.rows,
+						function (n) {
+							return n;
+						}));
+			case 'Ascending':
+				return A2(
+					_elm_lang$core$List$sortWith,
+					A2(_zgeorg03$table_elm$Table$sortForPermutation, model, col),
+					model.permutation);
+			default:
+				return A2(
+					_elm_lang$core$List$sortWith,
+					F2(
+						function (i, j) {
+							return A4(_zgeorg03$table_elm$Table$sortForPermutation, model, col, j, i);
+						}),
+					model.permutation);
+		}
+	});
+var _zgeorg03$table_elm$Table$sort = F3(
+	function (col, state, model) {
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{
+				permutation: A3(_zgeorg03$table_elm$Table$getNewPermutation, col, state, model)
+			});
+	});
+var _zgeorg03$table_elm$Table$getHeaderState = F2(
+	function (col, idHeaders) {
+		var array = _elm_lang$core$Array$fromList(idHeaders);
+		var mayIdHeader = A2(_elm_lang$core$Array$get, col, array);
+		var idHeader = function () {
+			var _p3 = mayIdHeader;
+			if (_p3.ctor === 'Nothing') {
+				return {
+					id: 0,
+					model: A3(_zgeorg03$table_elm$Header$Model, '', _zgeorg03$table_elm$Header$Original, _zgeorg03$table_elm$Value$IntType)
+				};
+			} else {
+				return _p3._0;
+			}
+		}();
+		var header = idHeader.model;
+		return header.state;
+	});
+var _zgeorg03$table_elm$Table$IdHeader = F2(
+	function (a, b) {
+		return {id: a, model: b};
+	});
+var _zgeorg03$table_elm$Table$initHeaderHelper = function (_p4) {
+	var _p5 = _p4;
+	return A2(_zgeorg03$table_elm$Table$IdHeader, _p5._0, _p5._1);
+};
+var _zgeorg03$table_elm$Table$IdRecord = F2(
+	function (a, b) {
+		return {id: a, model: b};
+	});
+var _zgeorg03$table_elm$Table$initRecordHelper = function (_p6) {
+	var _p7 = _p6;
+	return A2(_zgeorg03$table_elm$Table$IdRecord, _p7._0, _p7._1);
+};
+var _zgeorg03$table_elm$Table$Model = F9(
+	function (a, b, c, d, e, f, g, h, i) {
+		return {title: a, headers: b, records: c, permutation: d, rows: e, cols: f, base: g, pagination: h, error: i};
+	});
+var _zgeorg03$table_elm$Table$init = F3(
+	function (title, headers, records) {
+		var arrayRecords = _elm_lang$core$Array$fromList(records);
+		var recordsLen = _elm_lang$core$Array$length(arrayRecords);
+		var indexedListRecords = _elm_lang$core$Array$toIndexedList(arrayRecords);
+		var arrayHeaders = _elm_lang$core$Array$fromList(headers);
+		var headersLen = _elm_lang$core$Array$length(arrayHeaders);
+		var indexedListHeaders = _elm_lang$core$Array$toIndexedList(arrayHeaders);
+		var visibleRecords = 5;
+		var nextEnabled = (_elm_lang$core$Native_Utils.cmp(recordsLen, visibleRecords) > 0) ? true : false;
+		return {
+			ctor: '_Tuple2',
+			_0: A9(
+				_zgeorg03$table_elm$Table$Model,
+				title,
+				A2(_elm_lang$core$List$map, _zgeorg03$table_elm$Table$initHeaderHelper, indexedListHeaders),
+				A2(
+					_elm_lang$core$Array$map,
+					_zgeorg03$table_elm$Table$initRecordHelper,
+					_elm_lang$core$Array$fromList(indexedListRecords)),
+				_elm_lang$core$Array$toList(
+					A2(
+						_elm_lang$core$Array$initialize,
+						recordsLen,
+						function (n) {
+							return n;
+						})),
+				recordsLen,
+				headersLen,
+				0,
+				A2(_zgeorg03$table_elm$Pagination$init, recordsLen, visibleRecords),
+				_elm_lang$core$Maybe$Nothing),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
+var _zgeorg03$table_elm$Table$PaginationMsg = function (a) {
+	return {ctor: 'PaginationMsg', _0: a};
+};
+var _zgeorg03$table_elm$Table$RecordMsg = F2(
+	function (a, b) {
+		return {ctor: 'RecordMsg', _0: a, _1: b};
+	});
+var _zgeorg03$table_elm$Table$updateRecordHelp = F3(
+	function (id, msg, record) {
+		if (!_elm_lang$core$Native_Utils.eq(record.id, id)) {
+			return {ctor: '_Tuple2', _0: record, _1: _elm_lang$core$Platform_Cmd$none};
+		} else {
+			var _p8 = A2(_zgeorg03$table_elm$Record$update, msg, record.model);
+			var newModel = _p8._0;
+			var cmds = _p8._1;
+			return {
+				ctor: '_Tuple2',
+				_0: A2(_zgeorg03$table_elm$Table$IdRecord, id, newModel),
+				_1: A2(
+					_elm_lang$core$Platform_Cmd$map,
+					_zgeorg03$table_elm$Table$RecordMsg(id),
+					cmds)
+			};
+		}
+	});
+var _zgeorg03$table_elm$Table$viewRecordPermutated = function (res) {
+	var _p9 = res;
+	if (_p9.ctor === 'Nothing') {
+		return A2(
+			_elm_lang$html$Html$tr,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
+	} else {
+		var _p10 = _p9._0;
+		return A2(
+			_elm_lang$html$Html_App$map,
+			_zgeorg03$table_elm$Table$RecordMsg(_p10.id),
+			_zgeorg03$table_elm$Record$view(_p10.model));
+	}
+};
+var _zgeorg03$table_elm$Table$viewRecordsPermutated = function (model) {
+	var pagination = model.pagination;
+	var perm = _elm_lang$core$Array$toList(
+		A3(
+			_elm_lang$core$Array$slice,
+			model.base,
+			model.base + pagination.entriesInPage,
+			_elm_lang$core$Array$fromList(model.permutation)));
+	return A2(
+		_elm_lang$core$List$map,
+		function (x) {
+			return _zgeorg03$table_elm$Table$viewRecordPermutated(
+				A2(_elm_lang$core$Array$get, x, model.records));
+		},
+		perm);
+};
+var _zgeorg03$table_elm$Table$viewRecord = function (record) {
+	return A2(
+		_elm_lang$html$Html_App$map,
+		_zgeorg03$table_elm$Table$RecordMsg(record.id),
+		_zgeorg03$table_elm$Record$view(record.model));
+};
+var _zgeorg03$table_elm$Table$viewRecords = function (model) {
+	return _elm_lang$core$Array$toList(
+		A2(_elm_lang$core$Array$map, _zgeorg03$table_elm$Table$viewRecord, model.records));
+};
+var _zgeorg03$table_elm$Table$HeaderMsg = F2(
+	function (a, b) {
+		return {ctor: 'HeaderMsg', _0: a, _1: b};
+	});
+var _zgeorg03$table_elm$Table$updateHeaderHelp = F3(
+	function (id, msg, header) {
+		if (!_elm_lang$core$Native_Utils.eq(header.id, id)) {
+			var hModel = header.model;
+			var newModel = _elm_lang$core$Native_Utils.update(
+				hModel,
+				{state: _zgeorg03$table_elm$Header$Original});
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					header,
+					{model: newModel}),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		} else {
+			var _p11 = A2(_zgeorg03$table_elm$Header$update, msg, header.model);
+			var newModel = _p11._0;
+			var cmds = _p11._1;
+			return {
+				ctor: '_Tuple2',
+				_0: A2(_zgeorg03$table_elm$Table$IdHeader, id, newModel),
+				_1: A2(
+					_elm_lang$core$Platform_Cmd$map,
+					_zgeorg03$table_elm$Table$HeaderMsg(id),
+					cmds)
+			};
+		}
+	});
+var _zgeorg03$table_elm$Table$update = F2(
+	function (msg, model) {
+		var _p12 = msg;
+		switch (_p12.ctor) {
+			case 'NoOp':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'PaginationMsg':
+				var _p13 = A2(_zgeorg03$table_elm$Pagination$update, _p12._0, model.pagination);
+				var pagination = _p13._0;
+				var cmds = _p13._1;
+				var base = pagination.currentPage * pagination.entriesInPage;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{pagination: pagination, base: base}),
+					_1: A2(_elm_lang$core$Platform_Cmd$map, _zgeorg03$table_elm$Table$PaginationMsg, cmds)
+				};
+			case 'HeaderMsg':
+				var _p15 = _p12._0;
+				var _p14 = _elm_lang$core$List$unzip(
+					A2(
+						_elm_lang$core$List$map,
+						A2(_zgeorg03$table_elm$Table$updateHeaderHelp, _p15, _p12._1),
+						model.headers));
+				var newHeaders = _p14._0;
+				var cmds = _p14._1;
+				var state = A2(_zgeorg03$table_elm$Table$getHeaderState, _p15, newHeaders);
+				var newModel = A3(_zgeorg03$table_elm$Table$sort, _p15, state, model);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						newModel,
+						{headers: newHeaders}),
+					_1: _elm_lang$core$Platform_Cmd$batch(cmds)
+				};
+			default:
+				var _p16 = _elm_lang$core$List$unzip(
+					_elm_lang$core$Array$toList(
+						A2(
+							_elm_lang$core$Array$map,
+							A2(_zgeorg03$table_elm$Table$updateRecordHelp, _p12._0, _p12._1),
+							model.records)));
+				var newRecords = _p16._0;
+				var cmds = _p16._1;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							records: _elm_lang$core$Array$fromList(newRecords)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$batch(cmds)
+				};
+		}
+	});
+var _zgeorg03$table_elm$Table$viewHeader = function (_p17) {
+	var _p18 = _p17;
+	return A2(
+		_elm_lang$html$Html_App$map,
+		_zgeorg03$table_elm$Table$HeaderMsg(_p18.id),
+		_zgeorg03$table_elm$Header$view(_p18.model));
+};
+var _zgeorg03$table_elm$Table$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_zgeorg03$table_elm$ExternalCSS$stylesheet,
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('panel panel-primary')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('panel-heading')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(model.title)
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('panel-body')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$table,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('table')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$thead,
+										_elm_lang$core$Native_List.fromArray(
+											[]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												A2(
+												_elm_lang$html$Html$tr,
+												_elm_lang$core$Native_List.fromArray(
+													[]),
+												A2(_elm_lang$core$List$map, _zgeorg03$table_elm$Table$viewHeader, model.headers))
+											])),
+										function () {
+										var _p19 = model.error;
+										if (_p19.ctor === 'Nothing') {
+											return A2(
+												_elm_lang$html$Html$tbody,
+												_elm_lang$core$Native_List.fromArray(
+													[]),
+												_zgeorg03$table_elm$Table$viewRecordsPermutated(model));
+										} else {
+											return A2(
+												_elm_lang$html$Html$tr,
+												_elm_lang$core$Native_List.fromArray(
+													[]),
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html$text(_p19._0)
+													]));
+										}
+									}()
+									]))
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('panel-footer')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html_App$map,
+								_zgeorg03$table_elm$Table$PaginationMsg,
+								_zgeorg03$table_elm$Pagination$view(model.pagination))
+							]))
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('container')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(model.permutation))
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('container')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(model.base))
+					]))
+			]));
+};
+var _zgeorg03$table_elm$Table$main = {
+	main: _elm_lang$html$Html_App$program(
+		{
+			init: A3(_zgeorg03$table_elm$Table$init, 'Example table', _zgeorg03$table_elm$Table$dummyHeaders, _zgeorg03$table_elm$Table$dummyRecords),
+			view: _zgeorg03$table_elm$Table$view,
+			update: _zgeorg03$table_elm$Table$update,
+			subscriptions: function (_p20) {
+				return _elm_lang$core$Platform_Sub$none;
+			}
+		})
+};
+var _zgeorg03$table_elm$Table$NoOp = {ctor: 'NoOp'};
 var Elm = {};
-Elm['Main'] = Elm['Main'] || {};
-_elm_lang$core$Native_Platform.addPublicModule(Elm['Main'], 'Main', typeof _zgeorg03$table_elm$Main$main === 'undefined' ? null : _zgeorg03$table_elm$Main$main);
+Elm['Table'] = Elm['Table'] || {};
+_elm_lang$core$Native_Platform.addPublicModule(Elm['Table'], 'Table', typeof _zgeorg03$table_elm$Table$main === 'undefined' ? null : _zgeorg03$table_elm$Table$main);
 
 if (typeof define === "function" && define['amd'])
 {
@@ -8738,4 +10761,4 @@ for (var publicModule in Elm)
 }
 
 }).call(this);
-
+</script></head><body><script type="text/javascript">Elm.Table.fullscreen()</script></body></html>

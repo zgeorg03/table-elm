@@ -1,8 +1,8 @@
-module Record exposing (Msg, Model, init, update, view)
+module Record exposing (Msg, Model, init, update, view, toString)
 
 {-| This module represents a list of Cells
 
-@docs Msg, Model, init, update, view
+@docs Msg, Model, init, update, view, toString
 -}
 
 import Value exposing (..)
@@ -10,6 +10,7 @@ import Cell exposing (..)
 import Html exposing (..)
 import Array exposing (..)
 import Html.App as App exposing (program)
+import String
 
 
 type alias IdCell =
@@ -71,6 +72,17 @@ initHelper ( i, model ) =
 -}
 type Msg
     = CellMsg Int Cell.Msg
+
+
+{-| To String method
+-}
+toString : Model -> String
+toString model =
+    let
+        array =
+            Array.map (\x -> x.model) model
+    in
+        Array.map Cell.toString array |> Array.toList |> String.join " "
 
 
 {-| Update the model based on the appropriate action

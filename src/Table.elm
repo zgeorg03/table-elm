@@ -53,6 +53,7 @@ type alias Model =
     , cols : Int
     , base : Int
     , pagination : Pagination.Model
+    , searchableRecords : List String
     , error : Maybe String
     }
 
@@ -93,6 +94,9 @@ init title headers records =
                 True
             else
                 False
+
+        searchableRecords =
+            getSearchableRecords records
     in
         ( Model title
             (List.map initHeaderHelper indexedListHeaders)
@@ -102,6 +106,7 @@ init title headers records =
             headersLen
             0
             (Pagination.init recordsLen visibleRecords)
+            searchableRecords
             Nothing
         , Cmd.none
         )
@@ -164,6 +169,11 @@ update msg model =
                     List.unzip (Array.map (updateRecordHelp id msg) model.records |> toList)
             in
                 ( { model | records = newRecords |> fromList }, Cmd.batch cmds )
+
+
+getSearchableRecords : List Record.Model -> List String
+getSearchableRecords list =
+    List.map (Record.toString) list
 
 
 getHeaderState : Int -> List IdHeader -> State
@@ -329,7 +339,7 @@ view model =
                 [ (App.map PaginationMsg (Pagination.view model.pagination)) ]
             ]
         , div [ class "container" ] [ text (Basics.toString model.permutation) ]
-        , div [ class "container" ] [ text (Basics.toString model.base) ]
+        , div [ class "container" ] [ text (Basics.toString model.searchableRecords) ]
         ]
 
 
