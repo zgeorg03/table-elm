@@ -5,7 +5,6 @@ module Pagination exposing (Model, Msg, init, update, view)
 @docs Model, Msg, init, update, view
 -}
 
-import ExternalCSS exposing (stylesheet)
 import Html.App exposing (program)
 import Html.Attributes exposing (class, value, selected)
 import Html.Events exposing (onClick)
@@ -18,6 +17,7 @@ import Array exposing (..)
 type alias Model =
     { totalEntries : Int
     , entriesInPage : Int
+    , activeEntries : Int
     , totalPages : Int
     , currentPage : Int
     , pages : Array Int
@@ -34,10 +34,21 @@ update msg model =
             ( model, Cmd.none )
 
         FirstPage ->
-            ( { model | currentPage = 0 }, Cmd.none )
+            let
+                activeEntries =
+                    if (model.totalEntries < model.entriesInPage) then
+                        model.totalEntries
+                    else
+                        model.entriesInPage
+            in
+                ( { model | currentPage = 0, activeEntries = activeEntries }, Cmd.none )
 
         LastPage ->
-            ( { model | currentPage = model.totalPages - 1 }, Cmd.none )
+            let
+                activeEntries =
+                    model.totalEntries - ((model.totalPages - 1) * model.entriesInPage)
+            in
+                ( { model | currentPage = model.totalPages - 1, activeEntries = activeEntries }, Cmd.none )
 
         NextPage ->
             let
@@ -46,8 +57,16 @@ update msg model =
                         model.currentPage + 1
                     else
                         model.currentPage
+
+                activeEntries =
+                    if (nextPage == model.totalPages - 1) then
+                        model.totalEntries - ((model.totalPages - 1) * model.entriesInPage)
+                    else if (model.totalEntries < model.entriesInPage) then
+                        model.totalEntries
+                    else
+                        model.entriesInPage
             in
-                ( { model | currentPage = nextPage }, Cmd.none )
+                ( { model | currentPage = nextPage, activeEntries = activeEntries }, Cmd.none )
 
         PrevPage ->
             let
@@ -56,11 +75,26 @@ update msg model =
                         model.currentPage - 1
                     else
                         model.currentPage
+
+                activeEntries =
+                    if (model.totalEntries < model.entriesInPage) then
+                        model.totalEntries
+                    else
+                        model.entriesInPage
             in
-                ( { model | currentPage = nextPage }, Cmd.none )
+                ( { model | currentPage = nextPage, activeEntries = activeEntries }, Cmd.none )
 
         GotoPage nextPage ->
-            ( { model | currentPage = nextPage }, Cmd.none )
+            let
+                activeEntries =
+                    if (nextPage == model.totalPages - 1) then
+                        model.totalEntries - ((model.totalPages - 1) * model.entriesInPage)
+                    else if (model.totalEntries < model.entriesInPage) then
+                        model.totalEntries
+                    else
+                        model.entriesInPage
+            in
+                ( { model | currentPage = nextPage, activeEntries = activeEntries }, Cmd.none )
 
         ChangeEntriesInPage entries ->
             let
@@ -69,8 +103,22 @@ update msg model =
 
                 pages =
                     (Array.initialize totalPages (\n -> n))
+
+                activeEntries =
+                    if (model.totalEntries < entries) then
+                        model.totalEntries
+                    else
+                        entries
             in
-                ( { model | currentPage = 0, pages = pages, entriesInPage = entries, totalPages = totalPages }, Cmd.none )
+                ( { model
+                    | currentPage = 0
+                    , pages = pages
+                    , entriesInPage = entries
+                    , totalPages = totalPages
+                    , activeEntries = activeEntries
+                  }
+                , Cmd.none
+                )
 
 
 {-| Msg
@@ -89,27 +137,41 @@ type Msg
 -}
 view : Model -> Html Msg
 view model =
-    div [ class "row" ]
-        [ stylesheet
-        , div [ class "col-md-2" ]
-            [ text "Show  "
-            , select []
-                [ option [ onClick (ChangeEntriesInPage 1) ] [ text "1" ]
-                , option [ onClick (ChangeEntriesInPage 2) ] [ text "2" ]
-                , option [ selected True, onClick (ChangeEntriesInPage 5) ] [ text "5" ]
-                , option [ onClick (ChangeEntriesInPage 10) ] [ text "10" ]
-                , option [ onClick (ChangeEntriesInPage 25) ] [ text "25" ]
-                , option [ onClick (ChangeEntriesInPage 50) ] [ text "50" ]
-                , option [ onClick (ChangeEntriesInPage 100) ] [ text "100" ]
-                , option [ onClick (ChangeEntriesInPage 200) ] [ text "200" ]
+    let
+        base =
+            model.currentPage * model.entriesInPage
+    in
+        div [ class "row" ]
+            [ div [ class "col-md-2" ]
+                [ text "Show  "
+                , select []
+                    [ option [ onClick (ChangeEntriesInPage 1) ] [ text "1" ]
+                    , option [ onClick (ChangeEntriesInPage 2) ] [ text "2" ]
+                    , option [ selected True, onClick (ChangeEntriesInPage 5) ] [ text "5" ]
+                    , option [ onClick (ChangeEntriesInPage 10) ] [ text "10" ]
+                    , option [ onClick (ChangeEntriesInPage 25) ] [ text "25" ]
+                    , option [ onClick (ChangeEntriesInPage 50) ] [ text "50" ]
+                    , option [ onClick (ChangeEntriesInPage 100) ] [ text "100" ]
+                    , option [ onClick (ChangeEntriesInPage 200) ] [ text "200" ]
+                    ]
+                , text "  Entries"
                 ]
-            , text "  Entries"
+            , nav [ class "col-md-6" ]
+                [ ul [ class "pagination" ]
+                    (showPages model)
+                ]
+            , div [ class "col-md-4" ]
+                [ text
+                    ("Showing "
+                        ++ (toString (base + 1))
+                        ++ " to "
+                        ++ (toString (base + model.activeEntries))
+                        ++ " of "
+                        ++ (toString model.totalEntries)
+                        ++ " Entries"
+                    )
+                ]
             ]
-        , nav [ class "col-md-10" ]
-            [ ul [ class "pagination" ]
-                (showPages model)
-            ]
-        ]
 
 
 showPages : Model -> List (Html Msg)
@@ -121,7 +183,9 @@ showPages model =
             ]
 
         startPos =
-            if (model.currentPage + 2 <= 3) then
+            if (model.totalPages <= 5) then
+                0
+            else if (model.currentPage + 2 <= 3) then
                 0
             else if (model.currentPage + 2 >= model.totalPages) then
                 model.totalPages - 5
@@ -150,12 +214,36 @@ showPage currentPage id =
         li [] [ a [ onClick (GotoPage id) ] [ text (Basics.toString (id + 1)) ] ]
 
 
-{-| Initialization
-
+{-| Init Model
 -}
-init : Int -> Int -> ( Model, Cmd Msg )
+init : Int -> Int -> Model
 init records visible =
     let
+        activeEntries =
+            if (records < visible) then
+                records
+            else
+                visible
+
+        nOfPages : Int
+        nOfPages =
+            ceiling ((toFloat records) / (toFloat visible))
+    in
+        Model records visible activeEntries nOfPages 0 (Array.initialize nOfPages (\n -> n))
+
+
+{-| Initialization with Cmd
+
+-}
+initCmd : Int -> Int -> ( Model, Cmd Msg )
+initCmd records visible =
+    let
+        activeEntries =
+            if (records < visible) then
+                records
+            else
+                visible
+
         nOfPages : Int
         nOfPages =
             ceiling ((toFloat records) / (toFloat visible))
@@ -163,6 +251,7 @@ init records visible =
         ( Model
             records
             visible
+            activeEntries
             nOfPages
             0
             (Array.initialize nOfPages (\n -> n))
@@ -173,7 +262,7 @@ init records visible =
 main : Program Never
 main =
     program
-        { init = init 10 5
+        { init = initCmd 26 5
         , view = view
         , update = update
         , subscriptions = (\_ -> Sub.none)

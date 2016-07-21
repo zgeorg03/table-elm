@@ -12,14 +12,18 @@ import Header exposing (..)
 import Record exposing (..)
 import Cell exposing (..)
 import Value exposing (..)
+import Pagination exposing (..)
 import Html exposing (..)
 import Html.App as App exposing (program)
 import Html.Attributes exposing (class, value, style, disabled)
-import Html.Events exposing (onClick, onInput)
+
+
+--import Html.Events exposing (onClick, onInput)
+
 import Array exposing (..)
-import String
 
 
+--import String
 --MODEL
 
 
@@ -48,10 +52,7 @@ type alias Model =
     , rows : Int
     , cols : Int
     , base : Int
-    , visibleRecords : Int
-    , activeRecords : Int
-    , prevEnabled : Bool
-    , nextEnabled : Bool
+    , pagination : Pagination.Model
     , error : Maybe String
     }
 
@@ -87,12 +88,6 @@ init title headers records =
         indexedListRecords =
             toIndexedList arrayRecords
 
-        activeRecords =
-            if visibleRecords > recordsLen then
-                recordsLen
-            else
-                visibleRecords
-
         nextEnabled =
             if recordsLen > visibleRecords then
                 True
@@ -106,10 +101,7 @@ init title headers records =
             recordsLen
             headersLen
             0
-            visibleRecords
-            activeRecords
-            False
-            nextEnabled
+            (Pagination.init recordsLen visibleRecords)
             Nothing
         , Cmd.none
         )
@@ -133,9 +125,7 @@ type Msg
     = NoOp
     | HeaderMsg Int Header.Msg
     | RecordMsg Int Record.Msg
-    | IncrementBase
-    | DecrementBase
-    | ChangeVisibleRecords String
+    | PaginationMsg Pagination.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -143,6 +133,16 @@ update msg model =
     case msg of
         NoOp ->
             ( model, Cmd.none )
+
+        PaginationMsg msg ->
+            let
+                ( pagination, cmds ) =
+                    Pagination.update msg model.pagination
+
+                base =
+                    pagination.currentPage * pagination.entriesInPage
+            in
+                ( { model | pagination = pagination, base = base }, Cmd.map PaginationMsg cmds )
 
         HeaderMsg id msg ->
             let
@@ -164,94 +164,6 @@ update msg model =
                     List.unzip (Array.map (updateRecordHelp id msg) model.records |> toList)
             in
                 ( { model | records = newRecords |> fromList }, Cmd.batch cmds )
-
-        IncrementBase ->
-            let
-                activeRecords =
-                    if model.rows - (model.visibleRecords + model.base) < model.visibleRecords then
-                        model.rows - (model.visibleRecords + model.base)
-                    else
-                        model.visibleRecords
-
-                newNext =
-                    if (activeRecords < model.visibleRecords) then
-                        False
-                    else
-                        True
-
-                newBase =
-                    if (model.rows - (model.visibleRecords + model.base)) <= 0 then
-                        model.base
-                    else
-                        model.base + model.visibleRecords
-
-                newPrev =
-                    if (newBase - model.visibleRecords) < 0 then
-                        False
-                    else
-                        True
-            in
-                ( { model | prevEnabled = newPrev, nextEnabled = newNext, base = newBase, activeRecords = activeRecords }, Cmd.none )
-
-        DecrementBase ->
-            let
-                activeRecords =
-                    if (model.rows - model.base) + model.visibleRecords < model.visibleRecords then
-                        model.rows - (model.visibleRecords + model.base)
-                    else
-                        model.visibleRecords
-
-                newPrev =
-                    if (model.base - model.visibleRecords) <= 0 then
-                        False
-                    else
-                        True
-
-                newBase =
-                    if (model.base - model.visibleRecords) < 0 then
-                        model.base
-                    else
-                        model.base - model.visibleRecords
-
-                newNext =
-                    if (newBase - model.visibleRecords) > 0 then
-                        False
-                    else
-                        True
-            in
-                ( { model | nextEnabled = newNext, prevEnabled = newPrev, base = newBase, activeRecords = activeRecords }, Cmd.none )
-
-        ChangeVisibleRecords str ->
-            let
-                ( base, visibleRecords ) =
-                    case String.toInt str of
-                        Ok n ->
-                            ( 0, n )
-
-                        Err _ ->
-                            ( model.base, model.visibleRecords )
-
-                activeRecords =
-                    if (visibleRecords > model.rows) then
-                        model.rows
-                    else if (model.rows - model.base) + visibleRecords < visibleRecords then
-                        model.rows - (visibleRecords + model.base)
-                    else
-                        visibleRecords
-
-                newNext =
-                    if (model.rows - (visibleRecords + base)) <= 0 then
-                        False
-                    else
-                        True
-
-                newPrev =
-                    if (base - visibleRecords) < 0 then
-                        False
-                    else
-                        True
-            in
-                ( { model | visibleRecords = visibleRecords, nextEnabled = newNext, prevEnabled = newPrev, base = base, activeRecords = activeRecords }, Cmd.none )
 
 
 getHeaderState : Int -> List IdHeader -> State
@@ -414,30 +326,7 @@ view model =
                     ]
                 ]
             , div [ class "panel-footer" ]
-                [ div []
-                    [ text "Show  "
-                    , select []
-                        [ option [ onClick (ChangeVisibleRecords "2") ] [ text "2" ]
-                        , option [ onClick (ChangeVisibleRecords "5") ] [ text "5" ]
-                        , option [ onClick (ChangeVisibleRecords "10") ] [ text "10" ]
-                        , option [ onClick (ChangeVisibleRecords "25") ] [ text "25" ]
-                        , option [ onClick (ChangeVisibleRecords "50") ] [ text "50" ]
-                        , option [ onClick (ChangeVisibleRecords "100") ] [ text "100" ]
-                        ]
-                    , text "  Entries"
-                    ]
-                , div []
-                    [ nav []
-                        [ ul [ class "pagination" ]
-                            [ li [ onClick DecrementBase ] [ button [ disabled (not model.prevEnabled) ] [ a [] [ text "Previous" ] ] ]
-                            , li [ onClick IncrementBase ] [ button [ disabled (not model.nextEnabled) ] [ a [] [ text "Next" ] ] ]
-                            ]
-                        ]
-                    ]
-                , div []
-                    [ text ("Showing " ++ (Basics.toString (model.base + 1)) ++ " to " ++ (Basics.toString (model.base + model.activeRecords)) ++ " of " ++ (Basics.toString model.rows) ++ " entries")
-                    ]
-                ]
+                [ (App.map PaginationMsg (Pagination.view model.pagination)) ]
             ]
         , div [ class "container" ] [ text (Basics.toString model.permutation) ]
         , div [ class "container" ] [ text (Basics.toString model.base) ]
@@ -447,8 +336,11 @@ view model =
 viewRecordsPermutated : Model -> List (Html Msg)
 viewRecordsPermutated model =
     let
+        pagination =
+            model.pagination
+
         perm =
-            Array.slice model.base (model.base + model.visibleRecords) (model.permutation |> Array.fromList) |> Array.toList
+            Array.slice model.base (model.base + pagination.entriesInPage) (model.permutation |> Array.fromList) |> Array.toList
     in
         List.map (\x -> Array.get x model.records |> viewRecordPermutated) perm
 
@@ -550,7 +442,7 @@ dummyRecords =
         , Cell.init (B False)
         ]
     , Record.init
-        [ Cell.initEditable (I 525500)
+        [ Cell.init (I 525500)
         , Cell.init (S "Marios")
         , Cell.init (S "Georgiou")
         , Cell.init (D 344349992)
