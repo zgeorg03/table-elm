@@ -124,10 +124,10 @@ viewCell { id, model } =
 
 model : List Cell.Model
 model =
-    [ Cell.init (I 0)
-    , Cell.init (B True)
-    , Cell.init (F 0)
-    , Cell.init (D 12312312)
+    [ Cell.init (I 0) True
+    , Cell.init (B True) True
+    , Cell.init (F 0) True
+    , Cell.init (D 12312312) True
     ]
 
 

@@ -273,7 +273,8 @@ getValue index record =
         idCell =
             case mayIdCell of
                 Nothing ->
-                    { id = 0, model = Cell.init (I 0) }
+                    -- TODO Remove this
+                    { id = 0, model = Cell.init (I 0) False }
 
                 Just cell ->
                     cell
@@ -403,80 +404,80 @@ dummyHeaders =
 dummyRecords : List Record.Model
 dummyRecords =
     [ Record.init
-        [ Cell.init (I 500012)
-        , Cell.init (S "Zacharias")
-        , Cell.init (S "Georgiou")
-        , Cell.init (D 756216594)
-        , Cell.init (B True)
+        [ Cell.init (I 500012) True
+        , Cell.init (S "Zacharias") True
+        , Cell.init (S "Georgiou") True
+        , Cell.init (D 756216594) True
+        , Cell.init (B True) True
         ]
     , Record.init
-        [ Cell.init (I 503212)
-        , Cell.init (S "Andreas")
-        , Cell.init (S "Mariou")
-        , Cell.init (D 726216594)
-        , Cell.init (B False)
+        [ Cell.init (I 503212) True
+        , Cell.init (S "Andreas") True
+        , Cell.init (S "Mariou") True
+        , Cell.init (D 726216594) True
+        , Cell.init (B False) True
         ]
     , Record.init
-        [ Cell.init (I 123456)
-        , Cell.init (S "Maria")
-        , Cell.init (S "Andreou")
-        , Cell.init (D 726216594)
-        , Cell.init (B True)
+        [ Cell.init (I 123456) True
+        , Cell.init (S "Maria") True
+        , Cell.init (S "Andreou") True
+        , Cell.init (D 726216594) True
+        , Cell.init (B True) True
         ]
     , Record.init
-        [ Cell.init (I 123456)
-        , Cell.init (S "Chris")
-        , Cell.init (S "Petrou")
-        , Cell.init (D 644349992)
-        , Cell.init (B False)
+        [ Cell.init (I 123456) True
+        , Cell.init (S "Chris") True
+        , Cell.init (S "Petrou") True
+        , Cell.init (D 644349992) True
+        , Cell.init (B False) True
         ]
     , Record.init
-        [ Cell.init (I 235409)
-        , Cell.init (S "Costas")
-        , Cell.init (S "Costa")
-        , Cell.init (D 944349992)
-        , Cell.init (B False)
+        [ Cell.init (I 235409) True
+        , Cell.init (S "Costas") True
+        , Cell.init (S "Costa") True
+        , Cell.init (D 944349992) False
+        , Cell.init (B False) True
         ]
     , Record.init
-        [ Cell.init (I 524202)
-        , Cell.init (S "Andri")
-        , Cell.init (S "Andreou")
-        , Cell.init (D 1244349992)
-        , Cell.init (B False)
+        [ Cell.init (I 524202) True
+        , Cell.init (S "Andri") True
+        , Cell.init (S "Andreou") True
+        , Cell.init (D 1244349992) True
+        , Cell.init (B False) True
         ]
     , Record.init
-        [ Cell.init (I 525400)
-        , Cell.init (S "Maria")
-        , Cell.init (S "Christou")
-        , Cell.init (D 244349992)
-        , Cell.init (B False)
+        [ Cell.init (I 525400) True
+        , Cell.init (S "Maria") True
+        , Cell.init (S "Christou") True
+        , Cell.init (D 244349992) True
+        , Cell.init (B False) True
         ]
     , Record.init
-        [ Cell.init (I 525500)
-        , Cell.init (S "Marios")
-        , Cell.init (S "Georgiou")
-        , Cell.init (D 344349992)
-        , Cell.init (B True)
+        [ Cell.init (I 525500) True
+        , Cell.init (S "Marios") True
+        , Cell.init (S "Georgiou") False
+        , Cell.init (D 344349992) True
+        , Cell.init (B True) True
         ]
     , Record.init
-        [ Cell.init (I 595500)
-        , Cell.init (S "Marios")
-        , Cell.init (S "Mariou")
-        , Cell.init (D 344349992)
-        , Cell.init (B True)
+        [ Cell.init (I 595500) True
+        , Cell.init (S "Marios") True
+        , Cell.init (S "Mariou") True
+        , Cell.init (D 344349992) True
+        , Cell.init (B True) True
         ]
     , Record.init
-        [ Cell.init (I 525500)
-        , Cell.init (S "Marios")
-        , Cell.init (S "Georgiou")
-        , Cell.init (D 344349992)
-        , Cell.init (B True)
+        [ Cell.init (I 525500) True
+        , Cell.init (S "Marios") True
+        , Cell.init (S "Georgiou") True
+        , Cell.init (D 344349992) True
+        , Cell.init (B True) True
         ]
     , Record.init
-        [ Cell.init (I 405500)
-        , Cell.init (S "Giorgos")
-        , Cell.init (S "Antreou")
-        , Cell.init (D 344049992)
-        , Cell.init (B True)
+        [ Cell.init (I 405500) True
+        , Cell.init (S "Giorgos") True
+        , Cell.init (S "Antreou") True
+        , Cell.init (D 344049992) True
+        , Cell.init (B True) True
         ]
     ]

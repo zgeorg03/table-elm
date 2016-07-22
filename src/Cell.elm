@@ -22,6 +22,7 @@ import Json.Decode as Json
 -}
 type alias Model =
     { value : Value
+    , visible : Bool
     , rawValue : String
     , readonly : Bool
     }
@@ -29,23 +30,23 @@ type alias Model =
 
 {-| Initialization of a model without command
 -}
-init : Value -> Model
-init value =
-    Model value (Value.toString value) True
+init : Value -> Bool -> Model
+init value visible =
+    Model value visible (Value.toString value) True
 
 
 {-| Initialization of a model without command in edit mode
 -}
-initEditable : Value -> Model
-initEditable value =
-    Model value (Value.toString value) False
+initEditable : Value -> Bool -> Model
+initEditable value visible =
+    Model value visible (Value.toString value) False
 
 
 {-| Initialization of a model
 -}
-initCmd : Value -> Bool -> ( Model, Cmd Msg )
-initCmd val readonly =
-    ( Model val (Value.toString val) readonly
+initCmd : Value -> Bool -> Bool -> ( Model, Cmd Msg )
+initCmd val visible readonly =
+    ( Model val visible (Value.toString val) readonly
     , Cmd.none
     )
 
@@ -141,34 +142,39 @@ update msg model =
 -}
 view : Model -> Html Msg
 view model =
-    case model.readonly of
-        False ->
-            case model.value of
-                I int ->
-                    input [ onEnter UpdateInteger, onInput UpdateRawInput, type' "text", value model.rawValue ] []
-
-                F float ->
-                    input [ onEnter UpdateFloat, onInput UpdateRawInput, type' "text", value model.rawValue ] []
-
-                B bool ->
-                    input [ onClick UpdateBool, type' "checkbox", checked bool ] []
-
-                D date ->
-                    input [ readonly True, type' "date", value (Value.toString model.value) ] []
-
-                S str ->
-                    input [ onEnter UpdateString, onInput UpdateRawInput, type' "text", value model.rawValue ] []
-
-                E ->
-                    input [ readonly True, type' "text", value (Value.toString model.value) ] []
-
+    case model.visible of
         True ->
-            case model.value of
-                B bool ->
-                    input [ disabled True, readonly model.readonly, type' "checkbox", checked bool ] []
+            case model.readonly of
+                False ->
+                    case model.value of
+                        I int ->
+                            input [ onEnter UpdateInteger, onInput UpdateRawInput, type' "text", value model.rawValue ] []
 
-                _ ->
-                    text (Value.toString model.value)
+                        F float ->
+                            input [ onEnter UpdateFloat, onInput UpdateRawInput, type' "text", value model.rawValue ] []
+
+                        B bool ->
+                            input [ onClick UpdateBool, type' "checkbox", checked bool ] []
+
+                        D date ->
+                            input [ readonly True, type' "date", value (Value.toString model.value) ] []
+
+                        S str ->
+                            input [ onEnter UpdateString, onInput UpdateRawInput, type' "text", value model.rawValue ] []
+
+                        E ->
+                            input [ readonly True, type' "text", value (Value.toString model.value) ] []
+
+                True ->
+                    case model.value of
+                        B bool ->
+                            input [ disabled True, readonly model.readonly, type' "checkbox", checked bool ] []
+
+                        _ ->
+                            text (Value.toString model.value)
+
+        False ->
+            text "          "
 
 
 onEnter : Msg -> Attribute Msg
@@ -190,7 +196,7 @@ onEnter msg =
 main : Program Never
 main =
     program
-        { init = initCmd (F 1213) False
+        { init = initCmd (F 1213) False False
         , view = view
         , update = update
         , subscriptions = (\_ -> Sub.none)

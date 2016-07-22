@@ -6,10 +6,15 @@ module Pagination exposing (Model, Msg, init, update, view)
 -}
 
 import Html.App exposing (program)
-import Html.Attributes exposing (class, value, selected)
+import Html.Attributes exposing (class, value, selected, placeholder)
 import Html.Events exposing (onClick)
 import Html exposing (..)
 import Array exposing (..)
+
+
+--TODO Erase this after finishing this module
+
+import ExternalCSS exposing (stylesheet)
 
 
 {-| Model
@@ -21,6 +26,8 @@ type alias Model =
     , totalPages : Int
     , currentPage : Int
     , pages : Array Int
+    , data : List String
+    , search : Maybe String
     }
 
 
@@ -120,6 +127,9 @@ update msg model =
                 , Cmd.none
                 )
 
+        UpdateSearch str ->
+            ( model, Cmd.none )
+
 
 {-| Msg
 -}
@@ -131,6 +141,7 @@ type Msg
     | PrevPage
     | GotoPage Int
     | ChangeEntriesInPage Int
+    | UpdateSearch String
 
 
 {-| View of the model
@@ -142,7 +153,8 @@ view model =
             model.currentPage * model.entriesInPage
     in
         div [ class "row" ]
-            [ div [ class "col-md-2" ]
+            [ stylesheet
+            , div [ class "col-md-2" ]
                 [ text "Show  "
                 , select []
                     [ option [ onClick (ChangeEntriesInPage 1) ] [ text "1" ]
@@ -156,11 +168,11 @@ view model =
                     ]
                 , text "  Entries"
                 ]
-            , nav [ class "col-md-6" ]
+            , nav [ class "col-md-4" ]
                 [ ul [ class "pagination" ]
                     (showPages model)
                 ]
-            , div [ class "col-md-4" ]
+            , div [ class "col-md-3" ]
                 [ text
                     ("Showing "
                         ++ (toString (base + 1))
@@ -170,6 +182,12 @@ view model =
                         ++ (toString model.totalEntries)
                         ++ " Entries"
                     )
+                ]
+            , div [ class "col-md-3" ]
+                [ input [ placeholder "Search" ] []
+                ]
+            , div [ class "container" ]
+                [ text (toString model.data)
                 ]
             ]
 
@@ -229,7 +247,15 @@ init records visible =
         nOfPages =
             ceiling ((toFloat records) / (toFloat visible))
     in
-        Model records visible activeEntries nOfPages 0 (Array.initialize nOfPages (\n -> n))
+        Model
+            records
+            visible
+            activeEntries
+            nOfPages
+            0
+            (Array.initialize nOfPages (\n -> n))
+            [ "Test 1232 of", "another 18/12 andreas", "Apoel", "zacharias georgiou 123 ", "Christos " ]
+            Nothing
 
 
 {-| Initialization with Cmd
@@ -237,32 +263,13 @@ init records visible =
 -}
 initCmd : Int -> Int -> ( Model, Cmd Msg )
 initCmd records visible =
-    let
-        activeEntries =
-            if (records < visible) then
-                records
-            else
-                visible
-
-        nOfPages : Int
-        nOfPages =
-            ceiling ((toFloat records) / (toFloat visible))
-    in
-        ( Model
-            records
-            visible
-            activeEntries
-            nOfPages
-            0
-            (Array.initialize nOfPages (\n -> n))
-        , Cmd.none
-        )
+    ( init records visible, Cmd.none )
 
 
 main : Program Never
 main =
     program
-        { init = initCmd 26 5
+        { init = initCmd 5 5
         , view = view
         , update = update
         , subscriptions = (\_ -> Sub.none)
