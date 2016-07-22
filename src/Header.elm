@@ -1,8 +1,8 @@
-module Header exposing (State(..), Model, Msg, init, initNoCmd, update, view)
+module Header exposing (State(..), Model, Msg, init, initNoCmd, update, view, reset)
 
 {-| This module builds a simple Header, with 3 states: Original,Ascending, Descending
 
-@docs State, Model, Msg, init, initNoCmd, update, view
+@docs State, Model, Msg, init, initNoCmd, update, view, reset
 -}
 
 import Value exposing (..)
@@ -41,6 +41,13 @@ type alias Model =
 init : String -> ValueType -> ( Model, Cmd Msg )
 init title typ =
     ( Model title Original typ, Cmd.none )
+
+
+{-| Initialization of the model
+-}
+reset : Model -> Model
+reset header =
+    Model header.title Original header.type'
 
 
 {-| Initialization of the model without command

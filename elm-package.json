@@ -6,7 +6,18 @@
     "source-directories": [
         ".", "src/", "tests/"
     ],
-    "exposed-modules": ["Table","Pagination", "Header","Cell","Record", "ExternalCSS","Value"],
+    "exposed-modules": [
+			"Table",
+			"MyRegex",
+			"Pagination",
+			"Pagination", 
+			"Header",
+			"Cell",
+			"Record", 
+			"ExternalCSS",
+			"Value"
+		],
+		"native-modules" : true,
     "dependencies": {
         "elm-community/elm-test": "1.1.0 <= v < 2.0.0",
         "elm-lang/core": "4.0.3 <= v < 5.0.0",

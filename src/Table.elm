@@ -13,6 +13,8 @@ import Record exposing (..)
 import Cell exposing (..)
 import Value exposing (..)
 import Pagination exposing (..)
+import Search exposing (..)
+import String
 import Html exposing (..)
 import Html.App as App exposing (program)
 import Html.Attributes exposing (class, value, style, disabled)
@@ -53,7 +55,7 @@ type alias Model =
     , cols : Int
     , base : Int
     , pagination : Pagination.Model
-    , searchableRecords : List String
+    , search : Search.Model
     , error : Maybe String
     }
 
@@ -106,10 +108,29 @@ init title headers records =
             headersLen
             0
             (Pagination.init recordsLen visibleRecords)
-            searchableRecords
+            (Search.init searchableRecords)
             Nothing
         , Cmd.none
         )
+
+
+resetHeaders : Model -> Model
+resetHeaders table =
+    let
+        headers : List IdHeader
+        headers =
+            List.map (resetIdHeader) table.headers
+    in
+        { table | headers = headers }
+
+
+resetIdHeader : IdHeader -> IdHeader
+resetIdHeader idHeader =
+    let
+        header =
+            idHeader.model
+    in
+        IdHeader idHeader.id (Header.reset header)
 
 
 initRecordHelper : ( Int, Record.Model ) -> IdRecord
@@ -131,6 +152,7 @@ type Msg
     | HeaderMsg Int Header.Msg
     | RecordMsg Int Record.Msg
     | PaginationMsg Pagination.Msg
+    | SearchMsg Search.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -148,6 +170,22 @@ update msg model =
                     pagination.currentPage * pagination.entriesInPage
             in
                 ( { model | pagination = pagination, base = base }, Cmd.map PaginationMsg cmds )
+
+        SearchMsg msg ->
+            let
+                oldPagination =
+                    model.pagination
+
+                ( search, cmds ) =
+                    Search.update msg model.search
+
+                perm =
+                    search.searchList
+
+                pagination =
+                    Pagination.init (List.length perm) oldPagination.entriesInPage
+            in
+                ( { model | search = search, permutation = perm, pagination = pagination }, Cmd.map SearchMsg cmds )
 
         HeaderMsg id msg ->
             let
@@ -209,7 +247,14 @@ getNewPermutation : Int -> State -> Model -> List Int
 getNewPermutation col state model =
     case state of
         Original ->
-            Array.initialize model.rows (\n -> n) |> Array.toList
+            let
+                search =
+                    model.search
+            in
+                if String.isEmpty search.value then
+                    Array.initialize model.rows (\n -> n) |> Array.toList
+                else
+                    search.searchList
 
         Ascending ->
             List.sortWith (sortForPermutation model col) model.permutation
@@ -323,7 +368,8 @@ view model =
         , div [ class "panel panel-primary" ]
             [ div [ class "panel-heading" ] [ text model.title ]
             , div [ class "panel-body" ]
-                [ table [ class "table" ]
+                [ (App.map SearchMsg (Search.view model.search))
+                , table [ class "table" ]
                     [ thead []
                         [ tr [] (List.map viewHeader model.headers)
                         ]
@@ -340,7 +386,6 @@ view model =
                 [ (App.map PaginationMsg (Pagination.view model.pagination)) ]
             ]
         , div [ class "container" ] [ text (Basics.toString model.permutation) ]
-        , div [ class "container" ] [ text (Basics.toString model.searchableRecords) ]
         ]
 
 
@@ -476,6 +521,13 @@ dummyRecords =
     , Record.init
         [ Cell.init (I 405500) True
         , Cell.init (S "Giorgos") True
+        , Cell.init (S "Antreou") True
+        , Cell.init (D 344049992) True
+        , Cell.init (B True) True
+        ]
+    , Record.init
+        [ Cell.init (I 952003) True
+        , Cell.init (S "Emily") True
         , Cell.init (S "Antreou") True
         , Cell.init (D 344049992) True
         , Cell.init (B True) True

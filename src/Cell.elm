@@ -196,7 +196,7 @@ onEnter msg =
 main : Program Never
 main =
     program
-        { init = initCmd (F 1213) False False
+        { init = initCmd (F 1213) True False
         , view = view
         , update = update
         , subscriptions = (\_ -> Sub.none)

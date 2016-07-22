@@ -93,7 +93,7 @@ update msg model =
         CellMsg id msg ->
             let
                 ( newCells, cmds ) =
-                    List.unzip (Array.map (updateHelp id msg) model |> Array.toList)
+                    Array.map (updateHelp id msg) model |> Array.toList |> List.unzip
             in
                 ( Array.fromList newCells, Cmd.batch cmds )
 
@@ -124,8 +124,8 @@ viewCell { id, model } =
 
 model : List Cell.Model
 model =
-    [ Cell.init (I 0) True
-    , Cell.init (B True) True
+    [ Cell.initEditable (I 0) True
+    , Cell.initEditable (B True) True
     , Cell.init (F 0) True
     , Cell.init (D 12312312) True
     ]

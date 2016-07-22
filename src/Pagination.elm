@@ -26,8 +26,6 @@ type alias Model =
     , totalPages : Int
     , currentPage : Int
     , pages : Array Int
-    , data : List String
-    , search : Maybe String
     }
 
 
@@ -127,9 +125,6 @@ update msg model =
                 , Cmd.none
                 )
 
-        UpdateSearch str ->
-            ( model, Cmd.none )
-
 
 {-| Msg
 -}
@@ -141,7 +136,6 @@ type Msg
     | PrevPage
     | GotoPage Int
     | ChangeEntriesInPage Int
-    | UpdateSearch String
 
 
 {-| View of the model
@@ -154,7 +148,7 @@ view model =
     in
         div [ class "row" ]
             [ stylesheet
-            , div [ class "col-md-2" ]
+            , div [ class "col-md-4" ]
                 [ text "Show  "
                 , select []
                     [ option [ onClick (ChangeEntriesInPage 1) ] [ text "1" ]
@@ -172,22 +166,20 @@ view model =
                 [ ul [ class "pagination" ]
                     (showPages model)
                 ]
-            , div [ class "col-md-3" ]
+            , div [ class "col-md-4" ]
                 [ text
-                    ("Showing "
-                        ++ (toString (base + 1))
-                        ++ " to "
-                        ++ (toString (base + model.activeEntries))
-                        ++ " of "
-                        ++ (toString model.totalEntries)
-                        ++ " Entries"
+                    (if model.totalEntries == 0 then
+                        "No entries found"
+                     else
+                        ("Showing "
+                            ++ (toString (base + 1))
+                            ++ " to "
+                            ++ (toString (base + model.activeEntries))
+                            ++ " of "
+                            ++ (toString model.totalEntries)
+                            ++ " Entries"
+                        )
                     )
-                ]
-            , div [ class "col-md-3" ]
-                [ input [ placeholder "Search" ] []
-                ]
-            , div [ class "container" ]
-                [ text (toString model.data)
                 ]
             ]
 
@@ -254,8 +246,6 @@ init records visible =
             nOfPages
             0
             (Array.initialize nOfPages (\n -> n))
-            [ "Test 1232 of", "another 18/12 andreas", "Apoel", "zacharias georgiou 123 ", "Christos " ]
-            Nothing
 
 
 {-| Initialization with Cmd
