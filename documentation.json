@@ -1,0 +1,354 @@
+[
+  {
+    "name": "Table",
+    "comment": "\n  This module implements a simple table\n\n@docs Model, init\n\n",
+    "aliases": [
+      {
+        "name": "Model",
+        "comment": " Model\n  ##Arguments##\n  1. **title** The title shown in the header\n\n",
+        "args": [],
+        "type": "{ title : String , headers : List Table.IdHeader , records : Array.Array Table.IdRecord , permutation : List Int , rows : Int , cols : Int , base : Int , pagination : Pagination.Model , search : Search.Model , error : Maybe.Maybe String }"
+      }
+    ],
+    "types": [],
+    "values": [
+      {
+        "name": "init",
+        "comment": " Initialization of the Table\n\n",
+        "type": "String -> List Header.Model -> List Record.Model -> ( Table.Model, Platform.Cmd.Cmd Table.Msg )"
+      }
+    ],
+    "generated-with-elm-version": "0.17.1"
+  },
+  {
+    "name": "Record",
+    "comment": " This module represents a list of Cells\n\n@docs Msg, Model, init, update, view, toString\n",
+    "aliases": [
+      {
+        "name": "Model",
+        "comment": " The model is a list of unique cells\n",
+        "args": [],
+        "type": "Array.Array Record.IdCell"
+      }
+    ],
+    "types": [
+      {
+        "name": "Msg",
+        "comment": " Possible actions\n",
+        "args": [],
+        "cases": []
+      }
+    ],
+    "values": [
+      {
+        "name": "init",
+        "comment": " Initialization of the model\n",
+        "type": "List Cell.Model -> Record.Model"
+      },
+      {
+        "name": "toString",
+        "comment": " To String method\n",
+        "type": "Record.Model -> String"
+      },
+      {
+        "name": "update",
+        "comment": " Update the model based on the appropriate action\n",
+        "type": "Record.Msg -> Record.Model -> ( Record.Model, Platform.Cmd.Cmd Record.Msg )"
+      },
+      {
+        "name": "view",
+        "comment": " The view of the model\n",
+        "type": "Record.Model -> Html.Html Record.Msg"
+      }
+    ],
+    "generated-with-elm-version": "0.17.1"
+  },
+  {
+    "name": "Pagination",
+    "comment": " Pagination module for the table\n\n@docs Model, Msg, init, update, view\n",
+    "aliases": [
+      {
+        "name": "Model",
+        "comment": " Model\n",
+        "args": [],
+        "type": "{ totalEntries : Int , entriesInPage : Int , activeEntries : Int , totalPages : Int , currentPage : Int , pages : Array.Array Int }"
+      }
+    ],
+    "types": [
+      {
+        "name": "Msg",
+        "comment": " Msg\n",
+        "args": [],
+        "cases": []
+      }
+    ],
+    "values": [
+      {
+        "name": "init",
+        "comment": " Init Model\n",
+        "type": "Int -> Int -> Pagination.Model"
+      },
+      {
+        "name": "update",
+        "comment": " Update Method\n\n",
+        "type": "Pagination.Msg -> Pagination.Model -> ( Pagination.Model, Platform.Cmd.Cmd Pagination.Msg )"
+      },
+      {
+        "name": "view",
+        "comment": " View of the model\n",
+        "type": "Pagination.Model -> Html.Html Pagination.Msg"
+      }
+    ],
+    "generated-with-elm-version": "0.17.1"
+  },
+  {
+    "name": "Cell",
+    "comment": " This module implements an input field with validation\n\n@docs Model, Msg, init, initEditable, update, view, toString\n\n",
+    "aliases": [
+      {
+        "name": "Model",
+        "comment": " Model Description\n",
+        "args": [],
+        "type": "{ value : Value.Value , visible : Bool , rawValue : String , readonly : Bool }"
+      }
+    ],
+    "types": [
+      {
+        "name": "Msg",
+        "comment": " All the possible actions a cell can perfrom\n",
+        "args": [],
+        "cases": []
+      }
+    ],
+    "values": [
+      {
+        "name": "init",
+        "comment": " Initialization of a model without command\n",
+        "type": "Value.Value -> Bool -> Cell.Model"
+      },
+      {
+        "name": "initEditable",
+        "comment": " Initialization of a model without command in edit mode\n",
+        "type": "Value.Value -> Bool -> Cell.Model"
+      },
+      {
+        "name": "toString",
+        "comment": " To string method\n",
+        "type": "Cell.Model -> String"
+      },
+      {
+        "name": "update",
+        "comment": " Update the model\n",
+        "type": "Cell.Msg -> Cell.Model -> ( Cell.Model, Platform.Cmd.Cmd Cell.Msg )"
+      },
+      {
+        "name": "view",
+        "comment": " The view of the model\n",
+        "type": "Cell.Model -> Html.Html Cell.Msg"
+      }
+    ],
+    "generated-with-elm-version": "0.17.1"
+  },
+  {
+    "name": "Header",
+    "comment": " This module builds a simple Header, with 3 states: Original,Ascending, Descending\n\n@docs State, Model, Msg, init, initNoCmd, update, view, reset\n",
+    "aliases": [
+      {
+        "name": "Model",
+        "comment": " A model has a value and a state\n",
+        "args": [],
+        "type": "{ title : String, state : Header.State, type' : Value.ValueType }"
+      }
+    ],
+    "types": [
+      {
+        "name": "Msg",
+        "comment": " All the possible actions\n",
+        "args": [],
+        "cases": []
+      },
+      {
+        "name": "State",
+        "comment": " All the possible states a header can be\n",
+        "args": [],
+        "cases": [
+          [
+            "Original",
+            []
+          ],
+          [
+            "Ascending",
+            []
+          ],
+          [
+            "Descending",
+            []
+          ]
+        ]
+      }
+    ],
+    "values": [
+      {
+        "name": "init",
+        "comment": " Initialization of the model\n",
+        "type": "String -> Value.ValueType -> ( Header.Model, Platform.Cmd.Cmd Header.Msg )"
+      },
+      {
+        "name": "initNoCmd",
+        "comment": " Initialization of the model without command\n",
+        "type": "String -> Value.ValueType -> Header.Model"
+      },
+      {
+        "name": "reset",
+        "comment": " Initialization of the model\n",
+        "type": "Header.Model -> Header.Model"
+      },
+      {
+        "name": "update",
+        "comment": " Update the model\n",
+        "type": "Header.Msg -> Header.Model -> ( Header.Model, Platform.Cmd.Cmd Header.Msg )"
+      },
+      {
+        "name": "view",
+        "comment": " The view of the model\n",
+        "type": "Header.Model -> Html.Html Header.Msg"
+      }
+    ],
+    "generated-with-elm-version": "0.17.1"
+  },
+  {
+    "name": "MyRegex",
+    "comment": " A wrapper for regex module to avoid runtime error\n@docs safeRegex\n",
+    "aliases": [],
+    "types": [],
+    "values": [
+      {
+        "name": "safeRegex",
+        "comment": " Safe Regex\n",
+        "type": "String -> Result.Result String Regex.Regex"
+      }
+    ],
+    "generated-with-elm-version": "0.17.1"
+  },
+  {
+    "name": "ExternalCSS",
+    "comment": "\n  Used only for testing with reactor\n\n@docs stylesheet\n",
+    "aliases": [],
+    "types": [],
+    "values": [
+      {
+        "name": "stylesheet",
+        "comment": " A link to bootstrap cdn\n",
+        "type": "Html.Html a"
+      }
+    ],
+    "generated-with-elm-version": "0.17.1"
+  },
+  {
+    "name": "Value",
+    "comment": " This module wraps all the possible types a table cell can have\n\n\n@docs Value,ValueType,getDefaultValueFromType, getDefaultValue, compare, toString, tests\n\n",
+    "aliases": [],
+    "types": [
+      {
+        "name": "Value",
+        "comment": " This type holds the possible types with the corresponding values for a table cell\n",
+        "args": [],
+        "cases": [
+          [
+            "I",
+            [
+              "Int"
+            ]
+          ],
+          [
+            "F",
+            [
+              "Float"
+            ]
+          ],
+          [
+            "B",
+            [
+              "Bool"
+            ]
+          ],
+          [
+            "S",
+            [
+              "String"
+            ]
+          ],
+          [
+            "D",
+            [
+              "Int"
+            ]
+          ],
+          [
+            "E",
+            []
+          ]
+        ]
+      },
+      {
+        "name": "ValueType",
+        "comment": " This type holds the possible types for a table cell\n",
+        "args": [],
+        "cases": [
+          [
+            "IntType",
+            []
+          ],
+          [
+            "StringType",
+            []
+          ],
+          [
+            "DateType",
+            []
+          ],
+          [
+            "FloatType",
+            []
+          ],
+          [
+            "BoolType",
+            []
+          ],
+          [
+            "EmptyType",
+            []
+          ]
+        ]
+      }
+    ],
+    "values": [
+      {
+        "name": "compare",
+        "comment": " Comparator for Value\n  **TODO** Comparing different types of values for now returns LT\n",
+        "type": "Value.Value -> Value.Value -> Basics.Order"
+      },
+      {
+        "name": "getDefaultValue",
+        "comment": " Useful method to get the default value given it's value\n",
+        "type": "Value.Value -> Value.Value"
+      },
+      {
+        "name": "getDefaultValueFromType",
+        "comment": " Useful method to get the default value given it's data type\n",
+        "type": "Value.ValueType -> Value.Value"
+      },
+      {
+        "name": "tests",
+        "comment": " The function with all the necessary tests\n",
+        "type": "ElmTest.Test"
+      },
+      {
+        "name": "toString",
+        "comment": " String representation of a value\n",
+        "type": "Value.Value -> String"
+      }
+    ],
+    "generated-with-elm-version": "0.17.1"
+  }
+]

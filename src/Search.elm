@@ -16,8 +16,7 @@ import Json.Decode as Json
 --import String
 
 import Array
-import MyRegex exposing (..)
-import Regex exposing (..)
+import SafeRegex exposing (..)
 
 
 {-| Model definition
@@ -69,18 +68,18 @@ update msg model =
         UpdateSearch ->
             let
                 res =
-                    MyRegex.safeRegex model.value
+                    SafeRegex.safeRegex model.value
 
                 regex =
                     case res of
                         Err _ ->
-                            Regex.regex ""
+                            SafeRegex.regex ""
 
                         Ok a ->
                             a
 
                 ( searchList, _ ) =
-                    List.unzip (filterList (Regex.regex "") model.data)
+                    List.unzip (filterList regex model.data)
             in
                 ( { model | searchList = searchList }, Cmd.none )
 
@@ -104,7 +103,7 @@ filterList search list =
 
 findString : Regex -> ( Int, String ) -> Bool
 findString search ( _, text ) =
-    Regex.contains search text
+    SafeRegex.contains search text
 
 
 {-| View Method

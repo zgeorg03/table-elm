@@ -4,12 +4,10 @@
     "repository": "https://github.com/zgeorg03/table-elm.git",
     "license": "BSD3",
     "source-directories": [
-        ".", "src/", "tests/"
+        ".", "src/"
     ],
     "exposed-modules": [
 			"Table",
-			"MyRegex",
-			"Pagination",
 			"Pagination", 
 			"Header",
 			"Cell",
