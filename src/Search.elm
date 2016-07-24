@@ -8,8 +8,8 @@ module Search exposing (Model, Msg, init, update, view)
 import Basics
 import Html exposing (..)
 import Html.App as App exposing (program)
-import Html.Attributes exposing (class, placeholder)
-import Html.Events exposing (onInput, on, keyCode)
+import Html.Attributes exposing (class, placeholder, style, value)
+import Html.Events exposing (onInput, on, keyCode, onClick)
 import Json.Decode as Json
 
 
@@ -25,6 +25,7 @@ type alias Model =
     { value : String
     , data : List ( Int, String )
     , searchList : List Int
+    , error : Maybe String
     }
 
 
@@ -34,6 +35,7 @@ type Msg
     = NoOp
     | ChangeValue String
     | UpdateSearch
+    | HideError
 
 
 {-| Init method
@@ -44,7 +46,7 @@ init list =
         indexedList =
             Array.fromList list |> Array.toIndexedList
     in
-        Model "" indexedList (Array.initialize (List.length list) (\n -> n) |> Array.toList)
+        Model "" indexedList (Array.initialize (List.length list) (\n -> n) |> Array.toList) Nothing
 
 
 {-| Init with command method
@@ -63,25 +65,22 @@ update msg model =
             ( model, Cmd.none )
 
         ChangeValue str ->
-            ( { model | value = str }, Cmd.none )
+            ( { model | value = str, error = Nothing }, Cmd.none )
+
+        HideError ->
+            ( { model | error = Nothing }, Cmd.none )
 
         UpdateSearch ->
-            let
-                res =
-                    SafeRegex.safeRegex model.value
+            case SafeRegex.safeRegex model.value of
+                Ok regex ->
+                    let
+                        ( searchList, _ ) =
+                            List.unzip (filterList regex model.data)
+                    in
+                        ( { model | searchList = searchList }, Cmd.none )
 
-                regex =
-                    case res of
-                        Err _ ->
-                            SafeRegex.regex ""
-
-                        Ok a ->
-                            a
-
-                ( searchList, _ ) =
-                    List.unzip (filterList regex model.data)
-            in
-                ( { model | searchList = searchList }, Cmd.none )
+                Err _ ->
+                    ( { model | searchList = (Array.initialize (List.length model.data) (\n -> n) |> Array.toList), error = Just "Regular Expression is not valid!", value = "" }, Cmd.none )
 
 
 onEnter : Msg -> Attribute Msg
@@ -110,7 +109,25 @@ findString search ( _, text ) =
 -}
 view : Model -> Html Msg
 view model =
-    input [ onInput ChangeValue, onEnter UpdateSearch, placeholder "Search" ] []
+    div []
+        [ div [ class "row" ]
+            [ div [ class "col-md-4" ]
+                [ input [ style [ ( "width", "100%" ) ], onInput ChangeValue, onEnter UpdateSearch, placeholder "Search", value model.value ] []
+                ]
+            , div [ class "col-md-4" ]
+                [ button []
+                    [ span [ class "glyphicon glyphicon-save" ] []
+                    , text "  Save"
+                    ]
+                ]
+            ]
+        , case model.error of
+            Nothing ->
+                div [] []
+
+            Just error ->
+                div [ class "alert alert-danger col-md-3", onClick HideError ] [ text error ]
+        ]
 
 
 main : Program Never
