@@ -93,7 +93,17 @@ toString model =
         array =
             Array.map (\x -> x.model) model
     in
-        Array.map Cell.toString array |> Array.toList |> String.join " "
+        "#" ++ (Array.map Cell.toString array |> addHashCol |> String.join "#")
+
+
+addHashCol : Array String -> List String
+addHashCol array =
+    Array.toIndexedList array |> List.map mapPair
+
+
+mapPair : ( Int, String ) -> String
+mapPair ( id, value ) =
+    (Basics.toString id) ++ "#" ++ value
 
 
 {-| Update the model based on the appropriate action

@@ -8,7 +8,7 @@ module Search exposing (Model, Msg, init, update, view)
 import Basics
 import Html exposing (..)
 import Html.App as App exposing (program)
-import Html.Attributes exposing (class, placeholder, style, value)
+import Html.Attributes exposing (class, placeholder, style, value, type', checked)
 import Html.Events exposing (onInput, on, keyCode, onClick)
 import Json.Decode as Json
 
@@ -25,7 +25,8 @@ type alias Model =
     { value : String
     , data : List ( Int, String )
     , searchList : List Int
-    , error : Maybe String
+    , automated : Bool
+    , caseInsensitive : Bool
     }
 
 
@@ -35,26 +36,26 @@ type Msg
     = NoOp
     | ChangeValue String
     | UpdateSearch
-    | HideError
     | ClearSearch
+    | UpdateCaseSensitivity
 
 
 {-| Init method
 -}
-init : List String -> Model
-init list =
+init : Bool -> List String -> Model
+init auto list =
     let
         indexedList =
             Array.fromList list |> Array.toIndexedList
     in
-        Model "" indexedList (Array.initialize (List.length list) (\n -> n) |> Array.toList) Nothing
+        Model "" indexedList (Array.initialize (List.length list) (\n -> n) |> Array.toList) auto False
 
 
 {-| Init with command method
 -}
-initCmd : List String -> ( Model, Cmd Msg )
-initCmd list =
-    ( init list, Cmd.none )
+initCmd : Bool -> List String -> ( Model, Cmd Msg )
+initCmd auto list =
+    ( init auto list, Cmd.none )
 
 
 {-| Update method
@@ -65,14 +66,46 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
+        UpdateCaseSensitivity ->
+            let
+                old =
+                    model.caseInsensitive
+            in
+                ( { model | caseInsensitive = not old, searchList = (Array.initialize (List.length model.data) (\n -> n) |> Array.toList), value = "" }, Cmd.none )
+
         ChangeValue str ->
-            ( { model | value = str, error = Nothing }, Cmd.none )
+            case model.automated of
+                False ->
+                    ( { model | value = str }, Cmd.none )
+
+                True ->
+                    case model.caseInsensitive of
+                        False ->
+                            case SafeRegex.safeRegex str of
+                                Ok regex ->
+                                    let
+                                        ( searchList, _ ) =
+                                            List.unzip (filterList regex model.data)
+                                    in
+                                        ( { model | value = str, searchList = searchList }, Cmd.none )
+
+                                Err _ ->
+                                    ( { model | value = str, searchList = (Array.initialize (List.length model.data) (\n -> n) |> Array.toList) }, Cmd.none )
+
+                        True ->
+                            case SafeRegex.safeRegexInsensitive str of
+                                Ok regex ->
+                                    let
+                                        ( searchList, _ ) =
+                                            List.unzip (filterList regex model.data)
+                                    in
+                                        ( { model | value = str, searchList = searchList }, Cmd.none )
+
+                                Err _ ->
+                                    ( { model | value = str, searchList = (Array.initialize (List.length model.data) (\n -> n) |> Array.toList) }, Cmd.none )
 
         ClearSearch ->
-            ( { model | error = Nothing, searchList = (Array.initialize (List.length model.data) (\n -> n) |> Array.toList), value = "" }, Cmd.none )
-
-        HideError ->
-            ( { model | error = Nothing }, Cmd.none )
+            ( { model | searchList = (Array.initialize (List.length model.data) (\n -> n) |> Array.toList), value = "" }, Cmd.none )
 
         UpdateSearch ->
             case SafeRegex.safeRegex model.value of
@@ -84,7 +117,7 @@ update msg model =
                         ( { model | searchList = searchList }, Cmd.none )
 
                 Err _ ->
-                    ( { model | searchList = (Array.initialize (List.length model.data) (\n -> n) |> Array.toList), error = Just "Regular Expression is not valid!", value = "" }, Cmd.none )
+                    ( { model | searchList = (Array.initialize (List.length model.data) (\n -> n) |> Array.toList), value = "" }, Cmd.none )
 
 
 onEnter : Msg -> Attribute Msg
@@ -122,12 +155,12 @@ view model =
                     ]
                 ]
             ]
-        , case model.error of
-            Nothing ->
-                div [] []
-
-            Just error ->
-                div [ class "alert alert-danger col-md-3", onClick HideError ] [ text error ]
+        , div [ class "row" ]
+            [ div [ class "col-md-4" ]
+                [ text "Case Insensitive   "
+                , input [ onClick UpdateCaseSensitivity, type' "checkbox", checked model.caseInsensitive ] []
+                ]
+            ]
         ]
 
 
@@ -135,7 +168,7 @@ main : Program Never
 main =
     program
         { view = view
-        , init = initCmd [ "123124 Zacharias Georgiou 18 Dec", "9534 Testing Marios 03 March" ]
+        , init = initCmd True [ "123124 Zacharias Georgiou 18 Dec", "9534 Testing Marios 03 March" ]
         , update = update
         , subscriptions = (\_ -> Sub.none)
         }

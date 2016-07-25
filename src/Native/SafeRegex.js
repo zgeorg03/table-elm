@@ -24,6 +24,16 @@ function safeRegex(raw)
 	return x;
 }
 
+function safeRegexInsensitive(raw)
+{
+	var x;
+	try{
+		x = _elm_lang$core$Result$Ok(new RegExp(raw, 'gi'));
+	}catch (ex){
+		x = _elm_lang$core$Result$Err("Not valid regular expression");
+	}
+	return x;
+}
 
 function contains(re, string)
 {
@@ -116,6 +126,7 @@ function split(n, re, str)
 return {
 	regex: regex,
 	safeRegex: safeRegex,
+	safeRegexInsensitive: safeRegexInsensitive,
 	caseInsensitive: caseInsensitive,
 	escape: escape,
 

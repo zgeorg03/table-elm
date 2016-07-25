@@ -1,8 +1,8 @@
-module Header exposing (State(..), Model, Msg, init, initNoCmd, update, view, reset)
+module Header exposing (State(..), Model, Msg, init, initNoCmd, update, view, reset, toCsv)
 
 {-| This module builds a simple Header, with 3 states: Original,Ascending, Descending
 
-@docs State, Model, Msg, init, initNoCmd, update, view, reset
+@docs State, Model, Msg, init, initNoCmd, update, view, reset, toCsv
 -}
 
 import Value exposing (..)
@@ -55,6 +55,13 @@ reset header =
 initNoCmd : String -> ValueType -> Model
 initNoCmd title typ =
     Model title Original typ
+
+
+{-| To Csv
+-}
+toCsv : Model -> String
+toCsv model =
+    "\"" ++ model.title ++ "\""
 
 
 

@@ -1,9 +1,9 @@
-module Table exposing (Model, Msg, init, update, view)
+module Table exposing (Model, Msg, init, initHeaders, update, view)
 
 {-|
   This module implements a simple table
 
-@docs Model, Msg, init, update, view
+@docs Model, Msg, init, initHeaders, update, view
 
 -}
 
@@ -14,7 +14,7 @@ import Cell exposing (..)
 import Value exposing (..)
 import Pagination exposing (..)
 import Search exposing (..)
-import Char
+import Http
 import String
 import Html exposing (..)
 import Html.App as App exposing (program)
@@ -69,8 +69,8 @@ type alias Model =
 {-| Initialization of the Table only with Headers
 
 -}
-initHeaders : String -> List Header.Model -> Model
-initHeaders title headers =
+initHeaders : String -> List Header.Model -> Bool -> Model
+initHeaders title headers auto =
     let
         visibleRecords =
             5
@@ -95,7 +95,7 @@ initHeaders title headers =
             headersLen
             0
             (Pagination.init 0 visibleRecords)
-            (Search.init searchableRecords)
+            (Search.init auto searchableRecords)
             ""
             Nothing
 
@@ -103,11 +103,14 @@ initHeaders title headers =
 {-| Initialization of the Table with Headers and Records
 
 -}
-init : String -> List Header.Model -> List Record.Model -> Model
-init title headers records =
+init : String -> List Header.Model -> List Record.Model -> Bool -> Model
+init title headers records auto =
     let
         visibleRecords =
             5
+
+        perm =
+            (Array.initialize recordsLen (\n -> n) |> Array.toList)
 
         arrayHeaders =
             fromList headers
@@ -131,24 +134,24 @@ init title headers records =
             getSearchableRecords records
 
         csv =
-            getCsv records
+            getCsv headers records
     in
         Model title
             (List.map initHeaderHelper indexedListHeaders)
             (Array.map initRecordHelper (indexedListRecords |> fromList))
-            (Array.initialize recordsLen (\n -> n) |> Array.toList)
+            perm
             recordsLen
             headersLen
             0
             (Pagination.init recordsLen visibleRecords)
-            (Search.init searchableRecords)
+            (Search.init auto searchableRecords)
             csv
             Nothing
 
 
-initCmd : String -> List Header.Model -> List Record.Model -> ( Model, Cmd Msg )
-initCmd title headers records =
-    ( init title headers records, Cmd.none )
+initCmd : String -> List Header.Model -> List Record.Model -> Bool -> ( Model, Cmd Msg )
+initCmd title headers records auto =
+    ( init title headers records auto, Cmd.none )
 
 
 resetHeaders : Model -> Model
@@ -221,8 +224,11 @@ update msg model =
 
                 pagination =
                     Pagination.init (List.length perm) oldPagination.entriesInPage
+
+                csv =
+                    updateCsv model.headers model.records perm
             in
-                ( { model | base = 0, search = search, permutation = perm, pagination = pagination }, Cmd.map SearchMsg cmds )
+                ( { model | csv = csv, base = 0, search = search, permutation = perm, pagination = pagination }, Cmd.map SearchMsg cmds )
 
         HeaderMsg id msg ->
             let
@@ -235,8 +241,11 @@ update msg model =
 
                 newModel =
                     sort id state model
+
+                csv =
+                    updateCsv newModel.headers newModel.records newModel.permutation
             in
-                ( { newModel | headers = newHeaders }, Cmd.batch cmds )
+                ( { newModel | csv = csv, headers = newHeaders }, Cmd.batch cmds )
 
         RecordMsg id msg ->
             let
@@ -246,9 +255,38 @@ update msg model =
                 ( { model | records = newRecords |> fromList }, Cmd.batch cmds )
 
 
-getCsv : List Record.Model -> String
-getCsv list =
-    List.map (Record.toCsv) list |> String.join (String.fromChar (Char.fromCode 13))
+getCsv : List Header.Model -> List Record.Model -> String
+getCsv headers records =
+    let
+        h =
+            List.map (Header.toCsv) headers |> String.join (String.fromChar ',')
+
+        r =
+            List.map (Record.toCsv) records |> String.join (String.fromChar '\n')
+    in
+        h ++ (String.fromChar '\n') ++ r
+
+
+updateCsv : List IdHeader -> Array IdRecord -> List Int -> String
+updateCsv headers records perm =
+    let
+        h =
+            List.map (\x -> x.model |> Header.toCsv) headers |> String.join (String.fromChar ',')
+
+        r =
+            List.map (\x -> Array.get x records |> toRecord |> Record.toCsv) perm |> String.join (String.fromChar '\n')
+    in
+        h ++ (String.fromChar '\n') ++ r
+
+
+toRecord : Maybe IdRecord -> Record.Model
+toRecord res =
+    case res of
+        Nothing ->
+            Record.init []
+
+        Just record ->
+            record.model
 
 
 getSearchableRecords : List Record.Model -> List String
@@ -414,7 +452,7 @@ view model =
             , div [ class "panel-body" ]
                 [ div [ class "row" ]
                     [ div [ class "col-md-10" ] [ (App.map SearchMsg (Search.view model.search)) ]
-                    , div [ class "col-md-2" ] [ a [ href ("data:text/csv;charset=utf-8," ++ model.csv), downloadAs "table.csv" ] [ span [ class "glyphicon glyphicon-download-alt" ] [] ] ]
+                    , div [ class "col-md-2" ] [ a [ href ("data:text/csv;charset=utf-8," ++ (Http.uriEncode model.csv)), downloadAs "table.csv" ] [ span [ class "glyphicon glyphicon-download-alt" ] [] ] ]
                     ]
                 , table [ class "table" ]
                     [ thead []
@@ -432,8 +470,13 @@ view model =
             , div [ class "panel-footer" ]
                 [ (App.map PaginationMsg (Pagination.view model.pagination)) ]
             ]
-        , div [ class "container" ] [ text (model.csv) ]
+          -- , text (recordsToString model.records)
         ]
+
+
+recordsToString : Array IdRecord -> String
+recordsToString array =
+    Array.map (\x -> x.model |> Record.toString) array |> Array.toList |> String.join "#"
 
 
 viewRecordsPermutated : Model -> List (Html Msg)
@@ -476,7 +519,7 @@ viewHeader { id, model } =
 main : Program Never
 main =
     program
-        { init = initCmd "Example table" dummyHeaders dummyRecords
+        { init = initCmd "Example table" dummyHeaders dummyRecords True
         , view = view
         , update = update
         , subscriptions = (\_ -> Sub.none)

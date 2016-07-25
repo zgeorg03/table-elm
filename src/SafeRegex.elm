@@ -3,6 +3,7 @@ module SafeRegex
         ( Regex
         , regex
         , safeRegex
+        , safeRegexInsensitive
         , escape
         , caseInsensitive
         , HowMany(..)
@@ -17,7 +18,7 @@ module SafeRegex
 same kind of regular expressions accepted by JavaScript](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions).
 
 # Create
-@docs Regex, regex, escape, caseInsensitive, safeRegex
+@docs Regex, regex, escape, caseInsensitive, safeRegex, safeRegexInsensitive
 
 # Helpful Data Structures
 
@@ -65,6 +66,11 @@ regex =
 safeRegex : String -> Result String Regex
 safeRegex =
     Native.SafeRegex.safeRegex
+
+
+safeRegexInsensitive : String -> Result String Regex
+safeRegexInsensitive =
+    Native.SafeRegex.safeRegexInsensitive
 
 
 {-| Make a regex case insensitive
