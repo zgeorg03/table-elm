@@ -36,6 +36,7 @@ type Msg
     | ChangeValue String
     | UpdateSearch
     | HideError
+    | ClearSearch
 
 
 {-| Init method
@@ -66,6 +67,9 @@ update msg model =
 
         ChangeValue str ->
             ( { model | value = str, error = Nothing }, Cmd.none )
+
+        ClearSearch ->
+            ( { model | error = Nothing, searchList = (Array.initialize (List.length model.data) (\n -> n) |> Array.toList), value = "" }, Cmd.none )
 
         HideError ->
             ( { model | error = Nothing }, Cmd.none )
@@ -112,12 +116,9 @@ view model =
     div []
         [ div [ class "row" ]
             [ div [ class "col-md-4" ]
-                [ input [ style [ ( "width", "100%" ) ], onInput ChangeValue, onEnter UpdateSearch, placeholder "Search", value model.value ] []
-                ]
-            , div [ class "col-md-4" ]
-                [ button []
-                    [ span [ class "glyphicon glyphicon-save" ] []
-                    , text "  Save"
+                [ input [ style [ ( "width", "80%" ) ], onInput ChangeValue, onEnter UpdateSearch, placeholder "Search", value model.value ] []
+                , button [ onClick ClearSearch ]
+                    [ span [ class "glyphicon glyphicon-remove" ] []
                     ]
                 ]
             ]

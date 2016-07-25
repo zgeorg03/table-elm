@@ -6,13 +6,14 @@ module Value
         , getDefaultValue
         , compare
         , toString
+        , toCsv
         , tests
         )
 
 {-| This module wraps all the possible types a table cell can have
 
-
-@docs Value,ValueType,getDefaultValueFromType, getDefaultValue, compare, toString, tests
+# Basics
+@docs Value,ValueType,getDefaultValueFromType, getDefaultValue, compare, toString, tests, toCsv
 
 -}
 
@@ -91,6 +92,13 @@ getDefaultValue value =
             E
 
 
+{-| Convert to Csv
+-}
+toCsv : Value -> String
+toCsv value =
+    "\"" ++ (toString value) ++ "\""
+
+
 {-| String representation of a value
 -}
 toString : Value -> String
@@ -117,7 +125,10 @@ toString value =
                     getDateFromInt timestamp
 
                 day =
-                    Date.day date |> Basics.toString
+                    if (Date.day date) < 10 then
+                        "0" ++ (Date.day date |> Basics.toString)
+                    else
+                        Date.day date |> Basics.toString
 
                 month =
                     getMonth date
@@ -136,8 +147,14 @@ toString value =
                         "0" ++ (Date.minute date |> Basics.toString)
                     else
                         Date.minute date |> Basics.toString
+
+                secs =
+                    if (Date.second date) < 10 then
+                        "0" ++ (Date.second date |> Basics.toString)
+                    else
+                        Date.second date |> Basics.toString
             in
-                day ++ " " ++ month ++ " " ++ year ++ ", " ++ hours ++ ":" ++ mins
+                year ++ "-" ++ month ++ "-" ++ day ++ " " ++ hours ++ ":" ++ mins ++ ":" ++ secs
 
 
 getDateFromInt : Int -> Date
@@ -241,37 +258,37 @@ getMonth date =
     in
         case m of
             Jan ->
-                "January"
+                "01"
 
             Feb ->
-                "February"
+                "02"
 
             Mar ->
-                "March"
+                "03"
 
             Apr ->
-                "April"
+                "04"
 
             May ->
-                "May"
+                "05"
 
             Jun ->
-                "June"
+                "06"
 
             Jul ->
-                "July"
+                "07"
 
             Aug ->
-                "August"
+                "08"
 
             Sep ->
-                "September"
+                "09"
 
             Oct ->
-                "October"
+                "10"
 
             Nov ->
-                "November"
+                "11"
 
             Dec ->
-                "December"
+                "12"

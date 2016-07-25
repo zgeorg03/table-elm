@@ -12,11 +12,6 @@ import Html exposing (..)
 import Array exposing (..)
 
 
---TODO Erase this after finishing this module
-
-import ExternalCSS exposing (stylesheet)
-
-
 {-| Model
 -}
 type alias Model =
@@ -147,8 +142,7 @@ view model =
             model.currentPage * model.entriesInPage
     in
         div [ class "row" ]
-            [ stylesheet
-            , div [ class "col-md-4" ]
+            [ div [ class "col-md-4" ]
                 [ text "Show  "
                 , select []
                     [ option [ onClick (ChangeEntriesInPage 1) ] [ text "1" ]

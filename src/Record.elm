@@ -1,8 +1,8 @@
-module Record exposing (Msg, Model, init, update, view, toString)
+module Record exposing (Msg, Model, init, update, view, toString, toCsv)
 
 {-| This module represents a list of Cells
 
-@docs Msg, Model, init, update, view, toString
+@docs Msg, Model, init, update, view, toString, toCsv
 -}
 
 import Value exposing (..)
@@ -72,6 +72,17 @@ initHelper ( i, model ) =
 -}
 type Msg
     = CellMsg Int Cell.Msg
+
+
+{-| To csv method
+-}
+toCsv : Model -> String
+toCsv model =
+    let
+        array =
+            Array.map (\x -> x.model) model
+    in
+        Array.map Cell.toCsv array |> Array.toList |> String.join ","
 
 
 {-| To String method

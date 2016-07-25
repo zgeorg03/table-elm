@@ -102,54 +102,6 @@
     "generated-with-elm-version": "0.17.1"
   },
   {
-    "name": "Cell",
-    "comment": " This module implements an input field with validation\n\n@docs Model, Msg, init, initEditable, update, view, toString\n\n",
-    "aliases": [
-      {
-        "name": "Model",
-        "comment": " Model Description\n",
-        "args": [],
-        "type": "{ value : Value.Value , visible : Bool , rawValue : String , readonly : Bool }"
-      }
-    ],
-    "types": [
-      {
-        "name": "Msg",
-        "comment": " All the possible actions a cell can perfrom\n",
-        "args": [],
-        "cases": []
-      }
-    ],
-    "values": [
-      {
-        "name": "init",
-        "comment": " Initialization of a model without command\n",
-        "type": "Value.Value -> Bool -> Cell.Model"
-      },
-      {
-        "name": "initEditable",
-        "comment": " Initialization of a model without command in edit mode\n",
-        "type": "Value.Value -> Bool -> Cell.Model"
-      },
-      {
-        "name": "toString",
-        "comment": " To string method\n",
-        "type": "Cell.Model -> String"
-      },
-      {
-        "name": "update",
-        "comment": " Update the model\n",
-        "type": "Cell.Msg -> Cell.Model -> ( Cell.Model, Platform.Cmd.Cmd Cell.Msg )"
-      },
-      {
-        "name": "view",
-        "comment": " The view of the model\n",
-        "type": "Cell.Model -> Html.Html Cell.Msg"
-      }
-    ],
-    "generated-with-elm-version": "0.17.1"
-  },
-  {
     "name": "Header",
     "comment": " This module builds a simple Header, with 3 states: Original,Ascending, Descending\n\n@docs State, Model, Msg, init, initNoCmd, update, view, reset\n",
     "aliases": [
@@ -217,15 +169,49 @@
     "generated-with-elm-version": "0.17.1"
   },
   {
-    "name": "MyRegex",
-    "comment": " A wrapper for regex module to avoid runtime error\n@docs safeRegex\n",
-    "aliases": [],
-    "types": [],
+    "name": "Cell",
+    "comment": " This module implements an input field with validation\n\n# Basics\n@docs Model, Msg, init, initEditable, update, view, toString\n\n",
+    "aliases": [
+      {
+        "name": "Model",
+        "comment": " Model Description\n",
+        "args": [],
+        "type": "{ value : Value.Value , visible : Bool , rawValue : String , readonly : Bool }"
+      }
+    ],
+    "types": [
+      {
+        "name": "Msg",
+        "comment": " All the possible actions a cell can perfrom\n",
+        "args": [],
+        "cases": []
+      }
+    ],
     "values": [
       {
-        "name": "safeRegex",
-        "comment": " Safe Regex\n",
-        "type": "String -> Result.Result String Regex.Regex"
+        "name": "init",
+        "comment": " Initialization of a model without command\n",
+        "type": "Value.Value -> Bool -> Cell.Model"
+      },
+      {
+        "name": "initEditable",
+        "comment": " Initialization of a model without command in edit mode\n",
+        "type": "Value.Value -> Bool -> Cell.Model"
+      },
+      {
+        "name": "toString",
+        "comment": " To string method\n",
+        "type": "Cell.Model -> String"
+      },
+      {
+        "name": "update",
+        "comment": " Update the model\n",
+        "type": "Cell.Msg -> Cell.Model -> ( Cell.Model, Platform.Cmd.Cmd Cell.Msg )"
+      },
+      {
+        "name": "view",
+        "comment": " The view of the model\n",
+        "type": "Cell.Model -> Html.Html Cell.Msg"
       }
     ],
     "generated-with-elm-version": "0.17.1"
@@ -246,7 +232,7 @@
   },
   {
     "name": "Value",
-    "comment": " This module wraps all the possible types a table cell can have\n\n\n@docs Value,ValueType,getDefaultValueFromType, getDefaultValue, compare, toString, tests\n\n",
+    "comment": " This module wraps all the possible types a table cell can have\n\n# Basics\n@docs Value,ValueType,getDefaultValueFromType, getDefaultValue, compare, toString, tests\n\n",
     "aliases": [],
     "types": [
       {

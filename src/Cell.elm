@@ -1,8 +1,9 @@
-module Cell exposing (Model, Msg, init, initEditable, update, view, toString)
+module Cell exposing (Model, Msg, init, initEditable, update, view, toString, toCsv)
 
 {-| This module implements an input field with validation
 
-@docs Model, Msg, init, initEditable, update, view, toString
+# Basics
+@docs Model, Msg, init, initEditable, update, view, toString, toCsv
 
 -}
 
@@ -66,6 +67,16 @@ type Msg
     | UpdateInteger
     | UpdateFloat
     | UpdateBool
+
+
+{-| To csv method
+-}
+toCsv : Model -> String
+toCsv model =
+    if model.visible then
+        "\"" ++ Value.toString model.value ++ "\""
+    else
+        "\"\""
 
 
 {-| To string method
