@@ -17,7 +17,6 @@ import Json.Decode.Extra exposing (..)
 
 type alias Model =
     { table : Maybe Table.Model
-    , id : String
     , error : Maybe Http.Error
     }
 
@@ -36,21 +35,20 @@ type Msg
     | TableMsg Table.Msg
     | FetchFail Http.Error
     | FetchSucceed (List UserRecord)
-    | LoadOpenTrades
-    | UpdateId String
+    | LoadPeople
 
 
-getUserOpenTrades : String -> Cmd Msg
-getUserOpenTrades id =
+loadPeople : Cmd Msg
+loadPeople =
     let
         url =
             "/res/people.json"
     in
-        Task.perform FetchFail FetchSucceed (Http.get decodeOpenTrades url)
+        Task.perform FetchFail FetchSucceed (Http.get decodePeople url)
 
 
-decodeOpenTrades : Decoder (List UserRecord)
-decodeOpenTrades =
+decodePeople : Decoder (List UserRecord)
+decodePeople =
     let
         decoder =
             succeed UserRecord
@@ -91,16 +89,13 @@ toRecord rec =
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model Nothing "" Nothing, Cmd.none )
+    ( Model Nothing Nothing, loadPeople )
 
 
 view : Model -> Html Msg
 view model =
     div [ class "container" ]
         [ div [ class "row" ]
-            [ input [ onInput UpdateId, onEnter LoadOpenTrades, placeholder "Customer ID" ] []
-            ]
-        , div [ class "row" ]
             [ case model.table of
                 Nothing ->
                     div [] [ text "Select a customer" ]
@@ -123,9 +118,6 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-        UpdateId str ->
-            ( { model | id = str }, Cmd.none )
-
         TableMsg msg ->
             case model.table of
                 Nothing ->
@@ -147,12 +139,12 @@ update msg model =
                     getRecords rec
 
                 table =
-                    Table.init ("Open Trades for Customer: " ++ model.id) headers records True
+                    Table.init ("Example") headers records True
             in
                 ( { model | table = Just table }, Cmd.none )
 
-        LoadOpenTrades ->
-            ( model, getUserOpenTrades model.id )
+        LoadPeople ->
+            ( model, loadPeople )
 
 
 onEnter : Msg -> Attribute Msg
