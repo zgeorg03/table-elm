@@ -157,8 +157,8 @@ view model =
             ]
         , div [ class "row" ]
             [ div [ class "col-md-4" ]
-                [ text "Case Insensitive   "
-                , input [ onClick UpdateCaseSensitivity, type' "checkbox", checked model.caseInsensitive ] []
+                [ input [ onClick UpdateCaseSensitivity, type' "checkbox", checked model.caseInsensitive ] []
+                , text "  Case insensitive   "
                 ]
             ]
         ]

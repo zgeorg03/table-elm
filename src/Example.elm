@@ -8,7 +8,7 @@ import Header exposing (..)
 import Http exposing (..)
 import Html exposing (..)
 import Html.App as App exposing (program)
-import Html.Attributes exposing (placeholder, class)
+import Html.Attributes as Attributes exposing (placeholder, class, style, type', value)
 import Html.Events exposing (onClick, onInput, on, keyCode)
 import Task
 import Json.Decode as Json exposing (..)
@@ -18,15 +18,18 @@ import Json.Decode.Extra exposing (..)
 type alias Model =
     { table : Maybe Table.Model
     , error : Maybe Http.Error
+    , url : String
     }
 
 
 type alias UserRecord =
     { id : Int
+    , name : String
+    , surname : String
     , isActive : Bool
     , balance : Float
     , age : Int
-    , name : String
+    , email : String
     }
 
 
@@ -36,15 +39,12 @@ type Msg
     | FetchFail Http.Error
     | FetchSucceed (List UserRecord)
     | LoadPeople
+    | UpdateInput String
 
 
-loadPeople : Cmd Msg
-loadPeople =
-    let
-        url =
-            "/res/people.json"
-    in
-        Task.perform FetchFail FetchSucceed (Http.get decodePeople url)
+loadPeople : String -> Cmd Msg
+loadPeople url =
+    Task.perform FetchFail FetchSucceed (Http.get decodePeople url)
 
 
 decodePeople : Decoder (List UserRecord)
@@ -53,10 +53,12 @@ decodePeople =
         decoder =
             succeed UserRecord
                 |: ("_id" := int)
+                |: ("name" := Json.string)
+                |: ("surname" := Json.string)
                 |: ("isActive" := bool)
                 |: ("balance" := Json.float)
                 |: ("age" := int)
-                |: ("name" := Json.string)
+                |: ("email" := Json.string)
     in
         at [ "data" ] (list decoder)
 
@@ -64,10 +66,12 @@ decodePeople =
 headers : List Header.Model
 headers =
     [ { title = "Id", state = Original, type' = IntType }
-    , { title = "Active", state = Original, type' = IntType }
-    , { title = "Balance", state = Original, type' = StringType }
+    , { title = "Name", state = Original, type' = StringType }
+    , { title = "Surname", state = Original, type' = StringType }
+    , { title = "Balance", state = Original, type' = FloatType }
     , { title = "Age", state = Original, type' = DateType }
-    , { title = "Name", state = Original, type' = FloatType }
+    , { title = "Email", state = Original, type' = StringType }
+    , { title = "Active", state = Original, type' = BoolType }
     ]
 
 
@@ -80,25 +84,33 @@ toRecord : UserRecord -> Record.Model
 toRecord rec =
     Record.init
         [ Cell.init (I rec.id) True
-        , Cell.init (B rec.isActive) True
+        , Cell.init (S rec.name) True
+        , Cell.init (S rec.surname) True
         , Cell.init (F rec.balance) True
         , Cell.init (D rec.age) True
-        , Cell.init (S rec.name) True
+        , Cell.init (S rec.email) True
+        , Cell.init (B rec.isActive) True
         ]
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( Model Nothing Nothing, loadPeople )
+init : String -> ( Model, Cmd Msg )
+init url =
+    ( Model Nothing Nothing url, loadPeople url )
 
 
 view : Model -> Html Msg
 view model =
     div [ class "container" ]
-        [ div [ class "row" ]
+        [ div []
+            [ div [ class "form-group" ]
+                [ label [] [ text "Fetch data from:   " ]
+                , input [ onEnter LoadPeople, onInput UpdateInput, placeholder "Url", type' "text", Attributes.value model.url ] []
+                ]
+            ]
+        , div [ class "row" ]
             [ case model.table of
                 Nothing ->
-                    div [] [ text "Select a customer" ]
+                    div [] []
 
                 Just table ->
                     (App.map TableMsg (Table.view table))
@@ -108,7 +120,11 @@ view model =
                 div [] []
 
             Just e ->
-                text (Basics.toString e)
+                div
+                    [ style [ ( "color", "red" ) ] ]
+                    [ text
+                        (Basics.toString e)
+                    ]
         ]
 
 
@@ -144,7 +160,10 @@ update msg model =
                 ( { model | table = Just table }, Cmd.none )
 
         LoadPeople ->
-            ( model, loadPeople )
+            ( { model | error = Nothing }, loadPeople model.url )
+
+        UpdateInput str ->
+            ( { model | url = str }, Cmd.none )
 
 
 onEnter : Msg -> Attribute Msg
@@ -162,7 +181,7 @@ onEnter msg =
 main : Program Never
 main =
     App.program
-        { init = init
+        { init = init "/res/people.json"
         , view = view
         , update = update
         , subscriptions = (\_ -> Sub.none)

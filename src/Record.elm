@@ -103,7 +103,7 @@ addHashCol array =
 
 mapPair : ( Int, String ) -> String
 mapPair ( id, value ) =
-    (Basics.toString id) ++ "#" ++ value
+    (Basics.toString (id + 1)) ++ "#" ++ value
 
 
 {-| Update the model based on the appropriate action
@@ -145,8 +145,8 @@ viewCell { id, model } =
 
 model : List Cell.Model
 model =
-    [ Cell.initEditable (I 0) True
-    , Cell.initEditable (B True) True
+    [ Cell.init (I 0) True
+    , Cell.init (B True) True
     , Cell.init (F 0) True
     , Cell.init (D 12312312) True
     ]

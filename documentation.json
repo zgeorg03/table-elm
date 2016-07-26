@@ -1,28 +1,50 @@
 [
   {
     "name": "Table",
-    "comment": "\n  This module implements a simple table\n\n@docs Model, init\n\n",
+    "comment": "\n  This module implements a simple table\n\n@docs Model, Msg, init, initHeaders, update, view\n\n",
     "aliases": [
       {
         "name": "Model",
         "comment": " Model\n  ##Arguments##\n  1. **title** The title shown in the header\n\n",
         "args": [],
-        "type": "{ title : String , headers : List Table.IdHeader , records : Array.Array Table.IdRecord , permutation : List Int , rows : Int , cols : Int , base : Int , pagination : Pagination.Model , search : Search.Model , error : Maybe.Maybe String }"
+        "type": "{ title : String , headers : List Table.IdHeader , records : Array.Array Table.IdRecord , permutation : List Int , rows : Int , cols : Int , base : Int , pagination : Pagination.Model , search : Search.Model , csv : String , error : Maybe.Maybe String }"
       }
     ],
-    "types": [],
+    "types": [
+      {
+        "name": "Msg",
+        "comment": " Possible actions\n",
+        "args": [],
+        "cases": []
+      }
+    ],
     "values": [
       {
         "name": "init",
-        "comment": " Initialization of the Table\n\n",
-        "type": "String -> List Header.Model -> List Record.Model -> ( Table.Model, Platform.Cmd.Cmd Table.Msg )"
+        "comment": " Initialization of the Table with Headers and Records\n\n",
+        "type": "String -> List Header.Model -> List Record.Model -> Bool -> Table.Model"
+      },
+      {
+        "name": "initHeaders",
+        "comment": " Initialization of the Table only with Headers\n\n",
+        "type": "String -> List Header.Model -> Bool -> Table.Model"
+      },
+      {
+        "name": "update",
+        "comment": " Controller\n",
+        "type": "Table.Msg -> Table.Model -> ( Table.Model, Platform.Cmd.Cmd Table.Msg )"
+      },
+      {
+        "name": "view",
+        "comment": " View of the model\n",
+        "type": "Table.Model -> Html.Html Table.Msg"
       }
     ],
     "generated-with-elm-version": "0.17.1"
   },
   {
     "name": "Record",
-    "comment": " This module represents a list of Cells\n\n@docs Msg, Model, init, update, view, toString\n",
+    "comment": " This module represents a list of Cells\n\n@docs Msg, Model, init, update, view, toString, toCsv\n",
     "aliases": [
       {
         "name": "Model",
@@ -46,6 +68,11 @@
         "type": "List Cell.Model -> Record.Model"
       },
       {
+        "name": "toCsv",
+        "comment": " To csv method\n",
+        "type": "Record.Model -> String"
+      },
+      {
         "name": "toString",
         "comment": " To String method\n",
         "type": "Record.Model -> String"
@@ -64,46 +91,8 @@
     "generated-with-elm-version": "0.17.1"
   },
   {
-    "name": "Pagination",
-    "comment": " Pagination module for the table\n\n@docs Model, Msg, init, update, view\n",
-    "aliases": [
-      {
-        "name": "Model",
-        "comment": " Model\n",
-        "args": [],
-        "type": "{ totalEntries : Int , entriesInPage : Int , activeEntries : Int , totalPages : Int , currentPage : Int , pages : Array.Array Int }"
-      }
-    ],
-    "types": [
-      {
-        "name": "Msg",
-        "comment": " Msg\n",
-        "args": [],
-        "cases": []
-      }
-    ],
-    "values": [
-      {
-        "name": "init",
-        "comment": " Init Model\n",
-        "type": "Int -> Int -> Pagination.Model"
-      },
-      {
-        "name": "update",
-        "comment": " Update Method\n\n",
-        "type": "Pagination.Msg -> Pagination.Model -> ( Pagination.Model, Platform.Cmd.Cmd Pagination.Msg )"
-      },
-      {
-        "name": "view",
-        "comment": " View of the model\n",
-        "type": "Pagination.Model -> Html.Html Pagination.Msg"
-      }
-    ],
-    "generated-with-elm-version": "0.17.1"
-  },
-  {
     "name": "Header",
-    "comment": " This module builds a simple Header, with 3 states: Original,Ascending, Descending\n\n@docs State, Model, Msg, init, initNoCmd, update, view, reset\n",
+    "comment": " This module builds a simple Header, with 3 states: Original,Ascending, Descending\n\n@docs State, Model, Msg, init, initNoCmd, update, view, reset, toCsv\n",
     "aliases": [
       {
         "name": "Model",
@@ -156,6 +145,11 @@
         "type": "Header.Model -> Header.Model"
       },
       {
+        "name": "toCsv",
+        "comment": " To Csv\n",
+        "type": "Header.Model -> String"
+      },
+      {
         "name": "update",
         "comment": " Update the model\n",
         "type": "Header.Msg -> Header.Model -> ( Header.Model, Platform.Cmd.Cmd Header.Msg )"
@@ -170,13 +164,13 @@
   },
   {
     "name": "Cell",
-    "comment": " This module implements an input field with validation\n\n# Basics\n@docs Model, Msg, init, initEditable, update, view, toString\n\n",
+    "comment": " This module implements an input field with validation\n\n# Basics\n@docs Model, Msg, init,  update, view, toString, toCsv\n\n",
     "aliases": [
       {
         "name": "Model",
         "comment": " Model Description\n",
         "args": [],
-        "type": "{ value : Value.Value , visible : Bool , rawValue : String , readonly : Bool }"
+        "type": "{ value : Value.Value, visible : Bool }"
       }
     ],
     "types": [
@@ -194,9 +188,9 @@
         "type": "Value.Value -> Bool -> Cell.Model"
       },
       {
-        "name": "initEditable",
-        "comment": " Initialization of a model without command in edit mode\n",
-        "type": "Value.Value -> Bool -> Cell.Model"
+        "name": "toCsv",
+        "comment": " To csv method\n",
+        "type": "Cell.Model -> String"
       },
       {
         "name": "toString",
@@ -217,22 +211,8 @@
     "generated-with-elm-version": "0.17.1"
   },
   {
-    "name": "ExternalCSS",
-    "comment": "\n  Used only for testing with reactor\n\n@docs stylesheet\n",
-    "aliases": [],
-    "types": [],
-    "values": [
-      {
-        "name": "stylesheet",
-        "comment": " A link to bootstrap cdn\n",
-        "type": "Html.Html a"
-      }
-    ],
-    "generated-with-elm-version": "0.17.1"
-  },
-  {
     "name": "Value",
-    "comment": " This module wraps all the possible types a table cell can have\n\n# Basics\n@docs Value,ValueType,getDefaultValueFromType, getDefaultValue, compare, toString, tests\n\n",
+    "comment": " This module wraps all the possible types a table cell can have\n\n# Basics\n@docs Value,ValueType,getDefaultValueFromType, getDefaultValue, compare, toString, tests, toCsv\n\n",
     "aliases": [],
     "types": [
       {
@@ -330,9 +310,66 @@
         "type": "ElmTest.Test"
       },
       {
+        "name": "toCsv",
+        "comment": " Convert to Csv\n",
+        "type": "Value.Value -> String"
+      },
+      {
         "name": "toString",
         "comment": " String representation of a value\n",
         "type": "Value.Value -> String"
+      }
+    ],
+    "generated-with-elm-version": "0.17.1"
+  },
+  {
+    "name": "Pagination",
+    "comment": " Pagination module for the table\n\n@docs Model, Msg, init, update, view\n",
+    "aliases": [
+      {
+        "name": "Model",
+        "comment": " Model\n",
+        "args": [],
+        "type": "{ totalEntries : Int , entriesInPage : Int , activeEntries : Int , totalPages : Int , currentPage : Int , pages : Array.Array Int }"
+      }
+    ],
+    "types": [
+      {
+        "name": "Msg",
+        "comment": " Msg\n",
+        "args": [],
+        "cases": []
+      }
+    ],
+    "values": [
+      {
+        "name": "init",
+        "comment": " Init Model\n",
+        "type": "Int -> Int -> Pagination.Model"
+      },
+      {
+        "name": "update",
+        "comment": " Update Method\n\n",
+        "type": "Pagination.Msg -> Pagination.Model -> ( Pagination.Model, Platform.Cmd.Cmd Pagination.Msg )"
+      },
+      {
+        "name": "view",
+        "comment": " View of the model\n",
+        "type": "Pagination.Model -> Html.Html Pagination.Msg"
+      }
+    ],
+    "generated-with-elm-version": "0.17.1"
+  },
+  {
+    "name": "ExternalCSS",
+    "comment": "\n  Used only for testing with reactor\n\n@docs stylesheet\n",
+    "aliases": [],
+    "types": [],
+    "values": [
+      {
+        "name": "stylesheet",
+        "comment": " A link to bootstrap cdn\n",
+        "type": "Html.Html a"
       }
     ],
     "generated-with-elm-version": "0.17.1"

@@ -73,7 +73,7 @@ initHeaders : String -> List Header.Model -> Bool -> Model
 initHeaders title headers auto =
     let
         visibleRecords =
-            5
+            10
 
         arrayHeaders =
             fromList headers
@@ -107,7 +107,7 @@ init : String -> List Header.Model -> List Record.Model -> Bool -> Model
 init title headers records auto =
     let
         visibleRecords =
-            5
+            10
 
         perm =
             (Array.initialize recordsLen (\n -> n) |> Array.toList)
