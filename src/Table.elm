@@ -26,10 +26,6 @@ import Html.Attributes exposing (class, value, style, disabled, href, downloadAs
 import Array exposing (..)
 
 
---import String
---MODEL
-
-
 type alias IdHeader =
     { id : Int
     , model : Header.Model
@@ -43,8 +39,6 @@ type alias IdRecord =
 
 
 {-| Model
-  ##Arguments##
-  1. **title** The title shown in the header
 
 -}
 type alias Model =
@@ -85,7 +79,7 @@ initHeaders title headers auto =
             toIndexedList arrayHeaders
 
         searchableRecords =
-            getSearchableRecords []
+            getRecordsForSearch []
     in
         Model title
             (List.map initHeaderHelper indexedListHeaders)
@@ -131,7 +125,7 @@ init title headers records auto =
             toIndexedList arrayRecords
 
         searchableRecords =
-            getSearchableRecords records
+            getRecordsForSearch records
 
         csv =
             getCsv headers records
@@ -289,8 +283,8 @@ toRecord res =
             record.model
 
 
-getSearchableRecords : List Record.Model -> List String
-getSearchableRecords list =
+getRecordsForSearch : List Record.Model -> List String
+getRecordsForSearch list =
     List.map (Record.toString) list
 
 
@@ -306,7 +300,6 @@ getHeaderState col idHeaders =
         idHeader =
             case mayIdHeader of
                 Nothing ->
-                    --TODO Fix this
                     { id = 0, model = Header.Model "" Original IntType }
 
                 Just s ->
@@ -321,6 +314,54 @@ getHeaderState col idHeaders =
 sort : Int -> State -> Model -> Model
 sort col state model =
     { model | permutation = getNewPermutation col state model }
+
+
+getCompositePermuation : Int -> State -> Model -> List Int -> List Int
+getCompositePermuation col state model f =
+    let
+        slices =
+            getSlices col model 0 f
+    in
+        slices
+
+
+getSlices : Int -> Model -> Int -> List Int -> List Int
+getSlices col model index list =
+    case list of
+        [] ->
+            []
+
+        x1 :: rest ->
+            let
+                x2 =
+                    case rest of
+                        [] ->
+                            x1 + 1
+
+                        p :: rest2 ->
+                            p
+            in
+                if (areTheSame col model x1 x2) then
+                    getSlices col model (index + 1) rest
+                else
+                    index :: getSlices col model (index + 1) rest
+
+
+areTheSame : Int -> Model -> Int -> Int -> Bool
+areTheSame col model id1 id2 =
+    let
+        v1 =
+            getIdRecord id1 model |> getRecord |> getValue col
+
+        v2 =
+            getIdRecord id2 model |> getRecord |> getValue col
+    in
+        case Value.compare v1 v2 of
+            EQ ->
+                True
+
+            _ ->
+                False
 
 
 getNewPermutation : Int -> State -> Model -> List Int
@@ -369,7 +410,7 @@ getIdRecord row model =
 
         mayIdRecord : Maybe IdRecord
         mayIdRecord =
-            get row records
+            Array.get row records
 
         idRecord : IdRecord
         idRecord =
@@ -470,7 +511,7 @@ view model =
             , div [ class "panel-footer" ]
                 [ (App.map PaginationMsg (Pagination.view model.pagination)) ]
             ]
-          -- , text (recordsToString model.records)
+        , div [] [ text (Basics.toString (getCompositePermuation 0 Ascending model model.permutation)) ]
         ]
 
 

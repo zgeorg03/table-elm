@@ -181,7 +181,7 @@ onEnter msg =
 main : Program Never
 main =
     App.program
-        { init = init "/res/people.json"
+        { init = init "/res/people-small.json"
         , view = view
         , update = update
         , subscriptions = (\_ -> Sub.none)
