@@ -316,15 +316,6 @@ sort col state model =
     { model | permutation = getNewPermutation col state model }
 
 
-getCompositePermuation : Int -> State -> Model -> List Int -> List Int
-getCompositePermuation col state model f =
-    let
-        slices =
-            getSlices col model 0 f
-    in
-        slices
-
-
 getSlices : Int -> Model -> Int -> List Int -> List Int
 getSlices col model index list =
     case list of
@@ -511,7 +502,6 @@ view model =
             , div [ class "panel-footer" ]
                 [ (App.map PaginationMsg (Pagination.view model.pagination)) ]
             ]
-        , div [] [ text (Basics.toString (getCompositePermuation 0 Ascending model model.permutation)) ]
         ]
 
 

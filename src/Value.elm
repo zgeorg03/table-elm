@@ -7,17 +7,15 @@ module Value
         , compare
         , toString
         , toCsv
-        , tests
         )
 
 {-| This module wraps all the possible types a table cell can have
 
 # Basics
-@docs Value,ValueType,getDefaultValueFromType, getDefaultValue, compare, toString, tests, toCsv
+@docs Value,ValueType,getDefaultValueFromType, getDefaultValue, compare, toString,  toCsv
 
 -}
 
-import ElmTest exposing (..)
 import Html exposing (..)
 import Date exposing (..)
 
@@ -220,19 +218,6 @@ compare a b =
 
                 _ ->
                     LT
-
-
-{-| The function with all the necessary tests
--}
-tests : Test
-tests =
-    suite "Value package Test suite"
-        [ test "Integer" <| assertEqual (toString (I 23)) "23"
-        , test "Float" <| assertEqual (toString (F 23.33)) "23.33"
-        , test "Boolean" <| assertEqual (toString (B False)) "False"
-        , test "Date" <| assertEqual (toString (D 1468688316)) "16 July 2016, 19:58"
-        , test "String" <| assertEqual (toString (S "Test string")) "Test string"
-        ]
 
 
 {-| This is just to visually check this module

@@ -5,7 +5,7 @@
     "aliases": [
       {
         "name": "Model",
-        "comment": " Model\n  ##Arguments##\n  1. **title** The title shown in the header\n\n",
+        "comment": " Model\n\n",
         "args": [],
         "type": "{ title : String , headers : List Table.IdHeader , records : Array.Array Table.IdRecord , permutation : List Int , rows : Int , cols : Int , base : Int , pagination : Pagination.Model , search : Search.Model , csv : String , error : Maybe.Maybe String }"
       }
@@ -212,7 +212,7 @@
   },
   {
     "name": "Value",
-    "comment": " This module wraps all the possible types a table cell can have\n\n# Basics\n@docs Value,ValueType,getDefaultValueFromType, getDefaultValue, compare, toString, tests, toCsv\n\n",
+    "comment": " This module wraps all the possible types a table cell can have\n\n# Basics\n@docs Value,ValueType,getDefaultValueFromType, getDefaultValue, compare, toString,  toCsv\n\n",
     "aliases": [],
     "types": [
       {
@@ -303,11 +303,6 @@
         "name": "getDefaultValueFromType",
         "comment": " Useful method to get the default value given it's data type\n",
         "type": "Value.ValueType -> Value.Value"
-      },
-      {
-        "name": "tests",
-        "comment": " The function with all the necessary tests\n",
-        "type": "ElmTest.Test"
       },
       {
         "name": "toCsv",

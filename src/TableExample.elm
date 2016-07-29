@@ -1,4 +1,4 @@
-module Main exposing (..)
+module TableExample exposing (..)
 
 import Table exposing (..)
 import Record exposing (..)
