@@ -70,7 +70,7 @@ The library is divided into the following components:
 
 * **_Table_**
 
-   Implements the table connecting on all the above components together.
+   This component connects all the components together.
 
 * **_Native/SafeRegex_**
 
@@ -85,4 +85,5 @@ Further Work
 ============
 
 1. Column should know the data type not the cell 
-2. Separate data from table, as Evan Czaplicki did in  [evancz/elm-sortable-table](https://github.com/evancz/elm-sortable-table) package
+2. Consider this [evancz/elm-sortable-table](https://github.com/evancz/elm-sortable-table)  implementation by Evan Czaplicki in order
+to separate data and table
