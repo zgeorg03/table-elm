@@ -85,5 +85,5 @@ Further Work
 ============
 
 1. Column should know the data type not the cell 
-2. Consider this [evancz/elm-sortable-table](https://github.com/evancz/elm-sortable-table)  implementation by Evan Czaplicki in order
-to separate data and table
+2. Take into consideration [evancz/elm-sortable-table](https://github.com/evancz/elm-sortable-table) implementation 
+in order to generalize this library in a better way.
