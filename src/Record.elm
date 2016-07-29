@@ -25,11 +25,7 @@ type alias Model =
     Array IdCell
 
 
-
---Init
-
-
-{-| Initialization of the model
+{-| Initialization of the model. It needs a list of cells
 -}
 init : List Cell.Model -> Model
 init list =
@@ -59,13 +55,11 @@ initWithCmd list =
         )
 
 
+{-| Helper method in order to extend a cell into a cell with id
+-}
 initHelper : ( Int, Cell.Model ) -> IdCell
 initHelper ( i, model ) =
     IdCell i model
-
-
-
---Update
 
 
 {-| Possible actions
@@ -85,7 +79,7 @@ toCsv model =
         Array.map Cell.toCsv array |> Array.toList |> String.join ","
 
 
-{-| To String method
+{-| To String method. Each cell is seperated by #{column number}#
 -}
 toString : Model -> String
 toString model =
@@ -96,11 +90,15 @@ toString model =
         "#" ++ (Array.map Cell.toString array |> addHashCol |> String.join "#")
 
 
+{-| Helper function to add the number in each column
+-}
 addHashCol : Array String -> List String
 addHashCol array =
     Array.toIndexedList array |> List.map mapPair
 
 
+{-| Add the number of the column
+-}
 mapPair : ( Int, String ) -> String
 mapPair ( id, value ) =
     (Basics.toString (id + 1)) ++ "#" ++ value
@@ -119,6 +117,8 @@ update msg model =
                 ( Array.fromList newCells, Cmd.batch cmds )
 
 
+{-| Helper function to update the correct cell
+-}
 updateHelp : Int -> Cell.Msg -> IdCell -> ( IdCell, Cmd Msg )
 updateHelp id msg idcell =
     if idcell.id /= id then
@@ -138,11 +138,15 @@ view model =
     tr [] (Array.map viewCell model |> Array.toList)
 
 
+{-| View of the cell
+-}
 viewCell : IdCell -> Html Msg
 viewCell { id, model } =
     td [] [ App.map (CellMsg id) (Cell.view model) ]
 
 
+{-| Example model
+-}
 model : List Cell.Model
 model =
     [ Cell.init (I 0) True
@@ -152,6 +156,8 @@ model =
     ]
 
 
+{-| Visually check this module
+-}
 main : Program Never
 main =
     program

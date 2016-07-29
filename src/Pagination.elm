@@ -12,7 +12,7 @@ import Html exposing (..)
 import Array exposing (..)
 
 
-{-| Model
+{-| Model Description
 -}
 type alias Model =
     { totalEntries : Int
@@ -121,7 +121,7 @@ update msg model =
                 )
 
 
-{-| Msg
+{-| Possible Actions
 -}
 type Msg
     = NoOp
@@ -133,7 +133,7 @@ type Msg
     | ChangeEntriesInPage Int
 
 
-{-| View of the model
+{-| View of the model. Default visible entries is 10.
 -}
 view : Model -> Html Msg
 view model =
@@ -178,6 +178,8 @@ view model =
             ]
 
 
+{-| Show the pagination buttons
+-}
 showPages : Model -> List (Html Msg)
 showPages model =
     let

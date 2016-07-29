@@ -2,7 +2,6 @@ module Cell exposing (Model, Msg, init, update, view, toString, toCsv)
 
 {-| This module implements an input field with validation
 
-# Basics
 @docs Model, Msg, init,  update, view, toString, toCsv
 
 -}
@@ -15,10 +14,9 @@ import Html.Events exposing (onClick, keyCode, on, onInput)
 import Json.Decode as Json
 
 
---Model
+{-| ## Model Description ##
 
-
-{-| Model Description
+A cell holds a value and can be visible or not
 -}
 type alias Model =
     { value : Value
@@ -33,15 +31,11 @@ init value visible =
     Model value visible
 
 
-{-| Initialization of a model
+{-| Initialization of a model using command
 -}
 initCmd : Value -> Bool -> ( Model, Cmd Msg )
 initCmd value visible =
     ( init value visible, Cmd.none )
-
-
-
---Update
 
 
 {-| All the possible actions a cell can perfrom
@@ -50,7 +44,7 @@ type Msg
     = Pass
 
 
-{-| To csv method
+{-| Convert to csv format. If the model is invisible an empty string is shown
 -}
 toCsv : Model -> String
 toCsv model =
@@ -67,7 +61,7 @@ toString model =
     Value.toString model.value
 
 
-{-| Update the model
+{-| Update the model. For now it doesn't do anything
 -}
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -93,6 +87,8 @@ view model =
             text "          "
 
 
+{-| When user presses the return key, perfrom the given action
+-}
 onEnter : Msg -> Attribute Msg
 onEnter msg =
     let
@@ -105,10 +101,8 @@ onEnter msg =
         on "keydown" (Json.map tagger keyCode)
 
 
-
---Main
-
-
+{-| Visually check this module
+-}
 main : Program Never
 main =
     program

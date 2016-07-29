@@ -1,8 +1,8 @@
-module Header exposing (State(..), Model, Msg, init, initNoCmd, update, view, reset, toCsv)
+module Header exposing (State(..), Model, Msg, init, update, view, reset, toCsv)
 
 {-| This module builds a simple Header, with 3 states: Original,Ascending, Descending
 
-@docs State, Model, Msg, init, initNoCmd, update, view, reset, toCsv
+@docs State, Model, Msg, init, update, view, reset, toCsv
 -}
 
 import Value exposing (..)
@@ -10,9 +10,6 @@ import Html exposing (..)
 import Html.App exposing (program)
 import Html.Events exposing (onClick, onDoubleClick)
 import Html.Attributes exposing (class)
-
-
---MODEL
 
 
 {-| All the possible states a header can be
@@ -32,18 +29,14 @@ type alias Model =
     }
 
 
-
---INIT
-
-
 {-| Initialization of the model
 -}
-init : String -> ValueType -> ( Model, Cmd Msg )
-init title typ =
-    ( Model title Original typ, Cmd.none )
+initCmd : String -> ValueType -> ( Model, Cmd Msg )
+initCmd title typ =
+    ( init title typ, Cmd.none )
 
 
-{-| Initialization of the model
+{-| Reset the model to the original state
 -}
 reset : Model -> Model
 reset header =
@@ -52,8 +45,8 @@ reset header =
 
 {-| Initialization of the model without command
 -}
-initNoCmd : String -> ValueType -> Model
-initNoCmd title typ =
+init : String -> ValueType -> Model
+init title typ =
     Model title Original typ
 
 
@@ -62,10 +55,6 @@ initNoCmd title typ =
 toCsv : Model -> String
 toCsv model =
     "\"" ++ model.title ++ "\""
-
-
-
---UPDATE
 
 
 {-| All the possible actions
@@ -95,10 +84,6 @@ update msg model =
                     ( { model | state = Original }, Cmd.none )
 
 
-
---VIEW
-
-
 {-| The view of the model
 -}
 view : Model -> Html Msg
@@ -106,6 +91,8 @@ view model =
     showHeader model
 
 
+{-| Show header
+-}
 showHeader : Model -> Html Msg
 showHeader model =
     case model.state of
@@ -134,10 +121,12 @@ showHeader model =
                 ]
 
 
+{-| Visually check this module
+-}
 main : Program Never
 main =
     program
-        { init = init "Name" IntType
+        { init = initCmd "Name" IntType
         , view = view
         , update = update
         , subscriptions = \_ -> Sub.none

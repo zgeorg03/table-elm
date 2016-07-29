@@ -11,7 +11,6 @@ module Value
 
 {-| This module wraps all the possible types a table cell can have
 
-# Basics
 @docs Value,ValueType,getDefaultValueFromType, getDefaultValue, compare, toString,  toCsv
 
 -}
@@ -20,7 +19,8 @@ import Html exposing (..)
 import Date exposing (..)
 
 
-{-| This type holds the possible types with the corresponding values for a table cell
+{-| A value can hold an Integer,Float, Bool, String and Date. Date is initialized with
+timestamp.
 -}
 type Value
     = I Int
@@ -31,7 +31,7 @@ type Value
     | E
 
 
-{-| This type holds the possible types for a table cell
+{-| This type holds the possible types a table column can be
 -}
 type ValueType
     = IntType
@@ -90,7 +90,7 @@ getDefaultValue value =
             E
 
 
-{-| Convert to Csv
+{-| Convert the value to Csv format
 -}
 toCsv : Value -> String
 toCsv value =
@@ -155,6 +155,8 @@ toString value =
                 year ++ "-" ++ month ++ "-" ++ day ++ " " ++ hours ++ ":" ++ mins ++ ":" ++ secs
 
 
+{-| Return a date given a timestamp
+-}
 getDateFromInt : Int -> Date
 getDateFromInt timestamp =
     (1000 * timestamp) |> toFloat |> Date.fromTime

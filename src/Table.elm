@@ -1,7 +1,8 @@
 module Table exposing (Model, Msg, init, initHeaders, update, view)
 
 {-|
-  This module implements a simple table
+  This module implements a table with pagination, sorting and filtering
+  Also specified cells in the records can be set invisible
 
 @docs Model, Msg, init, initHeaders, update, view
 
@@ -19,10 +20,6 @@ import String
 import Html exposing (..)
 import Html.App as App exposing (program)
 import Html.Attributes exposing (class, value, style, disabled, href, downloadAs)
-
-
---import Html.Events exposing (onClick, onInput)
-
 import Array exposing (..)
 
 
@@ -38,7 +35,7 @@ type alias IdRecord =
     }
 
 
-{-| Model
+{-| Model Description
 
 -}
 type alias Model =
@@ -66,6 +63,7 @@ type alias Model =
 initHeaders : String -> List Header.Model -> Bool -> Model
 initHeaders title headers auto =
     let
+        -- Default visible records is 10
         visibleRecords =
             10
 
@@ -148,6 +146,8 @@ initCmd title headers records auto =
     ( init title headers records auto, Cmd.none )
 
 
+{-| Restore the headers to initial configuration
+-}
 resetHeaders : Model -> Model
 resetHeaders table =
     let
@@ -181,7 +181,11 @@ initHeaderHelper ( i, model ) =
 --UPDATE
 
 
-{-| Possible actions
+{-| Possible Messages:
+   * Header message
+   * Record message
+   * Pagination message
+   * Search message
 -}
 type Msg
     = HeaderMsg Int Header.Msg
@@ -190,7 +194,7 @@ type Msg
     | SearchMsg Search.Msg
 
 
-{-| Controller
+{-| Handle updates on the model
 -}
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -229,7 +233,6 @@ update msg model =
                 ( newHeaders, cmds ) =
                     List.unzip (List.map (updateHeaderHelp id msg) model.headers)
 
-                -- Get current state
                 state =
                     getHeaderState id newHeaders
 
@@ -249,6 +252,8 @@ update msg model =
                 ( { model | records = newRecords |> fromList }, Cmd.batch cmds )
 
 
+{-| Return csv of the records
+-}
 getCsv : List Header.Model -> List Record.Model -> String
 getCsv headers records =
     let
@@ -261,6 +266,8 @@ getCsv headers records =
         h ++ (String.fromChar '\n') ++ r
 
 
+{-| Update csv string based on the permuation
+-}
 updateCsv : List IdHeader -> Array IdRecord -> List Int -> String
 updateCsv headers records perm =
     let
@@ -273,6 +280,8 @@ updateCsv headers records perm =
         h ++ (String.fromChar '\n') ++ r
 
 
+{-| Get the record from an IdRecord
+-}
 toRecord : Maybe IdRecord -> Record.Model
 toRecord res =
     case res of
@@ -283,11 +292,15 @@ toRecord res =
             record.model
 
 
+{-| Get a list of the string representation of each record. Used by search module
+-}
 getRecordsForSearch : List Record.Model -> List String
 getRecordsForSearch list =
     List.map (Record.toString) list
 
 
+{-| Get the state of the specified header
+-}
 getHeaderState : Int -> List IdHeader -> State
 getHeaderState col idHeaders =
     let
@@ -300,7 +313,7 @@ getHeaderState col idHeaders =
         idHeader =
             case mayIdHeader of
                 Nothing ->
-                    { id = 0, model = Header.Model "" Original IntType }
+                    Debug.crash ("Header doesn't exist!")
 
                 Just s ->
                     s
@@ -311,50 +324,15 @@ getHeaderState col idHeaders =
         header.state
 
 
+{-| Return a new model based on the index of the column to sort
+-}
 sort : Int -> State -> Model -> Model
 sort col state model =
     { model | permutation = getNewPermutation col state model }
 
 
-getSlices : Int -> Model -> Int -> List Int -> List Int
-getSlices col model index list =
-    case list of
-        [] ->
-            []
-
-        x1 :: rest ->
-            let
-                x2 =
-                    case rest of
-                        [] ->
-                            x1 + 1
-
-                        p :: rest2 ->
-                            p
-            in
-                if (areTheSame col model x1 x2) then
-                    getSlices col model (index + 1) rest
-                else
-                    index :: getSlices col model (index + 1) rest
-
-
-areTheSame : Int -> Model -> Int -> Int -> Bool
-areTheSame col model id1 id2 =
-    let
-        v1 =
-            getIdRecord id1 model |> getRecord |> getValue col
-
-        v2 =
-            getIdRecord id2 model |> getRecord |> getValue col
-    in
-        case Value.compare v1 v2 of
-            EQ ->
-                True
-
-            _ ->
-                False
-
-
+{-| Get a new permuation based on the given column and state
+-}
 getNewPermutation : Int -> State -> Model -> List Int
 getNewPermutation col state model =
     case state of
@@ -375,6 +353,8 @@ getNewPermutation col state model =
             List.sortWith (\i -> (\j -> (sortForPermutation model col j i))) model.permutation
 
 
+{-| Return the order of the two indexes
+-}
 sortForPermutation : Model -> Int -> Int -> Int -> Order
 sortForPermutation model col id1 id2 =
     let
@@ -387,11 +367,15 @@ sortForPermutation model col id1 id2 =
         sortIdRecord col rec1 rec2
 
 
+{-| Return the order of the  two records
+-}
 sortIdRecord : Int -> IdRecord -> IdRecord -> Order
 sortIdRecord col rec1 rec2 =
     Value.compare (getRecord rec1 |> getValue col) (getRecord rec2 |> getValue col)
 
 
+{-| Get the IdRecord on the specified row
+-}
 getIdRecord : Int -> Model -> IdRecord
 getIdRecord row model =
     let
@@ -420,6 +404,8 @@ getRecord idRecord =
     idRecord.model
 
 
+{-| Get the value at the given column
+-}
 getValue : Int -> Record.Model -> Value
 getValue index record =
     let
@@ -430,8 +416,7 @@ getValue index record =
         idCell =
             case mayIdCell of
                 Nothing ->
-                    -- TODO Remove this
-                    { id = 0, model = Cell.init (I 0) False }
+                    Debug.crash ("Cell doesn't exist")
 
                 Just cell ->
                     cell
@@ -442,6 +427,8 @@ getValue index record =
         cell.value
 
 
+{-| Helper method to update each header individually
+-}
 updateHeaderHelp : Int -> Header.Msg -> IdHeader -> ( IdHeader, Cmd Msg )
 updateHeaderHelp id msg header =
     if header.id /= id then
@@ -461,6 +448,8 @@ updateHeaderHelp id msg header =
             ( IdHeader id newModel, Cmd.map (HeaderMsg id) cmds )
 
 
+{-| Helper method to update each record individually
+-}
 updateRecordHelp : Int -> Record.Msg -> IdRecord -> ( IdRecord, Cmd Msg )
 updateRecordHelp id msg record =
     if record.id /= id then
@@ -505,11 +494,15 @@ view model =
         ]
 
 
+{-| Convert records to String
+-}
 recordsToString : Array IdRecord -> String
 recordsToString array =
     Array.map (\x -> x.model |> Record.toString) array |> Array.toList |> String.join "#"
 
 
+{-| View only the records based on the permuation
+-}
 viewRecordsPermutated : Model -> List (Html Msg)
 viewRecordsPermutated model =
     let
@@ -522,6 +515,8 @@ viewRecordsPermutated model =
         List.map (\x -> Array.get x model.records |> viewRecordPermutated) perm
 
 
+{-| Helper method to show record
+-}
 viewRecordPermutated : Maybe IdRecord -> Html Msg
 viewRecordPermutated res =
     case res of
@@ -532,21 +527,15 @@ viewRecordPermutated res =
             (App.map (RecordMsg record.id) (Record.view record.model))
 
 
-viewRecords : Model -> List (Html Msg)
-viewRecords model =
-    Array.map viewRecord model.records |> toList
-
-
-viewRecord : IdRecord -> Html Msg
-viewRecord record =
-    (App.map (RecordMsg record.id) (Record.view record.model))
-
-
+{-| View Header
+-}
 viewHeader : IdHeader -> Html Msg
 viewHeader { id, model } =
     App.map (HeaderMsg id) (Header.view model)
 
 
+{-| Visually check this module
+-}
 main : Program Never
 main =
     program
@@ -557,6 +546,8 @@ main =
         }
 
 
+{-| Example headers
+-}
 dummyHeaders : List Header.Model
 dummyHeaders =
     [ { title = "ID", state = Original, type' = IntType }
@@ -567,6 +558,8 @@ dummyHeaders =
     ]
 
 
+{-| Example records
+-}
 dummyRecords : List Record.Model
 dummyRecords =
     [ Record.init
@@ -649,7 +642,7 @@ dummyRecords =
     , Record.init
         [ Cell.init (I 952003) True
         , Cell.init (S "Emily") True
-        , Cell.init (S "Antreou") True
+        , Cell.init (S "Hatziloizou") True
         , Cell.init (D 344049992) True
         , Cell.init (B True) True
         ]
