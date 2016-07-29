@@ -52,7 +52,7 @@ The library is divided into the following components:
 
 * **_Record_**
 	
-   Represents one entry in a table. It uses a list of _cells_ 
+   Represents one entry in a table. It uses a list of _cells_.
 
 
 * **_Header_**
@@ -62,7 +62,7 @@ The library is divided into the following components:
 
 * **_Pagination_**
 
-   Controls the view of the table.
+   Controls the view of the table. It breaks the view into pages showing a specified number of records.
 
 * **_Search_**
 
