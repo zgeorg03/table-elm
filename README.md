@@ -70,7 +70,7 @@ The library is divided into the following components:
 
 * **_Table_**
 
-   This component connects all the components together.
+   Table connects all the components together, providing them the data.
 
 * **_Native/SafeRegex_**
 
